@@ -1,0 +1,41 @@
+@import 'config';
+
+.notify
+{
+    z-index: 10001!important;
+    &.notify-top-full {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+}
+.toaster
+{
+    color: white;
+    padding: 2.4rem;
+    text-align: center;
+    border-radius: 0.3rem;
+    font-weight: 600;
+    background: #001730;
+    z-index: 10002!important;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+.toaster--warning
+{
+    @extend .toaster;
+    background: $color-warning;
+}
+
+.toaster--success
+{
+    @extend .toaster;
+    background: $color-success;
+}
+
+.toaster--error
+{
+    @extend .toaster;
+    background: $color-danger;
+}

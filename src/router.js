@@ -1,17 +1,39 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
+const Login = () => import("@/views/Login.vue");
+const Dashboard = () => import("@/views/Dashboard.vue");
+const Profile = () => import("@/views/Profile.vue");
 
 Vue.use(Router);
 
-export default new Router({
+let router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [
     {
       path: "/",
-      name: "home",
-      component: Home
+      redirect: "/login"
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: Login
+    },
+    {
+      path: "/dashboard",
+      name: "dashboard",
+      component: Dashboard,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/profile",
+      name: "profile",
+      component: Profile,
+      meta: {
+        auth: true
+      }
     },
     {
       path: "/about",
@@ -24,3 +46,21 @@ export default new Router({
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.meta && to.meta.auth) {
+    //Check if user is logged in.
+    if (!Vue.prototype.$auth.isAuthenticated()) {
+      next({
+        name: "login",
+        query: {
+          redirect: to.path
+        }
+      });
+      return;
+    }
+  }
+  next();
+});
+
+export default router;

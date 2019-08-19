@@ -1,0 +1,13 @@
+.trans-collapsible {
+  transition: height $transition-time ease-in-out;
+  overflow: hidden;
+}
+.trans-rotate {
+  transition: transform $transition-time ease-in-out;
+  &.rotate-180 {
+    transform: rotate(180deg);
+  }
+}
+.trans-opacity {
+  transition: opacity $transition-time ease-in-out;
+}

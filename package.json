@@ -8,11 +8,26 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.21",
+    "@fortawesome/free-regular-svg-icons": "^5.10.1",
+    "@fortawesome/free-solid-svg-icons": "^5.10.1",
+    "@fortawesome/vue-fontawesome": "^0.1.6",
+    "axios": "^0.19.0",
     "core-js": "^2.6.5",
+    "jwt-decode": "^2.2.0",
+    "luxon": "^1.17.2",
+    "material-components-vue": "^1.1.0",
+    "materialize-css": "^1.0.0-rc.2",
     "register-service-worker": "^1.6.2",
+    "velocity-animate": "^1.5.2",
     "vue": "^2.6.10",
+    "vue-axios": "^2.1.4",
+    "vue-datetime": "^1.0.0-beta.10",
     "vue-router": "^3.0.3",
-    "vuex": "^3.0.1"
+    "vue2-notify": "^1.4.0",
+    "vue2-touch-events": "^2.0.0",
+    "vuex": "^3.0.1",
+    "weekstart": "^1.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.10.0",

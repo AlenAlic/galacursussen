@@ -1,29 +1,29 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+  <div id="app" class="grey lighten-3">
+    <navbar v-if="$auth.isAuthenticated()" />
+    <router-view class="container" />
   </div>
 </template>
 
+<script>
+import { USER_PROFILE } from "./store/modules/auth";
+import Navbar from "@/components/navs/Navbar";
+export default {
+  name: "app",
+  components: { Navbar },
+  created() {
+    if (this.$store.state.auth.token) this.$store.dispatch(USER_PROFILE);
+  }
+};
+</script>
+
 <style lang="scss">
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  min-height: 100%;
+  height: 100%;
   text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+  overflow-x: auto;
 }
 </style>
+<!-- Import SCSS boilerplate -->
+<style src="./assets/css/styles.scss" lang="scss"></style>

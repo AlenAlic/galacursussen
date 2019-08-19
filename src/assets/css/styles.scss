@@ -1,0 +1,122 @@
+@import 'config';
+@import "./../../../node_modules/materialize-css/sass/materialize";
+
+
+@import 'transitions';
+@import 'toaster';
+
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
+}
+body {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+// click events
+.no-click {
+  pointer-events: auto !important;
+  cursor: not-allowed !important;
+}
+.clickable {
+   cursor: pointer;
+}
+
+// text color
+.text-info {
+  color: $color-info;
+}
+.text-success {
+  color: $color-success;
+}
+.text-super-success {
+  color: $color-super-success;
+}
+.text-warning {
+  color: $color-warning;
+}
+.text-danger {
+  color: $color-danger;
+}
+
+// background color
+.info {
+  background: $color-info;
+}
+.success {
+  background: $color-success;
+}
+.super-success {
+  background: $color-super-success;
+}
+.warning {
+  background: $color-warning;
+}
+.danger {
+  background: $color-danger;
+}
+
+
+// add option of no padding cols
+.row {
+  &.no-marg-bottom {
+    margin-bottom: 0;
+  }
+  &.no-padd {
+    .col {
+      padding: 0
+    }
+  }
+}
+
+
+// Fix for vue-datetime working with input
+.input-field.vdatetime {
+  margin-left: 3rem;
+  width: calc(100% - 3rem);
+  &.datetime-fix {
+    label {
+    -webkit-transform: translateY(-14px) scale(0.8);
+    transform: translateY(-14px) scale(0.8);
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+  }
+  };
+}
+.input-field.datetime-fix  {
+  label {
+    -webkit-transform: translateY(-14px) scale(0.8);
+    transform: translateY(-14px) scale(0.8);
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+  }
+}
+.input-field .prefix {
+  left: 0;
+}
+
+
+// Form validation
+.incorrect {
+  color: $color-danger;
+  label {
+    color: $color-danger;
+  }
+  input {
+    border-bottom: 1px solid $color-danger !important;
+  }
+}
+
+.tabs .tab a.active {
+  background-color: transparent;
+  color: $primary-color;
+  border-bottom: 1px solid $primary-color;
+}

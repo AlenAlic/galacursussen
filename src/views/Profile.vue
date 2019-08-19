@@ -1,11 +1,11 @@
 <template>
-  <profile />
+  <profile-card />
 </template>
 
 <script>
 import ProfileCard from "@/components/profile/ProfileCard";
 export default {
   name: "Profile",
-  components: { Profile }
+  components: { ProfileCard }
 };
 </script>

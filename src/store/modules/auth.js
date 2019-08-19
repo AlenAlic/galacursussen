@@ -15,7 +15,7 @@ const LOGOUT_REQUEST = "LOGOUT: Logout request sent.";
 const LOGOUT_SUCCESS = "LOGOUT: Successful request.";
 const LOGOUT_ERROR = "LOGOUT: Failed request.";
 
-const UNAUTHORIZED = "UNAUTHORIZED: Login request sent.";
+const UNAUTHORIZED = "UNAUTHORIZED: Unauthorized.";
 
 const RENEW = "RENEW: Renew auth token.";
 const RENEW_REQUEST = "RENEW: Renew request sent.";
@@ -28,10 +28,10 @@ const SET_PROFILE = "USER_PROFILE: Set profile data in store.";
 const PROFILE_SUCCESS = "USER_PROFILE: Successful request.";
 const PROFILE_ERROR = "USER_PROFILE: Failed request.";
 
-const TEST = "test";
-const TEST_REQUEST = "test_request";
-const TEST_SUCCESS = "test_success";
-const TEST_ERROR = "test_error";
+const TEST = "TEST";
+const TEST_REQUEST = "TEST: Renew request sent.";
+const TEST_SUCCESS = "TEST: Successful request.";
+const TEST_ERROR = "TEST: Failed request.";
 
 export { LOGIN, LOGOUT, UNAUTHORIZED, RENEW, USER_PROFILE, TEST };
 
@@ -178,7 +178,7 @@ export default {
     //       throw { status, errors };
     //     });
     // },
-    //
+
     // Test token
     [TEST]: ({ commit }) => {
       commit(TEST_REQUEST);
@@ -203,25 +203,6 @@ export default {
 
       return Vue.axios
         .get(`/auth/user/${state.userId}`)
-        .then(resp => {
-          commit(SET_PROFILE, resp.data);
-          commit(PROFILE_SUCCESS);
-        })
-        .catch(({ status, errors }) => {
-          commit(PROFILE_ERROR, errors);
-          throw { status, errors };
-        });
-    },
-    // Get logged in user's profile
-    [USER_PROFILE]: ({ commit, state }) => {
-      commit(PROFILE_REQUEST);
-
-      if (!state.userId) {
-        state.userId = decode(state.token).id;
-      }
-
-      return Vue.axios
-        .get(`user/${state.userId}`)
         .then(resp => {
           commit(SET_PROFILE, resp.data);
           commit(PROFILE_SUCCESS);

@@ -50,8 +50,8 @@ class User(UserMixin, Anonymous, db.Model):
     incie = db.Column(db.Boolean, nullable=False, default=False)
     salcie = db.Column(db.Boolean, nullable=False, default=False)
     mucie = db.Column(db.Boolean, nullable=False, default=False)
-    # assignment_requests = db.relationship("AssignmentRequest", back_populates="user")
-    # assignments = db.relationship("Assignment", back_populates="user")
+    assignment_requests = db.relationship("AssignmentRequest", back_populates="user")
+    assignments = db.relationship("Assignment", back_populates="user")
 
     def __repr__(self):
         return f'{self.email}'

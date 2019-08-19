@@ -22,4 +22,4 @@ yarn-error.log*
 
 # Own
 /instance/config.py
-/public/*.json
+/public/development.json

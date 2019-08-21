@@ -1,4 +1,5 @@
 from datetime import timezone, datetime
+from backend.values import DATETIME_FORMAT
 
 
 def format_euro(price):
@@ -12,7 +13,7 @@ def utc_to_local(utc_dt):
 
 
 def datetime_browser_format(dt):
-    return dt.strftime("%Y-%m-%dT%H:%M:%S.000Z")
+    return dt.strftime(DATETIME_FORMAT)
 
 
 def start_of_year():

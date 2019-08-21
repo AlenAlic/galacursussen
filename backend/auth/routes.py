@@ -1,12 +1,11 @@
-from flask import jsonify
-from flask_login import login_user, logout_user, current_user, login_required
-from backend import db
+from flask import jsonify, request, json
+from flask_login import current_user, login_required
 from backend.auth import bp
 from backend.auth.forms import LoginForm
 from backend.models import User
-from backend.auth.email import send_password_reset_email
-from backend.responses import json_unauthorized
+from backend.responses import json_unauthorized, json_error
 from backend.values import *
+from backend import db
 
 
 @bp.route('/login', methods=[POST])
@@ -23,10 +22,34 @@ def login():
     return json_unauthorized(form.login_status())
 
 
-@bp.route('/user/<int:user_id>', methods=[GET])
+@bp.route('/user/<int:user_id>', methods=[GET, PATCH])
+@login_required
 def user(user_id):
     u = User.query.filter(User.user_id == user_id).first()
-    return u.profile()
+    if request.method == GET:
+        return u.profile()
+    if request.method == PATCH:
+        form = json.loads(request.data)
+        u.email = form["email"]
+        u.incie = form["incie"]
+        u.salcie = form["salcie"]
+        u.mucie = form["mucie"]
+        db.session.commit()
+        return "Changes to profile saved."
+
+
+@bp.route('/password/<int:user_id>', methods=[PATCH])
+@login_required
+def password(user_id):
+    u = User.query.filter(User.user_id == user_id).first()
+    form = json.loads(request.data)
+    if u.check_password(form["current"]):
+        if form["password1"] == form["password2"]:
+            u.set_password(form["password1"], increment=False)
+            db.session.commit()
+            return "Password changed."
+        return json_error("Passwords are not equal.")
+    return json_error("Incorrect password.")
 
 
 @bp.route('/logout', methods=[POST])
@@ -39,61 +62,3 @@ def logout():
 @login_required
 def renew():
     return jsonify(current_user.profile())
-
-
-# @bp.route('/reset_password_request', methods=['GET', 'POST'])
-# def reset_password_request():
-#     if current_user.is_authenticated:
-#         return redirect(url_for('main.index'))
-#     form = ResetPasswordRequestForm()
-#     if request.method == "POST":
-#         if form.validate_on_submit():
-#             user = User.query.filter(User.email==form.email.data).first()
-#             if user is not None:
-#                 send_password_reset_email(user)
-#                 flash('Check your email for the instructions to reset your password.')
-#             else:
-#                 flash("This e-mail address is not registered here.")
-#             return redirect(url_for('main.index'))
-#     return render_template('auth/reset_password_request.html', title='Reset Password', form=form)
-#
-#
-# @bp.route('/reset_password/<token>', methods=['GET', 'POST'])
-# def reset_password(token):
-#     if current_user.is_authenticated:
-#         return redirect(url_for('main.index'))
-#     user = User.verify_reset_password_token(token)
-#     if not user:
-#         return redirect(url_for('main.index'))
-#     if user == 'error':
-#         flash('Not a valid token.', 'danger')
-#         return redirect(url_for('main.index'))
-#     form = ResetPasswordForm()
-#     if request.method == "POST":
-#         if form.validate_on_submit():
-#             user.set_password(form.password.data)
-#             db.session.commit()
-#             flash('Your password has been reset.', 'success')
-#             return redirect(url_for('main.index'))
-#     return render_template('auth/reset_password.html', form=form, user=user)
-#
-#
-# @bp.route('/activate_account/<token>', methods=['GET', 'POST'])
-# def activate_account(token):
-#     if current_user.is_authenticated:
-#         return redirect(url_for('main.index'))
-#     user = User.verify_reset_password_token(token)
-#     if not user:
-#         return redirect(url_for('main.index'))
-#     if user == 'error':
-#         flash('Not a valid token.', 'danger')
-#         return redirect(url_for('main.index'))
-#     form = ResetPasswordForm()
-#     form.submit.label.text = "Set password"
-#     if request.method == "POST":
-#         if form.validate_on_submit():
-#             user.set_password(form.password.data)
-#             db.session.commit()
-#             flash('Your password has been set.', 'success')
-#             return redirect(url_for('main.login'))
-#     return render_template('auth/activate_account.html', form=form, user=user)

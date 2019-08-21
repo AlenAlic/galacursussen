@@ -37,7 +37,7 @@ class Anonymous(AnonymousUserMixin):
 
 
 def create_app():
-    from backend.models import User, Configuration, Course
+    from backend.models import User, Course
     from backend.tests.data import test_users, test_courses
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_pyfile('config.py')
@@ -55,13 +55,12 @@ def create_app():
         if current_user.is_authenticated:
             current_user.last_seen = datetime.utcnow()
             db.session.commit()
-        g.config = Configuration.query.first()
 
     @app.after_request
     def add_cors_headers(response):
         response.headers['Access-Control-Allow-Origin'] = '*'
         if request.method == 'OPTIONS':
-            response.headers['Access-Control-Allow-Methods'] = 'DELETE, GET, POST, PUT'
+            response.headers['Access-Control-Allow-Methods'] = 'DELETE, GET, POST, PUT, PATCH'
             headers = request.headers.get('Access-Control-Request-Headers')
             if headers:
                 response.headers['Access-Control-Allow-Headers'] = headers
@@ -89,8 +88,6 @@ def create_app():
             a.access = values.ACCESS[values.ADMIN]
             a.is_active = True
             db.session.add(a)
-            conf = Configuration()
-            db.session.add(conf)
             db.session.commit()
 
     def create_test_users():
@@ -100,9 +97,6 @@ def create_app():
     def create_test_courses():
         if len(Course.query.all()) == 0:
             test_courses()
-
-    from backend.main import bp as main_bp
-    app.register_blueprint(main_bp)
 
     from backend.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')

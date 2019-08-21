@@ -6,14 +6,35 @@ from backend.models import new_courses_form_data, Course, AssignmentRequest, Use
 from backend.values import *
 from backend.courses.forms import AddCourseForm
 from backend.responses import json_error, json_forbidden
-from sqlalchemy import func
 from datetime import datetime
 
 
-@bp.route('/', methods=[GET, POST])
-def index():
-    courses = [c.json() for c in Course.query.filter(func.year(Course.date) > (func.year(datetime.now()) - 1)).all()]
-    return jsonify(courses)
+@bp.route('/', methods=[GET], defaults={'year': None})
+@bp.route('/<int:year>', methods=[GET])
+@login_required
+def index(year):
+    if year is not None:
+        start_date = datetime(year, FIRST_MONTH, 1)
+        end_date = datetime(year+1, FIRST_MONTH, 1)
+        c = \
+            {c.course_id: c.json() for c in Course.query.filter(Course.date >= start_date, Course.date < end_date).all()}
+        return jsonify(c)
+    offset = 0 if datetime.now().month >= FIRST_MONTH else -1
+    start_date = datetime(datetime.now().year + offset, FIRST_MONTH, 1)
+    end_date = datetime(datetime.now().year + offset + 1, FIRST_MONTH, 1)
+    c = {c.course_id: c.json() for c in Course.query.filter(Course.date >= start_date, Course.date < end_date).all()}
+    return jsonify(c)
+
+
+@bp.route('/updated/<int:course_id>', methods=[GET, PATCH])
+@login_required
+def updated(course_id):
+    if request.method == GET:
+        return jsonify(Course.query.filter(Course.course_id == course_id).first().json())
+    if request.method == PATCH:
+        course = Course.query.filter(Course.course_id == course_id).first()
+        course.save(json.loads(request.data), patch=True)
+        return course.changes_saved()
 
 
 @bp.route('/new', methods=[GET, POST])
@@ -24,7 +45,8 @@ def new():
         return new_courses_form_data()
     if request.method == POST:
         if form.validate():
-            return Course.create(form.model_data()).course_added()
+            course = Course()
+            return course.save(form.model_data()).course_added()
         else:
             return json_error(form.vue_error_form())
 

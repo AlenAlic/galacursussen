@@ -111,9 +111,9 @@ COURSES = [
      "SmartXP", "unknown", "incie", "QS, CC", ""),
 
     ("Communiqué", datetime(START_YEAR, 11, 23, 16, 30, 0, 0), timedelta(hours=1, minutes=30),
-     "", "en", "salcie", "", ""),
+     "Unknown", "en", "salcie", "", ""),
     ("Damesdispuut MonduDamo", datetime(START_YEAR, 11, 28, 21, 0, 0, 0), timedelta(hours=1, minutes=30),
-     "", "en", "salcie", "", ""),
+     "Unknown", "en", "salcie", "", ""),
     ("Dance Fever", datetime(START_YEAR + 1, 1, 23, 20, 0, 0, 0), timedelta(hours=1, minutes=30),
      "Nijmegen", "en", "salcie", "", ""),
     ("4 happy feet", datetime(START_YEAR + 1, 3, 21, 18, 0, 0, 0), timedelta(hours=1, minutes=30),
@@ -139,5 +139,6 @@ def course_request_data(data):
 
 
 def test_courses():
+    course = Course()
     for c in COURSES:
-        Course.create(course_request_data(c))
+        course.save(course_request_data(c))

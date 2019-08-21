@@ -49,7 +49,7 @@ def upgrade():
     sa.Column('assignment_request_id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('course_id', sa.Integer(), nullable=True),
-    sa.Column('attendance', sa.Enum('yes', 'maybe', 'no', 'prefer', name='attendance'), nullable=True),
+    sa.Column('attendance', sa.Enum('yes', 'maybe', 'no', name='attendance'), nullable=True),
     sa.Column('notes', sa.String(length=256), nullable=True),
     sa.ForeignKeyConstraint(['course_id'], ['course.course_id'], onupdate='CASCADE', ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['user_id'], ['users.user_id'], onupdate='CASCADE', ondelete='CASCADE'),

@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from backend.values import *
 from time import time
 import jwt
-from datetime import datetime
+from datetime import datetime, timedelta
 from functools import wraps
 import enum
 from backend.util import datetime_browser_format
@@ -71,12 +71,15 @@ class User(UserMixin, Anonymous, db.Model):
     def is_treasurer(self):
         return self.access == ACCESS[TREASURER]
 
+    def access_level(self):
+        return ACCESS_LEVEL[self.access]
+
     def allowed(self, access_level):
         return self.access == access_level
 
-    def set_password(self, password):
+    def set_password(self, password, increment=True):
         self.password_hash = generate_password_hash(password)
-        if self.reset_index is not None:
+        if self.reset_index is not None and increment:
             self.reset_index += 1
         db.session.commit()
 
@@ -98,14 +101,19 @@ class User(UserMixin, Anonymous, db.Model):
     def profile(self):
         if current_user == self:
             return {
+                "id": self.user_id,
                 "first_name": self.first_name,
                 "last_name": self.last_name,
                 "full_name": self.full_name(),
                 "email": self.email,
+                "access_level": self.access_level(),
                 "admin": self.is_admin(),
                 "organizer": self.is_organizer(),
                 "member": self.is_member(),
-                "treasurer": self.is_treasurer()
+                "treasurer": self.is_treasurer(),
+                "incie": self.incie,
+                "salcie": self.salcie,
+                "mucie": self.mucie
             }
         return "Not logged in"
 
@@ -131,12 +139,6 @@ class User(UserMixin, Anonymous, db.Model):
         }
 
 
-class Configuration(db.Model):
-    __tablename__ = "configuration"
-    lock_id = db.Column(db.Integer, primary_key=True)
-    maintenance = db.Column(db.Integer, default=False, nullable=False)
-
-
 class Language(enum.Enum):
     nl = "Dutch"
     en = "English"
@@ -146,13 +148,6 @@ class Language(enum.Enum):
 class Committee(enum.Enum):
     incie = "InCie"
     salcie = "SalCie"
-
-
-def new_courses_form_data():
-    return jsonify(
-        {"languages": [{"value": i.name, "text": i.value} for i in Language],
-         "committees": [{"value": i.name, "text": i.value} for i in Committee]
-         })
 
 
 class Course(db.Model):
@@ -187,6 +182,9 @@ class Course(db.Model):
     def course_added(self):
         return jsonify(f"Added course for {self.course_description()}")
 
+    def changes_saved(self):
+        return jsonify(f"Saved changes for {self.course_description()}")
+
     def json_date(self):
         return datetime_browser_format(self.date)
 
@@ -202,16 +200,14 @@ class Course(db.Model):
         return f"{duration.strftime('%H:%M')}"
 
     @staticmethod
-    def create(data):
-        course = Course()
-        course.requested_by = data["requested_by"]
-        course.date = data["date"]
-        course.duration = data["duration"]
-        course.location = data["location"]
-        course.language = data["language"]
-        course.committee = data["committee"]
-        course.dances = data["dances"]
-        course.notes = data["notes"]
+    def parse_dates(data):
+        data["date"] = datetime.strptime(data["date"], DATETIME_FORMAT)
+        duration = datetime.strptime(data["duration"], DATETIME_FORMAT)
+        data["duration"] = timedelta(hours=duration.hour, minutes=duration.minute)
+        return data
+
+    @staticmethod
+    def generate_assignment_requests(course):
         users = User.query.filter(User.is_active.is_(True))
         if course.committee == Committee.incie.name:
             users = users.filter(or_(User.mucie.is_(True), User.incie.is_(True)))
@@ -222,12 +218,32 @@ class Course(db.Model):
             assignment_request = AssignmentRequest()
             assignment_request.user = u
             assignment_request.course = course
-        db.session.add(course)
+
+    def save(self, data, patch=False):
+        if patch:
+            data = self.parse_dates(data)
+        course = Course() if not patch else self
+        course.requested_by = data["requested_by"]
+        course.date = data["date"]
+        course.duration = data["duration"]
+        course.location = data["location"]
+        course.language = data["language"]
+        course.committee = data["committee"]
+        course.dances = data["dances"]
+        course.notes = data["notes"]
+        if patch:
+            for change in data["assignment_requests"]:
+                req = AssignmentRequest.query.filter(AssignmentRequest.assignment_request_id == change).first()
+                req.attendance = data["assignment_requests"][change]
+        else:
+            self.generate_assignment_requests(course)
+            db.session.add(course)
         db.session.commit()
         return course
 
     def json(self):
         return {
+            "key": str(datetime.now()),
             "id": self.course_id,
             "requested_by": self.requested_by,
             "date": self.json_date(),
@@ -239,6 +255,8 @@ class Course(db.Model):
             "location": self.location,
             "language": self.language.value,
             "committee": self.committee.value,
+            "language_value": self.language.name,
+            "committee_value": self.committee.name,
             "price": self.price,
             "paid": self.paid,
             "dances": self.dances,
@@ -255,7 +273,15 @@ class Attendance(enum.Enum):
     yes = "Yes"
     maybe = "Maybe"
     no = "No"
-    prefer = "Yes, with preference for teaching/assisting"
+
+
+def new_courses_form_data():
+    return jsonify(
+        {"languages": [{"value": i.name, "text": i.value} for i in Language],
+         "committees": [{"value": i.name, "text": i.value} for i in Committee],
+         "attendance": [{"value": i.name, "text": i.value} for i in Attendance] +
+                       [{"value": None, "text": "Not responded"}]
+         })
 
 
 class AssignmentRequest(db.Model):

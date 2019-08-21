@@ -3,6 +3,7 @@ import Router from "vue-router";
 const Login = () => import("@/views/Login.vue");
 const Dashboard = () => import("@/views/Dashboard.vue");
 const Profile = () => import("@/views/Profile.vue");
+const TestingGrounds = () => import("@/views/TestingGrounds.vue");
 
 Vue.use(Router);
 
@@ -28,21 +29,20 @@ let router = new Router({
       }
     },
     {
+      path: "/testing",
+      name: "testing",
+      component: TestingGrounds,
+      meta: {
+        auth: true
+      }
+    },
+    {
       path: "/profile",
       name: "profile",
       component: Profile,
       meta: {
         auth: true
       }
-    },
-    {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
     }
   ]
 });

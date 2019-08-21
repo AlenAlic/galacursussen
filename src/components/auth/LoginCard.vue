@@ -20,7 +20,9 @@
               <span>Remember me</span>
             </label>
           </div>
+          <loading-spinner size="tiny" v-if="loading" />
           <button
+            v-else
             @click.prevent="login"
             :disabled="filled !== true"
             class="waves-effect waves-light btn"
@@ -36,11 +38,18 @@
 
 <script>
 import Errors from "@/components/Errors";
+import LoadingSpinner from "@/components/LoadingSpinner";
 export default {
   name: "login-card",
-  components: { Errors },
+  components: { LoadingSpinner, Errors },
   data: function() {
-    return { email: "", password: "", rememberMe: false, errors: [] };
+    return {
+      email: "",
+      password: "",
+      rememberMe: false,
+      errors: [],
+      loading: false
+    };
   },
   computed: {
     filled: function() {
@@ -50,6 +59,7 @@ export default {
   methods: {
     login: function() {
       this.error = undefined;
+      this.loading = true;
       this.$auth
         .signInWithUsernameAndPassword(
           this.email,
@@ -62,6 +72,7 @@ export default {
           });
         })
         .catch(({ errors }) => {
+          this.loading = false;
           return (this.errors = errors);
         });
     }

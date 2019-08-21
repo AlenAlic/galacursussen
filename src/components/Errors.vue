@@ -1,5 +1,5 @@
 <template>
-  <div class="errors">
+  <div class="errors text-danger">
     <div v-for="(err, index) in errors" v-bind:key="index" class="text-error">
       {{ err }}
     </div>

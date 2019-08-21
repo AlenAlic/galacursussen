@@ -1,25 +1,27 @@
 <template>
   <div class="card">
-    <div class="card-content">
-      <span class="card-title left-align">
-        {{ title }}
-        <i
-          class="material-icons right trans-rotate clickable"
-          @click="open = !open"
-          :class="{ 'rotate-180': open }"
-        >
-          arrow_drop_down_circle</i
-        >
-        <loading-spinner class="loading" size="tiny" v-if="loading" />
-      </span>
-      <div
-        class="trans-collapsible"
-        :style="{ height: `${this.height}px` }"
-        ref="form"
-      >
-        <slot></slot>
-      </div>
-    </div>
+    <ul class="collapsible">
+      <li>
+        <div class="collapsible-header">
+          <div class="title">
+            {{ title
+            }}<loading-spinner class="loading" size="tiny" v-if="loading" />
+          </div>
+          <div>
+            <i
+              class="material-icons right trans-rotate clickable unselectable"
+              @click="toggle"
+              :class="{ 'rotate-180': open }"
+            >
+              arrow_drop_down_circle</i
+            >
+          </div>
+        </div>
+        <div class="collapsible-body">
+          <slot></slot>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -32,18 +34,38 @@ export default {
   data: function() {
     return {
       open: false,
-      height: 0
+      ready: false
     };
   },
-  watch: {
-    open: function(newVals) {
-      this.height = newVals ? this.$refs.form.scrollHeight : 0;
+  methods: {
+    toggle: function() {
+      if (this.ready) this.open = !this.open;
     }
+  },
+  mounted: function() {
+    this.$nextTick(function() {
+      this.ready = true;
+      // eslint-disable-next-line no-undef
+      M.Collapsible.init(document.querySelectorAll(".collapsible"), {
+        inDuration: 400,
+        outDuration: 400
+      });
+    });
   }
 };
 </script>
 
 <style scoped lang="scss">
+.collapsible-header {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  width: 100%;
+  line-height: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  padding: 2rem 1rem 2rem 2rem;
+}
 .loading {
   margin-left: 1rem;
 }

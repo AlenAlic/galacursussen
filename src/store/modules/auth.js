@@ -41,7 +41,7 @@ export default {
     loading: false,
     errors: [],
     userId: undefined,
-    profile: {}
+    profile: undefined
   },
   mutations: {
     [SET_TOKEN](state, result) {
@@ -231,9 +231,12 @@ export default {
         firstName: decoded != null ? decoded.first_name : null,
         lastName: decoded != null ? decoded.last_name : null,
         id: decoded != null ? decoded.id : null,
-        admin: state.profile !== {} ? state.profile.admin : false,
-        organizer: state.profile !== {} ? state.profile.organizer : false
+        admin: state.profile ? state.profile.admin : false,
+        organizer: state.profile ? state.profile.organizer : false
       };
+    },
+    profile: state => {
+      return state.profile;
     }
   }
 };

@@ -7,7 +7,7 @@
           this.$store.getters.currentUser.organizer
       "
     />
-    <all-requested-courses
+    <this-academic-years-courses
       v-if="
         this.$store.getters.currentUser.admin ||
           this.$store.getters.currentUser.organizer
@@ -20,22 +20,18 @@
 import { COURSES } from "@/store/modules/courses";
 import NotRespondedCourses from "@/components/dashboard/NotRespondedCourses";
 import CreateNewRequest from "@/components/dashboard/CreateNewRequest";
-import AllRequestedCourses from "@/components/dashboard/AllRequestedCourses";
+import ThisAcademicYearsCourses from "@/components/dashboard/ThisAcademicYearsCourses";
 export default {
-  name: "dashboard",
+  name: "Dashboard",
   components: {
     NotRespondedCourses,
     CreateNewRequest,
-    AllRequestedCourses
+    ThisAcademicYearsCourses
   },
   created() {
-    this.$store.dispatch(COURSES);
+    if (!this.$store.getters.hasCourses) this.$store.dispatch(COURSES);
   }
 };
 </script>
 
-<style scoped lang="scss">
-.test {
-  display: block;
-}
-</style>
+<style scoped lang="scss"></style>

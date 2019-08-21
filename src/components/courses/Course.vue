@@ -1,12 +1,15 @@
 <template>
   <div class=" left-align">
     <div v-if="course">
-      <h5 class="title">
-        {{ course.requested_by }} ({{ course.committee }})
-        <button class="btn right btn-small" @click="showModal = true">
+      <div class="right-align buttons-container">
+        <button class="btn btn-small" @click="showEditModal = true">
           Edit
         </button>
-      </h5>
+        <button class="btn btn-small primary" @click="showModal = true">
+          Assignments
+        </button>
+      </div>
+      <h5 class="title">{{ course.requested_by }} ({{ course.committee }})</h5>
       <h6>{{ course.date_formatted }}</h6>
       <div><b>Location: </b>{{ course.location }}</div>
       <div><b>Course language: </b>{{ course.language }}</div>
@@ -22,25 +25,33 @@
         <b>Paid: </b>{{ course.paid ? "yes" : "" }}
       </div>
       <div><b>MuCie available: </b>{{ course.has_mucie ? "Yes" : "No" }}</div>
-      <div>
-        <response-list :assignment_requests="requests" />
+      <div class="respone-list">
+        <card-collapse-list :title="responsesTitle">
+          <response-list :assignment_requests="requests" />
+        </card-collapse-list>
       </div>
       <modal
-        title="Test"
+        v-if="showEditModal"
+        @close="showEditModal = false"
+        :show-close-btn="false"
+      >
+        <edit-course-form
+          slot="body"
+          :course="course"
+          @close="showEditModal = false"
+        />
+      </modal>
+      <modal
         v-if="showModal"
         @close="showModal = false"
-        closeBtn="Cancel"
+        :show-close-btn="false"
       >
-        <p slot="body">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-        <button slot="button" class="btn" @click="alert">Save</button>
+        <div slot="body" @close="showModal = false">
+          Hello
+          <button class="btn grey accent-2" @click.prevent="showModal = false">
+            Cancel
+          </button>
+        </div>
       </modal>
     </div>
   </div>
@@ -49,14 +60,17 @@
 <script>
 import ResponseList from "@/components/courses/ResponseList";
 import Modal from "@/components/Modal";
+import CardCollapseList from "@/components/courses/CardCollapseList";
+import EditCourseForm from "@/components/courses/EditCourseForm";
 export default {
   name: "Course",
   props: { data: Object },
-  components: { Modal, ResponseList },
+  components: { EditCourseForm, CardCollapseList, Modal, ResponseList },
   data: function() {
     return {
       course: undefined,
       requests: [],
+      showEditModal: false,
       showModal: false
     };
   },
@@ -73,11 +87,17 @@ export default {
     },
     pastCourseDate: function() {
       return this.courseDate < new Date();
-    }
-  },
-  methods: {
-    alert: function() {
-      alert("Hi");
+    },
+    responses: function() {
+      return (
+        this.totalRequests -
+        this.requests.filter(r => {
+          return !r.attendance;
+        }).length
+      );
+    },
+    responsesTitle: function() {
+      return `Responses ${this.responses} / ${this.totalRequests}`;
     }
   }
 };
@@ -85,6 +105,15 @@ export default {
 
 <style scoped lang="scss">
 .title {
+  padding-bottom: 1rem;
+}
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.respone-list {
+  margin-bottom: 1.5rem;
   border-bottom: 1px solid grey;
   padding-bottom: 0.75rem;
 }

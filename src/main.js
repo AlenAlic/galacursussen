@@ -15,7 +15,8 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faMusic,
   faCircle,
-  faMapMarkerAlt
+  faMapMarkerAlt,
+  faAt
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faBuilding,
@@ -31,6 +32,7 @@ library.add(
   faMusic,
   faCircle,
   faMapMarkerAlt,
+  faAt,
   faBuilding,
   faCalendarAlt,
   faClock,

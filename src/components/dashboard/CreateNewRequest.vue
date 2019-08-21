@@ -13,8 +13,7 @@ export default {
   computed: {
     formLoaded: function() {
       return (
-        this.$store.state.courses.languages.length > 0 &&
-        this.$store.state.courses.committees.length > 0
+        this.$store.getters.hasLanguages && this.$store.getters.hasCommittees
       );
     }
   }

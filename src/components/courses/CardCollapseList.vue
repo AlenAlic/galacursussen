@@ -4,7 +4,7 @@
       {{ title }}
       <i
         class="material-icons right trans-rotate clickable"
-        @click="open = !open"
+        @click="changing"
         :class="{ 'rotate-180': open }"
       >
         keyboard_arrow_down</i
@@ -33,6 +33,12 @@ export default {
   watch: {
     open: function(newVals) {
       this.height = newVals ? this.$refs.form.scrollHeight : 0;
+    }
+  },
+  methods: {
+    changing: function() {
+      this.$emit("changing");
+      this.open = !this.open;
     }
   }
 };

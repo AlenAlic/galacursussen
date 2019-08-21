@@ -9,11 +9,16 @@
           ><i class="material-icons">menu</i></a
         >
         <ul class="left hide-on-med-and-down">
-          <nav-link navigate-to="/about" path="path" text="About" />
           <nav-link
             navigate-to="/dashboard"
             text="Dashboard"
             icon="dashboard"
+          />
+          <nav-link
+            v-if="this.$config.env === 'development'"
+            navigate-to="/testing"
+            text="Testing"
+            icon="code"
           />
         </ul>
         <ul class="right hide-on-med-and-down">
@@ -21,7 +26,7 @@
           <li>
             <a
               @click.prevent="logout"
-              class="waves-effect waves-light btn teal lighten-2 white-text"
+              class="waves-effect waves-light btn white-text"
               >Log out <i class="material-icons right">exit_to_app</i></a
             >
           </li>
@@ -47,34 +52,34 @@
         "
       >
         <li>
-          <div class="user-view">
-            <div class="background">
-              <img
-                src="https://leasticoulddo.com/wp-content/uploads/2019/08/licd5144-aug16_19_thumbnail.jpg"
-                alt="Dummy"
-              />
-            </div>
-            <a href="#"
-              ><img
-                class="circle"
-                src="https://leasticoulddo.com/wp-content/uploads/2019/08/licd5144-aug16_19_thumbnail.jpg"
-                alt="Dummy"
-            /></a>
-            <a href="#"><span class="white-text name">John Doe</span></a>
-            <a href="#"
-              ><span class="white-text email">jdandturk@gmail.com</span></a
+          <div class="user-view nav-img-background"></div>
+        </li>
+        <li>
+          <nav-link
+            navigate-to="/dashboard"
+            text="Dashboard"
+            icon="dashboard"
+          />
+          <nav-link
+            v-if="this.$config.env === 'development'"
+            navigate-to="/testing"
+            text="Testing"
+            icon="code"
+          />
+        </li>
+        <li><div class="divider"></div></li>
+        <li>
+          <nav-link navigate-to="/profile" text="Profile" icon="person" />
+        </li>
+        <li>
+          <div class="logout">
+            <a
+              @click.prevent="logout"
+              class="waves-effect waves-light btn white-text"
+              >Log out <i class="material-icons right">exit_to_app</i></a
             >
           </div>
         </li>
-        <li>
-          <a href="#"
-            ><i class="material-icons">cloud</i>First Link With Icon</a
-          >
-        </li>
-        <li><a href="#">Second Link</a></li>
-        <li><div class="divider"></div></li>
-        <li><a class="subheader">Subheader</a></li>
-        <li><a class="waves-effect" href="#">Third Link With Waves</a></li>
       </ul>
     </transition>
     <div
@@ -148,21 +153,29 @@ export default {
       return Math.min(300, Math.abs(val)) / 3;
     },
     setDraggingStartPos: function(event) {
-      this.dragging = true;
-      this.startPosition = this.calculateDraggingPos(
-        event.targetTouches[0].clientX
-      );
+      if (event.type === "touchmove") {
+        this.dragging = true;
+        this.startPosition = this.calculateDraggingPos(
+          event.targetTouches[0].clientX
+        );
+      }
     },
     draggingSideNavOpen: function(event) {
-      this.position = this.calculateDraggingPos(event.targetTouches[0].clientX);
+      if (event.type === "touchmove") {
+        this.position = this.calculateDraggingPos(
+          event.targetTouches[0].clientX
+        );
+      }
     },
     draggingSideNavClose: function(event) {
-      let x =
-        this.calculateDraggingPos(event.targetTouches[0].clientX) +
-        100 -
-        this.startPosition;
-      x = x > 100 ? 100 : x;
-      this.position = x;
+      if (event.type === "touchmove") {
+        let x =
+          this.calculateDraggingPos(event.targetTouches[0].clientX) +
+          100 -
+          this.startPosition;
+        x = x > 100 ? 100 : x;
+        this.position = x;
+      }
     },
     stopDraggingSideNav: function() {
       this.dragging = false;
@@ -173,6 +186,21 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.user-view {
+  height: 160px;
+}
+.sidenav .divider {
+  margin: 6px 0 6px 0;
+}
+.logout {
+  padding-top: 3rem;
+}
+.nav-img-background {
+  background-image: url("../../../public/img/logo.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 @import "../../assets/css/config";
 .sidenav {
   &.show {

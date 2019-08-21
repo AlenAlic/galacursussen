@@ -1,5 +1,10 @@
 <template>
-  <div class="cards-container trans-opacity" :class="{ fade: this.hide }">
+  <div
+    class="cards-container"
+    ref="container"
+    :class="{ fade: this.hide }"
+    :style="{ height: this.height !== undefined ? `${this.height}px` : 'auto' }"
+  >
     <div class="card">
       <div class="card-content">
         <span class="card-title">{{ course.requested_by }}</span>
@@ -33,33 +38,32 @@
       <div class="card-action">
         <form v-on:submit.prevent>
           <div class="can">Can you attend this course?</div>
-          <loading-spinner size="big" v-if="buttonsDisabled" />
-          <div v-else>
+          <div>
             <div class="input-field">
               <font-awesome-icon
                 class="prefix"
                 :icon="['far', 'clipboard']"
               ></font-awesome-icon>
-              <input v-model="notes" type="text" id="notes" />
+              <input
+                v-model="notes"
+                type="text"
+                id="notes"
+                :disabled="loading"
+              />
               <label for="notes">Notes</label>
             </div>
-            <button class="btn success" @click="attend('yes')">
-              Yes
-            </button>
-            <button class="btn warning" @click="attend('maybe')">
-              Maybe
-            </button>
-            <button class="btn danger" @click="attend('no')">
-              No
-            </button>
-            <div class="prefer">
-              <button
-                class="btn super-success"
-                @click="attend('prefer')"
-                :disabled="buttonsDisabled"
-                :class="{ 'no-click': buttonsDisabled }"
-              >
-                Yes, teach/assist
+            <div v-if="loading" class="buttons-container">
+              <loading-spinner class="spinner" size="small" />
+            </div>
+            <div v-else class="buttons-container">
+              <button class="btn success" @click="attend('yes')">
+                Yes
+              </button>
+              <button class="btn warning" @click="attend('maybe')">
+                Maybe
+              </button>
+              <button class="btn danger" @click="attend('no')">
+                No
               </button>
             </div>
           </div>
@@ -70,7 +74,7 @@
 </template>
 
 <script>
-import { COURSES } from "@/store/modules/courses";
+import { UPDATE_COURSE } from "@/store/modules/courses";
 import Vue from "vue";
 import CardCollapseList from "@/components/courses/CardCollapseList";
 import ResponseListEntry from "@/components/courses/ResponseListEntry";
@@ -80,11 +84,17 @@ export default {
   components: { CardCollapseList, ResponseListEntry, LoadingSpinner },
   props: { course: Object },
   data: function() {
-    return { notes: "", buttonsDisabled: false, hide: false };
+    return {
+      notes: "",
+      loading: false,
+      hide: false,
+      height: undefined
+    };
   },
   methods: {
     attend: function(attendance) {
-      this.buttonsDisabled = true;
+      this.loading = true;
+      this.height = this.$refs.container.scrollHeight;
       Vue.axios
         .post("courses/attend", {
           user_id: this.$store.getters.currentUser.id,
@@ -95,11 +105,14 @@ export default {
         .then(res => {
           this.$notify(res.data, "success");
           this.hide = true;
-          this.$store.dispatch(COURSES);
+          this.height = 0;
+          let id = this.course.id;
+          this.$store.dispatch(UPDATE_COURSE, { id });
         })
         .catch(({ errors }) => {
-          this.$notify(errors[0], "error");
-          this.buttonsDisabled = false;
+          this.$notify(errors, "error");
+          this.loading = false;
+          this.height = undefined;
         });
     }
   }
@@ -107,9 +120,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "../../assets/css/config";
 .cards-container {
   display: flex;
   justify-content: center;
+  width: 100%;
+  transition: opacity $transition-time ease-in-out,
+    height $transition-time ease-in-out;
   &.fade {
     opacity: 0;
   }
@@ -137,11 +154,11 @@ export default {
       .can {
         margin-bottom: 1rem;
       }
-      .prefer {
-        margin-top: 1rem;
-      }
       .btn {
         margin: 0 0.5rem;
+      }
+      .buttons-container {
+        min-height: 45px;
       }
     }
   }

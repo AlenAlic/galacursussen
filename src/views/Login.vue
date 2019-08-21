@@ -7,7 +7,7 @@
 <script>
 import LoginCard from "@/components/auth/LoginCard";
 export default {
-  name: "login",
+  name: "Login",
   components: {
     LoginCard
   },

@@ -3,7 +3,7 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container modal-large">
-          <div class="modal-header">
+          <div class="modal-header" v-if="title">
             <h4>{{ title }}</h4>
           </div>
           <div class="modal-body">
@@ -12,7 +12,8 @@
           <div class="modal-footer right-align">
             <slot name="button"></slot>
             <button
-              class="modal-close-btn btn teal accent-1 black-text"
+              v-if="showCloseBtn"
+              class="modal-close-btn btn grey accent-2"
               @click="$emit('close')"
             >
               {{ closeBtn }}
@@ -27,7 +28,7 @@
 <script>
 export default {
   name: "Modal",
-  props: { title: String, closeBtn: String },
+  props: { title: String, closeBtn: String, showCloseBtn: Boolean },
   data: function() {
     return {
       showModal: false
@@ -54,17 +55,19 @@ export default {
   vertical-align: middle;
 }
 .modal-container {
-  width: 300px;
-  margin: 0 auto;
+  width: 90%;
+  max-width: 300px;
+  margin: 45px auto;
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all $transition-time ease;
   &.modal-large {
-    width: 800px;
-    max-width: 100%;
+    max-width: 1000px;
   }
+  max-height: 90%;
+  overflow-y: auto;
 }
 .modal-header h3 {
   margin-top: 0;

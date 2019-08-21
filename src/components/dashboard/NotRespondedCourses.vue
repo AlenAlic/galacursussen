@@ -1,21 +1,30 @@
 <template>
   <div>
-    <not-responded-card
-      v-for="course in courses"
-      :key="course.id"
-      :course="course"
-    ></not-responded-card>
+    <div
+      v-if="!hasCourses && this.$store.state.courses.loading"
+      class="spinner-container"
+    >
+      <loading-spinner />
+    </div>
+    <div v-else>
+      <not-responded-card
+        v-for="course in courses"
+        :key="course.id"
+        :course="course"
+      ></not-responded-card>
+    </div>
   </div>
 </template>
 
 <script>
 import NotRespondedCard from "@/components/courses/NotRespondedCard";
+import LoadingSpinner from "@/components/LoadingSpinner";
 export default {
   name: "NotRespondedCourses",
-  components: { NotRespondedCard },
+  components: { LoadingSpinner, NotRespondedCard },
   computed: {
     courses: function() {
-      let courses = this.$store.state.courses.courses;
+      let courses = this.$store.getters.courses;
       if (courses.length > 0) {
         courses = courses.filter(c => {
           let d = new Date(c.date);
@@ -38,40 +47,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.cards-container {
+.spinner-container {
   display: flex;
   justify-content: center;
-  .card {
-    max-width: 320px;
-    width: 100%;
-    .card-content {
-      .data-container {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        margin-top: 1rem;
-        .data {
-          max-width: 240px;
-          width: 100%;
-          .text-container {
-            display: grid;
-            grid-template-columns: 2rem auto;
-            margin: 0.5rem 0;
-          }
-        }
-      }
-    }
-    .card-action {
-      .can {
-        margin-bottom: 1rem;
-      }
-      .prefer {
-        margin-top: 1rem;
-      }
-      .btn {
-        margin: 0 0.5rem;
-      }
-    }
-  }
+  width: 100%;
+  padding: 2rem 0;
 }
 </style>

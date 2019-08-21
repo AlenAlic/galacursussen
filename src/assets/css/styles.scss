@@ -29,6 +29,9 @@ body {
 .clickable {
    cursor: pointer;
 }
+.unselectable {
+  user-select: none;
+}
 
 // text color
 .text-info {
@@ -62,6 +65,9 @@ body {
 }
 .danger {
   background: $color-danger;
+}
+.primary {
+  background: $primary-color;
 }
 
 
@@ -103,6 +109,13 @@ body {
   left: 0;
 }
 
+
+// notify fix click through
+.notify {
+  &.notify-top-full {
+    pointer-events: none;
+  }
+}
 
 // Form validation
 .incorrect {

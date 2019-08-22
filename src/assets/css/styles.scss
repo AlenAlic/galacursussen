@@ -69,6 +69,9 @@ body {
 .primary {
   background: $primary-color;
 }
+.cancel {
+  @extend .grey, .accent-2;
+}
 
 
 // add option of no padding cols

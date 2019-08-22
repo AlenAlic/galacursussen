@@ -118,7 +118,7 @@
       <button slot="button" class="btn" @click.prevent="patchCourse">
         Save
       </button>
-      <button class="btn grey accent-2" @click.prevent="$emit('close')">
+      <button class="btn cancel" @click.prevent="$emit('close')">
         Cancel
       </button>
     </div>

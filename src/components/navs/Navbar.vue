@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="navbar-fixed">
     <nav>
       <div class="nav-wrapper container">
         <a

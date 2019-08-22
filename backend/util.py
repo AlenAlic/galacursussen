@@ -1,5 +1,7 @@
 from datetime import timezone, datetime
 from backend.values import DATETIME_FORMAT
+import random
+import string
 
 
 def format_euro(price):
@@ -24,5 +26,10 @@ def is_float(s):
     try:
         int(s)
         return True
-    except ValueError:
+    except (ValueError, TypeError):
         return False
+
+
+def auth_token():
+    allowed_chars = string.ascii_letters + '0123456789'
+    return ''.join(random.sample(allowed_chars, 128))

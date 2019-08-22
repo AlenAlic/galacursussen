@@ -152,20 +152,18 @@ export default {
     committees: state => {
       return state.committees;
     },
-    hasCommittees: (state, getters) => {
-      return getters.committees.length > 0;
-    },
     languages: state => {
       return state.languages;
-    },
-    hasLanguages: (state, getters) => {
-      return getters.languages.length > 0;
     },
     attendance: state => {
       return state.attendance;
     },
-    hasAttendance: (state, getters) => {
-      return getters.attendance.length > 0;
+    hasFormData: state => {
+      return (
+        state.committees.length > 0 &&
+        state.languages.length > 0 &&
+        state.attendance.length > 0
+      );
     },
     courses: state => {
       return state.courses ? Object.values(state.courses) : [];

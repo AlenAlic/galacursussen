@@ -146,22 +146,21 @@
         </label>
       </div>
     </div>
-    <loading-spinner size="small" v-if="loading" />
-    <div class="buttons-container" v-else>
+    <div class="buttons-container">
       <button slot="button" class="btn" @click.prevent="patchCourse">
-        Save
+        Save <loading-spinner size="spinner-btn" v-if="loading" />
       </button>
-      <button class="btn grey accent-2" @click.prevent="$emit('close')">
+      <button class="btn cancel" @click.prevent="$emit('close')">
         Cancel
       </button>
     </div>
     <h4>Attendance</h4>
     <div
       class="assignment-request"
-      v-for="request in course.assignment_requests"
+      v-for="request in course.assignments"
       :key="request.id"
     >
-      <div class="center-align">
+      <div>
         <div>
           <b>
             {{ request.name }}
@@ -215,7 +214,7 @@ export default {
       language: course.language_value,
       committee: course.committee_value,
       dances: course.dances,
-      assignment_requests: {},
+      assignments: {},
       attendees: course.attendees,
       price: course.price,
       paid: course.paid,
@@ -239,7 +238,7 @@ export default {
   },
   methods: {
     addAttendance: function(id, assignment) {
-      this.assignment_requests[id] = assignment;
+      this.assignments[id] = assignment;
     },
     radioName: function(id) {
       return `assigment-${id}`;
@@ -260,7 +259,7 @@ export default {
           attendees: this.attendees,
           price: this.price,
           paid: this.paid,
-          assignment_requests: this.assignment_requests
+          assignments: this.assignments
         })
         .then(res => {
           this.$notify(res.data, "success");

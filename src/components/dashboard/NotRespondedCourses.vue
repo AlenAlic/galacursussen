@@ -31,7 +31,7 @@ export default {
           return d > new Date();
         });
         courses = courses.filter(c => {
-          return c.assignment_requests.some(
+          return c.assignments.some(
             a =>
               a.user_id === this.$store.getters.currentUser.id && !a.attendance
           );

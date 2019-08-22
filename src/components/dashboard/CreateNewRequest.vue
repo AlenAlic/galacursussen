@@ -1,5 +1,8 @@
 <template>
-  <collapse-card title="Add new course/workshop" :loading="!formLoaded">
+  <collapse-card
+    title="Add new course/workshop"
+    :loading="!this.$store.getters.hasFormData"
+  >
     <create-new-request-form />
   </collapse-card>
 </template>
@@ -9,13 +12,6 @@ import CreateNewRequestForm from "@/components/courses/CreateNewRequestForm";
 import CollapseCard from "@/components/CollapseCard";
 export default {
   name: "CreateNewRequest",
-  components: { CreateNewRequestForm, CollapseCard },
-  computed: {
-    formLoaded: function() {
-      return (
-        this.$store.getters.hasLanguages && this.$store.getters.hasCommittees
-      );
-    }
-  }
+  components: { CreateNewRequestForm, CollapseCard }
 };
 </script>

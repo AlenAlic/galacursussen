@@ -14,6 +14,7 @@ GET = "GET"
 POST = "POST"
 PATCH = "PATCH"
 PUT = "PUT"
+DELETE = "DELETE"
 
 # Access levels
 ADMIN = 'Admin'

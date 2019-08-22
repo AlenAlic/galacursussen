@@ -28,9 +28,9 @@
         <div class="data-container">
           <card-collapse-list class="data" title="Attendees">
             <response-list-entry
-              v-for="assignment_request in course.assignment_requests"
-              :key="assignment_request.id"
-              :assignment_request="assignment_request"
+              v-for="assignment in course.assignments"
+              :key="assignment.id"
+              :assignment="assignment"
             />
           </card-collapse-list>
         </div>

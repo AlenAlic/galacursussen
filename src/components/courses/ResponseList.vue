@@ -5,34 +5,20 @@
         <b>Responses</b> - {{ totalResponses }} / {{ totalRequests }}
       </h6>
       <response-list-entry
-        v-for="assignment_request in yes"
-        :key="assignment_request.id"
-        :assignment_request="assignment_request"
-      >
-      </response-list-entry>
-      <response-list-entry
-        v-for="assignment_request in maybe"
-        :key="assignment_request.id"
-        :assignment_request="assignment_request"
-      >
-      </response-list-entry>
-      <response-list-entry
-        v-for="assignment_request in no"
-        :key="assignment_request.id"
-        :assignment_request="assignment_request"
-      >
-      </response-list-entry>
+        v-for="assignment in responded"
+        :key="assignment.id"
+        :assignment="assignment"
+      />
     </div>
     <div class="col s12 m6">
       <h6 class="title">
         <b>Not responded</b> - {{ totalRequests - totalResponses }}
       </h6>
       <response-list-entry
-        v-for="assignment_request in not_responded"
-        :key="assignment_request.id"
-        :assignment_request="assignment_request"
-      >
-      </response-list-entry>
+        v-for="assignment in notResponded"
+        :key="assignment.id"
+        :assignment="assignment"
+      />
     </div>
   </div>
 </template>
@@ -41,32 +27,38 @@
 import ResponseListEntry from "@/components/courses/ResponseListEntry";
 export default {
   name: "ResponseList",
-  props: { assignment_requests: Array },
+  props: { assignments: Array },
   components: { ResponseListEntry },
   computed: {
     totalRequests: function() {
-      return this.assignment_requests.length;
+      return this.assignments.length;
     },
     totalResponses: function() {
       return this.totalRequests - this.not_responded.length;
     },
     yes: function() {
-      return this.assignment_requests.filter(r => {
+      return this.assignments.filter(r => {
         return r.attendance === "yes";
       });
     },
     maybe: function() {
-      return this.assignment_requests.filter(r => {
+      return this.assignments.filter(r => {
         return r.attendance === "maybe";
       });
     },
     no: function() {
-      return this.assignment_requests.filter(r => {
+      return this.assignments.filter(r => {
         return r.attendance === "no";
       });
     },
-    not_responded: function() {
-      return this.assignment_requests.filter(r => {
+    responded: function() {
+      return []
+        .push(...this.yes)
+        .push(...this.maybe)
+        .push(...this.no);
+    },
+    notResponded: function() {
+      return this.assignments.filter(r => {
         return !r.attendance;
       });
     }

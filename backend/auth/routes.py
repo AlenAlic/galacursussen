@@ -12,11 +12,11 @@ from backend import db
 def login():
     form = LoginForm()
     if form.validate():
-        user = User.query.filter(User.email == form.email.data).first()
-        if user is None or not user.check_password(form.password.data):
+        u = User.query.filter(User.email == form.email.data).first()
+        if u is None or not u.check_password(form.password.data):
             return json_unauthorized("Invalid username or password")
-        elif user.is_active:
-            return jsonify(user.get_auth_token(expires_in=31536000 if form.remember_me.data else 86400))
+        elif u.is_active:
+            return jsonify(u.get_auth_token(expires_in=31536000 if form.remember_me.data else 86400))
         else:
             return json_unauthorized("Account inactive")
     return json_unauthorized(form.login_status())

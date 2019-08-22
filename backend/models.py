@@ -50,7 +50,7 @@ class User(UserMixin, Anonymous, db.Model):
     incie = db.Column(db.Boolean, nullable=False, default=False)
     salcie = db.Column(db.Boolean, nullable=False, default=False)
     mucie = db.Column(db.Boolean, nullable=False, default=False)
-    assignment_requests = db.relationship("AssignmentRequest", back_populates="user")
+    auth_code = db.Column(db.String(128), nullable=True)
     assignments = db.relationship("Assignment", back_populates="user")
 
     def __repr__(self):
@@ -165,11 +165,10 @@ class Course(db.Model):
     dances = db.Column(db.String(256))
     notes = db.Column(db.String(256))
     cancelled = db.Column(db.Boolean, nullable=False, default=False)
-    assignment_requests = db.relationship("AssignmentRequest", back_populates="course", cascade="all, delete-orphan")
     assignments = db.relationship("Assignment", back_populates="course", cascade="all, delete-orphan")
 
     def __repr__(self):
-        return self.name()
+        return self.requested_by
 
     def name(self):
         return f"Course for {self.course_date()}"
@@ -207,7 +206,7 @@ class Course(db.Model):
         return data
 
     @staticmethod
-    def generate_assignment_requests(course):
+    def generate_assignments(course):
         users = User.query.filter(User.is_active.is_(True))
         if course.committee == Committee.incie.name:
             users = users.filter(or_(User.mucie.is_(True), User.incie.is_(True)))
@@ -215,9 +214,9 @@ class Course(db.Model):
             users = users.filter(or_(User.mucie.is_(True), User.salcie.is_(True)))
         users = users.all()
         for u in users:
-            assignment_request = AssignmentRequest()
-            assignment_request.user = u
-            assignment_request.course = course
+            assignment = Assignment()
+            assignment.user = u
+            assignment.course = course
 
     def save(self, data, patch=False):
         if patch:
@@ -232,15 +231,15 @@ class Course(db.Model):
         course.dances = data["dances"]
         course.notes = data["notes"]
         if patch:
-            for change in data["assignment_requests"]:
-                req = AssignmentRequest.query.filter(AssignmentRequest.assignment_request_id == change).first()
-                req.attendance = data["assignment_requests"][change]
+            for change in data["assignment"]:
+                req = Assignment.query.filter(Assignment.assignment_id == change).first()
+                req.attendance = data["assignment"][change]
             course.attendees = data["attendees"]
             if is_float(data["price"]):
                 course.price = float(data["price"])
             course.paid = data["paid"]
         else:
-            self.generate_assignment_requests(course)
+            self.generate_assignments(course)
             db.session.add(course)
         db.session.commit()
         return course
@@ -265,10 +264,9 @@ class Course(db.Model):
             "paid": self.paid,
             "dances": self.dances,
             "notes": self.notes,
-            "assignment_requests": list(sorted([a.json() for a in self.assignment_requests], key=lambda x: x["name"])),
             "assignments": list(sorted([a.json() for a in self.assignments], key=lambda x: x["name"])),
-            "responses": len([r for r in self.assignment_requests if r.attendance is not None]),
-            "has_mucie": len([r for r in self.assignment_requests
+            "responses": len([r for r in self.assignments if r.attendance is not None]),
+            "has_mucie": len([r for r in self.assignments
                               if r.attendance == Attendance.yes and r.user.mucie]) > 0
         }
 
@@ -279,24 +277,23 @@ class Attendance(enum.Enum):
     no = "No"
 
 
-def new_courses_form_data():
-    return jsonify(
-        {"languages": [{"value": i.name, "text": i.value} for i in Language],
-         "committees": [{"value": i.name, "text": i.value} for i in Committee],
-         "attendance": [{"value": i.name, "text": i.value} for i in Attendance] +
-                       [{"value": None, "text": "Not responded"}]
-         })
+class Role(enum.Enum):
+    teacher = "Teacher"
+    assistant = "Assistant"
+    mucie = "MuCie"
 
 
-class AssignmentRequest(db.Model):
-    __tablename__ = "assignment_request"
-    assignment_request_id = db.Column(db.Integer, primary_key=True)
+class Assignment(db.Model):
+    __tablename__ = "assignment"
+    assignment_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', onupdate="CASCADE", ondelete="CASCADE"))
-    user = db.relationship("User", back_populates="assignment_requests")
+    user = db.relationship("User", back_populates="assignments")
     course_id = db.Column(db.Integer, db.ForeignKey('course.course_id', onupdate="CASCADE", ondelete="CASCADE"))
-    course = db.relationship("Course", back_populates="assignment_requests")
+    course = db.relationship("Course", back_populates="assignments")
     attendance = db.Column(db.Enum(Attendance))
     notes = db.Column(db.String(256))
+    role = db.Column(db.Enum(Role))
+    assigned = db.Column(db.Boolean)
 
     def assignment_message(self):
         if self.attendance == Attendance.yes:
@@ -310,9 +307,15 @@ class AssignmentRequest(db.Model):
             return f"You cannot attend the course for {self.course.course_description()}"
         return
 
+    def assignment(self):
+        return f"Assigned {self.user.first_name} to {self.course}."
+
+    def removed(self):
+        return f"Removed {self.user.first_name} from {self.course}."
+
     def json(self):
         return {
-            "id": self.assignment_request_id,
+            "id": self.assignment_id,
             "user_id": self.user.user_id,
             "name": self.user.full_name(),
             "attendance": self.attendance.name if self.attendance is not None else None,
@@ -321,22 +324,10 @@ class AssignmentRequest(db.Model):
         }
 
 
-class Assignment(db.Model):
-    __tablename__ = "assignment"
-    assignment_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', onupdate="CASCADE", ondelete="CASCADE"))
-    user = db.relationship("User", back_populates="assignments")
-    course_id = db.Column(db.Integer, db.ForeignKey('course.course_id', onupdate="CASCADE", ondelete="CASCADE"))
-    course = db.relationship("Course", back_populates="assignments")
-    mucie = db.Column(db.Boolean, nullable=False, default=False)
-    teacher = db.Column(db.Boolean, nullable=False, default=False)
-    assistant = db.Column(db.Boolean, nullable=False, default=False)
-
-    def json(self):
-        return {
-            "id": self.assignment_id,
-            "name": self.user.full_name(),
-            "mucie": self.mucie,
-            "teacher": self.teacher,
-            "assistant": self.assistant
-        }
+def new_courses_form_data():
+    return jsonify(
+        {"languages": [{"value": i.name, "text": i.value} for i in Language],
+         "committees": [{"value": i.name, "text": i.value} for i in Committee],
+         "attendance": [{"value": i.name, "text": i.value} for i in Attendance] +
+                       [{"value": None, "text": "Not responded"}]
+         })

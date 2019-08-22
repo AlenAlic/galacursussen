@@ -124,7 +124,7 @@
 
 <script>
 import Vue from "vue";
-import { COURSES_FORM } from "./../../store/modules/courses";
+import { COURSES_FORM, COURSES } from "./../../store/modules/courses";
 import { DateTime } from "luxon";
 import { Datetime } from "vue-datetime";
 export default {
@@ -177,7 +177,7 @@ export default {
         .then(res => {
           this.requested_by = "";
           this.date = "";
-          this.duration = new Date(new Date().setHours(1, 30, 0, 0)).toJSON();
+          this.duration = DateTime.fromISO("1970-01-01T01:30:00.000Z").toISO();
           this.location = "";
           this.notes = "";
           this.language = "";
@@ -185,6 +185,7 @@ export default {
           this.dances = "";
           this.errors = {};
           this.$notify(res.data, "success");
+          this.$store.dispatch(COURSES);
         })
         .catch(({ errors }) => {
           this.errors = errors;

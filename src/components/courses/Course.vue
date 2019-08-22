@@ -9,7 +9,7 @@
           Assignments
         </button>
       </div>
-      <h5 class="title">{{ course.requested_by }} ({{ course.committee }})</h5>
+      <h5>{{ course.requested_by }} ({{ course.committee }})</h5>
       <h6>{{ course.date_formatted }}</h6>
       <div><b>Location: </b>{{ course.location }}</div>
       <div><b>Course language: </b>{{ course.language }}</div>
@@ -19,7 +19,7 @@
         <b>Attendees: </b>{{ course.attendees }}
       </div>
       <div :class="{ 'grey-text': !pastCourseDate }">
-        <b>Price: </b>{{ course.price1 }}
+        <b>Price: </b>{{ course.price }}
       </div>
       <div :class="{ 'grey-text': !pastCourseDate }">
         <b>Paid: </b>{{ course.paid ? "yes" : "" }}
@@ -104,9 +104,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.title {
-  padding-bottom: 1rem;
-}
 .buttons-container {
   display: flex;
   justify-content: space-between;

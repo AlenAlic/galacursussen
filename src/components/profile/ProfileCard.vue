@@ -86,14 +86,13 @@ export default {
 
 <style scoped lang="scss">
 .card {
-  max-width: 400px;
-  width: 100%;
+  max-width: 90vw;
+  width: 400px;
 }
 .committees-container {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding-left: 45px;
   margin-bottom: 2rem !important;
   label {
     padding: 0 0.5rem;

@@ -2,7 +2,7 @@
   <div class="card">
     <ul class="collapsible">
       <li>
-        <div class="collapsible-header">
+        <div class="collapsible-header" @click="toggle">
           <div class="title">
             {{ title
             }}<loading-spinner class="loading" size="tiny" v-if="loading" />
@@ -10,7 +10,6 @@
           <div>
             <i
               class="material-icons right trans-rotate clickable unselectable"
-              @click="toggle"
               :class="{ 'rotate-180': open }"
             >
               arrow_drop_down_circle</i

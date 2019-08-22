@@ -16,7 +16,9 @@ import {
   faMusic,
   faCircle,
   faMapMarkerAlt,
-  faAt
+  faAt,
+  faEuroSign,
+  faHashtag
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faBuilding,
@@ -33,6 +35,8 @@ library.add(
   faCircle,
   faMapMarkerAlt,
   faAt,
+  faEuroSign,
+  faHashtag,
   faBuilding,
   faCalendarAlt,
   faClock,

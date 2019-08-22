@@ -113,6 +113,39 @@
       <input v-model="notes" type="text" id="notes" />
       <label for="notes" :class="{ active: notes }">Notes</label>
     </div>
+    <div class="row no-padd no-marg-bottom">
+      <div class="col s4">
+        <div class="input-field">
+          <font-awesome-icon class="prefix" icon="hashtag"></font-awesome-icon>
+          <input
+            v-model="attendees"
+            type="number"
+            id="attendees"
+            min="0"
+            step="1"
+          />
+          <label for="attendees" :class="{ active: attendees }"
+            >Attendees</label
+          >
+        </div>
+      </div>
+      <div class="col s4">
+        <div class="input-field">
+          <font-awesome-icon
+            class="prefix"
+            icon="euro-sign"
+          ></font-awesome-icon>
+          <input v-model="price" type="number" id="price" min="0" step="0.01" />
+          <label for="price" :class="{ active: price }">Price</label>
+        </div>
+      </div>
+      <div class="col s4 paid-checkbox">
+        <label for="paid">
+          <input type="checkbox" id="paid" v-model="paid" />
+          <span>Paid</span>
+        </label>
+      </div>
+    </div>
     <loading-spinner size="small" v-if="loading" />
     <div class="buttons-container" v-else>
       <button slot="button" class="btn" @click.prevent="patchCourse">
@@ -182,8 +215,11 @@ export default {
       language: course.language_value,
       committee: course.committee_value,
       dances: course.dances,
-      loading: false,
       assignment_requests: {},
+      attendees: course.attendees,
+      price: course.price,
+      paid: course.paid,
+      loading: false,
       errors: {}
     };
   },
@@ -221,6 +257,9 @@ export default {
           language: this.language,
           committee: this.committee,
           dances: this.dances,
+          attendees: this.attendees,
+          price: this.price,
+          paid: this.paid,
           assignment_requests: this.assignment_requests
         })
         .then(res => {
@@ -253,5 +292,11 @@ export default {
   button {
     margin: 1rem 0.5rem 1.5rem 0.5rem;
   }
+}
+.paid-checkbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 84px;
 }
 </style>

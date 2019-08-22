@@ -18,3 +18,11 @@ def datetime_browser_format(dt):
 
 def start_of_year():
     return datetime(datetime.now().year, 1, 1, 0, 0, 0, 0)
+
+
+def is_float(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False

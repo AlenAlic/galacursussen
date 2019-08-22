@@ -8,7 +8,7 @@ import jwt
 from datetime import datetime, timedelta
 from functools import wraps
 import enum
-from backend.util import datetime_browser_format
+from backend.util import datetime_browser_format, is_float
 from sqlalchemy import or_
 
 
@@ -156,17 +156,17 @@ class Course(db.Model):
     requested_by = db.Column(db.String(256), nullable=False)
     date = db.Column(db.DateTime)
     duration = db.Column(db.Interval)
-    attendees = db.Column(db.Integer, nullable=False, default=0)
+    attendees = db.Column(db.Integer)
     location = db.Column(db.String(256))
     language = db.Column(db.Enum(Language), nullable=False, default=Language.unknown)
     committee = db.Column(db.Enum(Committee), nullable=False)
-    price = db.Column(db.Integer, nullable=False, default=0)
+    price = db.Column(db.Float)
     paid = db.Column(db.Boolean, nullable=False, default=False)
     dances = db.Column(db.String(256))
     notes = db.Column(db.String(256))
     cancelled = db.Column(db.Boolean, nullable=False, default=False)
-    assignment_requests = db.relationship("AssignmentRequest", back_populates="course")
-    assignments = db.relationship("Assignment", back_populates="course")
+    assignment_requests = db.relationship("AssignmentRequest", back_populates="course", cascade="all, delete-orphan")
+    assignments = db.relationship("Assignment", back_populates="course", cascade="all, delete-orphan")
 
     def __repr__(self):
         return self.name()
@@ -235,6 +235,10 @@ class Course(db.Model):
             for change in data["assignment_requests"]:
                 req = AssignmentRequest.query.filter(AssignmentRequest.assignment_request_id == change).first()
                 req.attendance = data["assignment_requests"][change]
+            course.attendees = data["attendees"]
+            if is_float(data["price"]):
+                course.price = float(data["price"])
+            course.paid = data["paid"]
         else:
             self.generate_assignment_requests(course)
             db.session.add(course)

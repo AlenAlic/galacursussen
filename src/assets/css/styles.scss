@@ -131,6 +131,13 @@ body {
   }
 }
 
+// Select fix
+.select-wrapper + label {
+  position: relative;
+  top: -65px;
+  left: 45px;
+  font-size: 0.8rem;
+}
 .tabs .tab a.active {
   background-color: transparent;
   color: $primary-color;

@@ -46,6 +46,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.trans-collapsible,
 .members {
   width: 100%;
 }

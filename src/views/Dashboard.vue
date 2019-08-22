@@ -2,7 +2,9 @@
   <div>
     <not-responded-courses />
     <upcoming-courses v-if="courses" />
-    <h4 v-else-if="!this.$store.state.courses.loading">There are no upcoming courses.</h4>
+    <h4 v-else-if="!this.$store.state.courses.loading">
+      There are no upcoming courses.
+    </h4>
     <create-new-request v-if="this.$store.getters.hasOrganizerPrivileges" />
     <this-academic-years-courses
       v-if="this.$store.getters.hasOrganizerPrivileges"

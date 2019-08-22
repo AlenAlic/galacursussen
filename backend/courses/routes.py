@@ -52,7 +52,7 @@ def new():
             return json_error(form.vue_error_form())
 
 
-@bp.route('attend', methods=[POST])
+@bp.route('attend', methods=[PATCH])
 @login_required
 def attend():
     form = json.loads(request.data)
@@ -69,25 +69,23 @@ def attend():
     return json_forbidden("You are not allowed to change this.")
 
 
-@bp.route('/<int:course_id>/assign', methods=[POST])
+@bp.route('/assign/<int:assignment_id>', methods=[PATCH])
 @login_required
-def assign(course_id):
+def assign(assignment_id):
     data = json.loads(request.data)
-    course = Course.query.filter(Course.course_id == course_id).first()
-    assignment = Assignment()
-    assignment.course = course
-    assignment.user = User.query.filter(User.user_id == data["user_id"]).first()
-    db.session.add(assignment)
-    db.session.commit()
-    return jsonify({"message": assignment.assignment(), "course": course.json()})
-
-
-@bp.route('/assignment/remove/<int:assignment_id>', methods=[DELETE])
-@login_required
-def assignment_remove(assignment_id):
     assignment = Assignment.query.filter(Assignment.assignment_id == assignment_id).first()
-    message = assignment.removed()
-    course = assignment.course
-    db.session.delete(assignment)
+    assignment.assigned = data["assigned"]
+    if not assignment.assigned:
+        assignment.role = None
     db.session.commit()
-    return jsonify({"message": message, "course": course.json()})
+    return jsonify({"message": assignment.assignment(), "course": assignment.course.json()})
+
+
+@bp.route('/role/<int:assignment_id>', methods=[PATCH])
+@login_required
+def role(assignment_id):
+    data = json.loads(request.data)
+    assignment = Assignment.query.filter(Assignment.assignment_id == assignment_id).first()
+    assignment.role = data["role"]
+    db.session.commit()
+    return jsonify({"message": assignment.set_role(), "course": assignment.course.json()})

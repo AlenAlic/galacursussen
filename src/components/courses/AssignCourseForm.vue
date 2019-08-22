@@ -1,25 +1,77 @@
 <template>
   <form class="center-align">
     <h4>{{ course.requested_by }}</h4>
-    <h5>Currently assigned</h5>
+    <h5>
+      Currently assigned
+      <span v-if="assigned.length > 0">({{ assigned.length }})</span>
+    </h5>
     <div v-if="assigned.length > 0" class="assigned">
       <div
-        class="assignment-request"
         v-for="assignment in assigned"
         :key="assignment.id"
+        class="underline"
       >
         <div class="assign">
           <div class="left-align">
             <b>
               {{ assignment.name }}
               <font-awesome-icon v-if="assignment.mucie" icon="music" />
+              ({{ assignment.hours }})
             </b>
             <br />
             <i v-if="assignment.notes">{{ assignment.notes }}</i>
           </div>
           <div>
-            <button class="btn" @click.prevent="remove(assignment.id)">
+            <button class="btn" @click.prevent="assign(assignment.id, false)">
               Remove
+            </button>
+          </div>
+        </div>
+        <div class="assign right-align" v-if="assignment.role">
+          <div>
+            {{ assignment.role }}
+          </div>
+          <div class="assign-buttons">
+            <button class="btn" @click.prevent="setRole(assignment.id, null)">
+              Clear role
+            </button>
+          </div>
+        </div>
+        <div class="assign" v-else>
+          <div></div>
+          <div
+            class="assign-buttons"
+            v-if="
+              !(
+                assignment.has_teacher &&
+                assignment.has_assistant &&
+                assignment.has_mucie
+              )
+            "
+          >
+            <button
+              v-if="assignment.mucie"
+              :disabled="assignment.has_mucie"
+              class="btn"
+              @click.prevent="setRole(assignment.id, 'mucie')"
+            >
+              MuCie
+            </button>
+            <button
+              v-if="assignment.committee"
+              :disabled="assignment.has_teacher"
+              class="btn"
+              @click.prevent="setRole(assignment.id, 'teacher')"
+            >
+              Teacher
+            </button>
+            <button
+              v-if="assignment.committee"
+              :disabled="assignment.has_assistant"
+              class="btn"
+              @click.prevent="setRole(assignment.id, 'assistant')"
+            >
+              Assistant
             </button>
           </div>
         </div>
@@ -30,40 +82,38 @@
     </div>
     <h5>Not assigned</h5>
     <div
-      class="assignment-request"
-      v-for="request in notAssigned"
-      :key="request.id"
+      v-for="assignment in notAssigned"
+      :key="assignment.id"
+      class="underline"
     >
       <div class="assign">
         <div class="left-align">
-          <b :class="attendanceClass(request)">
-            {{ request.name }}
-            <font-awesome-icon v-if="request.mucie" icon="music" />
+          <b :class="attendanceClass(assignment)">
+            {{ assignment.name }}
+            <font-awesome-icon v-if="assignment.mucie" icon="music" />
+            ({{ assignment.hours }})
           </b>
           <br />
-          <i v-if="request.notes">{{ request.notes }}</i>
+          <i v-if="assignment.notes">{{ assignment.notes }}</i>
         </div>
         <div>
-          <button class="btn" @click.prevent="assign(request.user_id, null)">
+          <button class="btn" @click.prevent="assign(assignment.id, true)">
             Assign
           </button>
         </div>
       </div>
     </div>
-    <button class="btn cancel exit" @click.prevent="$emit('close')">
+    <button class="btn cancel exit" @click.prevent="exit">
       Exit
     </button>
-    <loading-spinner size="spinner-btn" v-if="false" />
   </form>
 </template>
 
 <script>
-// import { UPDATE_COURSE } from "@/store/modules/courses";
+import { UPDATE_COURSE } from "@/store/modules/courses";
 import Vue from "vue";
-import LoadingSpinner from "@/components/LoadingSpinner";
 export default {
   name: "AssignCourseForm",
-  components: { LoadingSpinner },
   props: { courseData: Object },
   data: function() {
     return {
@@ -102,9 +152,9 @@ export default {
     },
     responded: function() {
       return []
-        .push(...this.yes)
-        .push(...this.maybe)
-        .push(...this.no);
+        .concat(...this.yes)
+        .concat(...this.maybe)
+        .concat(...this.no);
     }
   },
   methods: {
@@ -120,33 +170,36 @@ export default {
         "text-danger": assignment.attendance === "no"
       };
     },
-    assign: function(user_id, role) {
-      let id = this.course.id;
+    assign: function(assignment, assigned) {
       Vue.axios
-        .post(`courses/${id}/assign`, {
-          user_id: user_id,
-          role: role
+        .patch(`courses/assign/${assignment}`, {
+          assigned: assigned
         })
         .then(res => {
           this.$notify(res.data.message, "success");
           this.course = res.data.course;
-          // this.$store.dispatch(UPDATE_COURSE, { id });
         })
         .catch(({ errors }) => {
           this.errors = errors;
         });
     },
-    remove: function(assignment_id) {
+    setRole: function(assignment, role) {
       Vue.axios
-        .delete(`courses/assignment/remove/${assignment_id}`)
+        .patch(`courses/role/${assignment}`, {
+          role: role
+        })
         .then(res => {
           this.$notify(res.data.message, "success");
           this.course = res.data.course;
-          // this.$store.dispatch(UPDATE_COURSE, { id });
         })
         .catch(({ errors }) => {
           this.errors = errors;
         });
+    },
+    exit: function() {
+      let id = this.course.id;
+      this.$store.dispatch(UPDATE_COURSE, { id });
+      this.$emit("close");
     }
   }
 };
@@ -181,9 +234,17 @@ export default {
 .assign {
   display: flex;
   justify-content: space-between;
-  align-content: center;
+  align-items: center;
   width: 100%;
-  padding: 0.4rem 0;
+  margin: 0.25rem 0;
+}
+.assign-buttons {
+  padding-top: 0.25rem;
+  button {
+    margin-left: 1rem;
+  }
+}
+.underline {
   border-bottom: 1px solid lightgrey;
 }
 .exit {

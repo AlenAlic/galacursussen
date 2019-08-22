@@ -34,7 +34,7 @@ export default {
       return this.assignments.length;
     },
     totalResponses: function() {
-      return this.totalRequests - this.not_responded.length;
+      return this.totalRequests - this.notResponded.length;
     },
     yes: function() {
       return this.assignments.filter(r => {
@@ -53,9 +53,9 @@ export default {
     },
     responded: function() {
       return []
-        .push(...this.yes)
-        .push(...this.maybe)
-        .push(...this.no);
+        .concat(...this.yes)
+        .concat(...this.maybe)
+        .concat(...this.no);
     },
     notResponded: function() {
       return this.assignments.filter(r => {

@@ -138,6 +138,16 @@ class User(UserMixin, Anonymous, db.Model):
             "full_name": self.full_name(),
         }
 
+    def hours(self):
+        offset = 0 if datetime.now().month >= FIRST_MONTH else -1
+        start_date = datetime(datetime.now().year + offset, FIRST_MONTH, 1)
+        end_date = datetime(datetime.now().year + offset + 1, FIRST_MONTH, 1)
+        assignments = Assignment.query.join(Course)\
+            .filter(Assignment.user == self, Assignment.assigned.is_(True),
+                    Course.date >= start_date, Course.date < end_date).all()
+        seconds = sum([a.course.duration for a in assignments], timedelta()).seconds
+        return datetime.utcfromtimestamp(seconds).strftime('%H:%M')
+
 
 class Language(enum.Enum):
     nl = "Dutch"
@@ -231,9 +241,9 @@ class Course(db.Model):
         course.dances = data["dances"]
         course.notes = data["notes"]
         if patch:
-            for change in data["assignment"]:
+            for change in data["assignments"]:
                 req = Assignment.query.filter(Assignment.assignment_id == change).first()
-                req.attendance = data["assignment"][change]
+                req.attendance = data["assignments"][change]
             course.attendees = data["attendees"]
             if is_float(data["price"]):
                 course.price = float(data["price"])
@@ -308,10 +318,17 @@ class Assignment(db.Model):
         return
 
     def assignment(self):
-        return f"Assigned {self.user.first_name} to {self.course}."
+        return f"Assigned {self.user.first_name} to {self.course}." if self.assigned else self.removed()
+
+    def set_role(self):
+        return f"Set {self.user.first_name} as {self.role.value if self.role is not None else 'general member'}."
 
     def removed(self):
         return f"Removed {self.user.first_name} from {self.course}."
+
+    def committee(self):
+        return self.course.committee == Committee.incie and self.user.incie or \
+               self.course.committee == Committee.salcie and self.user.salcie
 
     def json(self):
         return {
@@ -320,7 +337,14 @@ class Assignment(db.Model):
             "name": self.user.full_name(),
             "attendance": self.attendance.name if self.attendance is not None else None,
             "notes": self.notes,
-            "mucie": self.user.mucie
+            "mucie": self.user.mucie,
+            "role": self.role.value if self.role is not None else None,
+            "assigned": self.assigned,
+            "has_teacher": any([a.role == Role.teacher for a in self.course.assignments]),
+            "has_assistant": any([a.role == Role.assistant for a in self.course.assignments]),
+            "has_mucie": any([a.role == Role.mucie for a in self.course.assignments]),
+            "committee": self.committee(),
+            "hours": self.user.hours()
         }
 
 

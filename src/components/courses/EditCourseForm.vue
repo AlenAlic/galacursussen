@@ -155,11 +155,7 @@
       </button>
     </div>
     <h4>Attendance</h4>
-    <div
-      class="assignment-request"
-      v-for="request in course.assignments"
-      :key="request.id"
-    >
+    <div v-for="request in course.assignments" :key="request.id">
       <div>
         <div>
           <b>
@@ -269,6 +265,7 @@ export default {
         .catch(({ errors }) => {
           this.errors = errors;
           this.loading = false;
+          this.$notify(errors[0], "error");
         });
     }
   }

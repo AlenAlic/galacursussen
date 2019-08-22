@@ -96,7 +96,7 @@ export default {
       this.loading = true;
       this.height = this.$refs.container.scrollHeight;
       Vue.axios
-        .post("courses/attend", {
+        .patch("courses/attend", {
           user_id: this.$store.getters.currentUser.id,
           course_id: this.course.id,
           attendance: attendance,

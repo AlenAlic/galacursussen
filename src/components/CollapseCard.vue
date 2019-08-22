@@ -4,8 +4,8 @@
       <li>
         <div class="collapsible-header" @click="toggle">
           <div class="title">
-            {{ title
-            }}<loading-spinner class="loading" size="tiny" v-if="loading" />
+            {{ title }} <span v-if="counter">({{ counter }})</span>
+            <loading-spinner class="loading" size="tiny" v-if="loading" />
           </div>
           <div>
             <i
@@ -28,7 +28,7 @@
 import LoadingSpinner from "@/components/LoadingSpinner";
 export default {
   name: "CollapseCard",
-  props: { title: String, loading: Boolean },
+  props: { title: String, loading: Boolean, counter: Number },
   components: { LoadingSpinner },
   data: function() {
     return {

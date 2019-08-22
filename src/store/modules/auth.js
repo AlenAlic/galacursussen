@@ -237,6 +237,9 @@ export default {
     },
     profile: state => {
       return state.profile;
+    },
+    hasOrganizerPrivileges: (state, getters) => {
+      return getters.currentUser.admin || getters.currentUser.organizer;
     }
   }
 };

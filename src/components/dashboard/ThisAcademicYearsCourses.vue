@@ -2,8 +2,9 @@
   <collapse-card
     title="This years courses/workshops"
     :loading="this.$store.state.courses.loading"
+    :counter="courses.length"
   >
-    <course v-for="course in courses" :key="course.key" :data="course" />
+    <course v-for="course in courses" :key="course.key" :course="course" />
   </collapse-card>
 </template>
 

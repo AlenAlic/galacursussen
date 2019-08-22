@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 const Login = () => import("@/views/Login.vue");
 const Dashboard = () => import("@/views/Dashboard.vue");
+const PastCourses = () => import("@/views/PastCourses.vue");
 const Profile = () => import("@/views/Profile.vue");
 const TestingGrounds = () => import("@/views/TestingGrounds.vue");
 
@@ -29,9 +30,9 @@ let router = new Router({
       }
     },
     {
-      path: "/testing",
-      name: "testing",
-      component: TestingGrounds,
+      path: "/past_courses",
+      name: "past_courses",
+      component: PastCourses,
       meta: {
         auth: true
       }
@@ -40,6 +41,14 @@ let router = new Router({
       path: "/profile",
       name: "profile",
       component: Profile,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/testing",
+      name: "testing",
+      component: TestingGrounds,
       meta: {
         auth: true
       }

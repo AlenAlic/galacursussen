@@ -7,7 +7,7 @@
       />
       <course-info :course="course" />
       <course-assigned class="mt" :course="course" />
-      <course-responses :course="course" />
+      <course-responses-single :course="course" />
     </div>
   </div>
 </template>
@@ -15,14 +15,14 @@
 <script>
 import CourseModals from "@/components/courses/CourseModals";
 import CourseInfo from "@/components/courses/CourseInfo";
-import CourseResponses from "@/components/courses/CourseResponses";
+import CourseResponsesSingle from "@/components/courses/CourseResponsesSingle";
 import CourseAssigned from "@/components/courses/CourseAssigned";
 export default {
-  name: "Course",
+  name: "UpcomingCourse",
   props: { course: Object },
   components: {
     CourseAssigned,
-    CourseResponses,
+    CourseResponsesSingle,
     CourseInfo,
     CourseModals
   }

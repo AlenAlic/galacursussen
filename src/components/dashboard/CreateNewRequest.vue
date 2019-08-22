@@ -1,7 +1,7 @@
 <template>
   <collapse-card
     title="Add new course/workshop"
-    :loading="!this.$store.getters.hasFormData"
+    :loading="this.$store.state.courses.loadingForm"
   >
     <create-new-request-form />
   </collapse-card>

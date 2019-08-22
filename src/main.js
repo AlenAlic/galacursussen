@@ -18,7 +18,8 @@ import {
   faMapMarkerAlt,
   faAt,
   faEuroSign,
-  faHashtag
+  faHashtag,
+  faHistory
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faBuilding,
@@ -37,6 +38,7 @@ library.add(
   faAt,
   faEuroSign,
   faHashtag,
+  faHistory,
   faBuilding,
   faCalendarAlt,
   faClock,

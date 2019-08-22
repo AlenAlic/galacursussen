@@ -1,7 +1,8 @@
 <template>
   <div class="members">
     <div class="left-align">
-      {{ title }}
+      <b v-if="bold">{{ title }}</b>
+      <span v-else>{{ title }}</span>
       <i
         class="material-icons right trans-rotate clickable"
         @click="changing"
@@ -23,7 +24,7 @@
 <script>
 export default {
   name: "CardCollapseList",
-  props: { title: String },
+  props: { title: String, bold: Boolean },
   data: function() {
     return {
       open: false,

@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div
-      v-if="!hasCourses && this.$store.state.courses.loading"
-      class="spinner-container"
-    >
+    <div v-if="this.$store.state.courses.loading" class="spinner-container">
       <loading-spinner />
     </div>
     <div v-else>

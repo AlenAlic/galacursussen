@@ -15,6 +15,11 @@
             icon="dashboard"
           />
           <nav-link
+            navigate-to="/past_courses"
+            text="Past courses"
+            icon="history"
+          />
+          <nav-link
             v-if="this.$config.env === 'development'"
             navigate-to="/testing"
             text="Testing"
@@ -59,6 +64,11 @@
             navigate-to="/dashboard"
             text="Dashboard"
             icon="dashboard"
+          />
+          <nav-link
+            navigate-to="/past_courses"
+            text="Past courses"
+            icon="history"
           />
           <nav-link
             v-if="this.$config.env === 'development'"

@@ -1,30 +1,26 @@
 <template>
-  <div class="row">
-    <div class="col s12 m6">
-      <h6 class="title"><b>Responses</b> - {{ totalResponses }}</h6>
-      <response-list-entry
-        v-for="assignment in responded"
-        :key="assignment.id"
-        :assignment="assignment"
-      />
-    </div>
-    <div class="col s12 m6">
-      <h6 class="title">
-        <b>Not responded</b> - {{ totalRequests - totalResponses }}
-      </h6>
-      <response-list-entry
-        v-for="assignment in notResponded"
-        :key="assignment.id"
-        :assignment="assignment"
-      />
-    </div>
+  <div>
+    <h6 class="title"><b>Responses</b> - {{ totalResponses }}</h6>
+    <response-list-entry
+      v-for="assignment in responded"
+      :key="assignment.id"
+      :assignment="assignment"
+    />
+    <h6 class="title">
+      <b>Not responded</b> - {{ totalRequests - totalResponses }}
+    </h6>
+    <response-list-entry
+      v-for="assignment in notResponded"
+      :key="assignment.id"
+      :assignment="assignment"
+    />
   </div>
 </template>
 
 <script>
 import ResponseListEntry from "@/components/courses/ResponseListEntry";
 export default {
-  name: "ResponseList",
+  name: "ResponseListSingle",
   props: { assignments: Array },
   components: { ResponseListEntry },
   computed: {

@@ -1,4 +1,4 @@
-from flask import jsonify, request, json
+from flask import jsonify, request, json, render_template
 from flask_login import current_user, login_required
 from backend.auth import bp
 from backend.auth.forms import LoginForm
@@ -6,6 +6,8 @@ from backend.models import User
 from backend.responses import json_unauthorized, json_error
 from backend.values import *
 from backend import db
+from backend.util import auth_token
+from backend.email import send_email
 
 
 @bp.route('/login', methods=[POST])
@@ -30,6 +32,8 @@ def user(user_id):
         return u.profile()
     if request.method == PATCH:
         form = json.loads(request.data)
+        u.first_name = form["first_name"]
+        u.last_name = form["last_name"]
         u.email = form["email"]
         u.incie = form["incie"]
         u.salcie = form["salcie"]
@@ -52,13 +56,68 @@ def password(user_id):
     return json_error("Incorrect password.")
 
 
+@bp.route('/password/set/<string:token>', methods=[PATCH])
+def set_password(token):
+    u = User.verify_reset_password_token(token)
+    if u != "error":
+        form = json.loads(request.data)
+        if form["password1"] == form["password2"]:
+            u.set_password(form["password1"])
+            u.auth_code = None
+            u.is_active = True
+            db.session.commit()
+            return "Password set."
+        return json_error("Passwords are not equal.")
+    return json_error("Token is invalid")
+
+
 @bp.route('/logout', methods=[POST])
 @login_required
 def logout():
     return jsonify("Logged out")
 
 
-@bp.route('/test', methods=[GET])
+def send_account_activation_email(u):
+    send_email(f"Account activation {request.url_root}.",
+               recipients=[u.email],
+               text_body=render_template('email/activate_account.txt', user=u),
+               html_body=render_template('email/activate_account.html', user=u))
+
+
+@bp.route('/create', methods=[POST])
+@login_required
+def create():
+    form = json.loads(request.data)
+    u = User()
+    u.first_name = form["first_name"]
+    u.last_name = form["last_name"]
+    u.email = form["email"]
+    u.incie = form["incie"]
+    u.salcie = form["salcie"]
+    u.mucie = form["mucie"]
+    u.access = form["account"]
+    u.auth_code = auth_token()
+    db.session.add(u)
+    db.session.commit()
+    send_account_activation_email(u)
+    return jsonify(u.created())
+
+
+@bp.route('/activate/<string:token>', methods=[GET])
+def activate(token):
+    u = User.query.filter(User.auth_code == token).first()
+    if u is not None:
+        return jsonify(u.get_reset_password_token())
+    else:
+        return json_error("")
+
+
+@bp.route('/renew', methods=[GET])
 @login_required
 def renew():
-    return jsonify(current_user.profile())
+    return "Renew"
+
+
+@bp.route('/test', methods=[GET])
+def test():
+    return render_template("test.html")

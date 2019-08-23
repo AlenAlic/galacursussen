@@ -148,6 +148,9 @@ class User(UserMixin, Anonymous, db.Model):
         seconds = sum([a.course.duration for a in assignments], timedelta()).seconds
         return datetime.utcfromtimestamp(seconds).strftime('%H:%M')
 
+    def created(self):
+        return f"Created account for {self.full_name()} ({self.email})."
+
 
 class Language(enum.Enum):
     nl = "Dutch"

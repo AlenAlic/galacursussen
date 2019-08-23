@@ -1,6 +1,6 @@
 from datetime import timezone, datetime
 from backend.values import DATETIME_FORMAT
-import random
+from random import choice
 import string
 
 
@@ -32,4 +32,4 @@ def is_float(s):
 
 def auth_token():
     allowed_chars = string.ascii_letters + '0123456789'
-    return ''.join(random.sample(allowed_chars, 128))
+    return ''.join([choice(allowed_chars) for _ in range(128)])

@@ -15,7 +15,7 @@ export default {
 
 <style scoped lang="scss">
 .errors {
-  padding-bottom: 1rem;
+  padding-bottom: 0.5rem;
   div {
     margin: 0.25rem 0;
   }

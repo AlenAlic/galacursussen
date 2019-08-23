@@ -240,6 +240,9 @@ export default {
     },
     hasOrganizerPrivileges: (state, getters) => {
       return getters.currentUser.admin || getters.currentUser.organizer;
+    },
+    isAdmin: (state, getters) => {
+      return getters.currentUser.admin;
     }
   }
 };

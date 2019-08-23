@@ -21,7 +21,7 @@ const responseInterceptor = axiosInstance.interceptors.response.use(
       ) {
         // Not signed in. Log-out and redirect to sign in page.
         store.dispatch(UNAUTHORIZED).then(() =>
-          router.replace({
+          router.push({
             name: "login"
           })
         );
@@ -35,8 +35,6 @@ const responseInterceptor = axiosInstance.interceptors.response.use(
         let data = error.response.data;
 
         let errors;
-        console.log(Array.isArray(data.errors));
-        console.log(data.errors);
         if (data.errors && Array.isArray(data.errors)) {
           errors = data.errors.flat();
         } else {

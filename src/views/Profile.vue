@@ -23,7 +23,6 @@ export default {
   display: flex;
   justify-content: space-evenly;
   width: 100%;
-  padding: 0 1rem;
   flex-wrap: wrap;
 }
 </style>

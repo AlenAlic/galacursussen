@@ -20,6 +20,12 @@
             icon="history"
           />
           <nav-link
+            v-if="this.$store.getters.isAdmin"
+            navigate-to="/admin"
+            text="Admin"
+            icon="verified_user"
+          />
+          <nav-link
             v-if="this.$config.env === 'development'"
             navigate-to="/testing"
             text="Testing"
@@ -69,6 +75,12 @@
             navigate-to="/past_courses"
             text="Past courses"
             icon="history"
+          />
+          <nav-link
+            v-if="this.$store.getters.isAdmin"
+            navigate-to="/admin"
+            text="Admin"
+            icon="verified_user"
           />
           <nav-link
             v-if="this.$config.env === 'development'"
@@ -196,6 +208,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+nav .nav-wrapper {
+  &.container {
+    padding: 0;
+  }
+}
 .user-view {
   height: 160px;
 }

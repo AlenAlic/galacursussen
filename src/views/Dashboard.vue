@@ -1,14 +1,11 @@
 <template>
   <div>
+    <create-new-request v-if="this.$store.getters.hasOrganizerPrivileges" />
     <not-responded-courses />
     <upcoming-courses v-if="courses" />
     <h4 v-else-if="!this.$store.state.courses.loading">
       There are no upcoming courses.
     </h4>
-    <create-new-request v-if="this.$store.getters.hasOrganizerPrivileges" />
-    <this-academic-years-courses
-      v-if="this.$store.getters.hasOrganizerPrivileges"
-    />
   </div>
 </template>
 
@@ -16,15 +13,13 @@
 import { COURSES } from "@/store/modules/courses";
 import NotRespondedCourses from "@/components/dashboard/NotRespondedCourses";
 import CreateNewRequest from "@/components/dashboard/CreateNewRequest";
-import ThisAcademicYearsCourses from "@/components/dashboard/ThisAcademicYearsCourses";
 import UpcomingCourses from "@/components/dashboard/UpcomingCourses";
 export default {
   name: "Dashboard",
   components: {
     UpcomingCourses,
     NotRespondedCourses,
-    CreateNewRequest,
-    ThisAcademicYearsCourses
+    CreateNewRequest
   },
   created() {
     if (!this.$store.getters.hasCourses) this.$store.dispatch(COURSES);

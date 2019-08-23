@@ -19,7 +19,10 @@ import {
   faAt,
   faEuroSign,
   faHashtag,
-  faHistory
+  faHistory,
+  faUserTie,
+  faSignature,
+  faKey
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faBuilding,
@@ -39,6 +42,11 @@ library.add(
   faEuroSign,
   faHashtag,
   faHistory,
+  faUserTie,
+  faSignature,
+  faKey
+);
+library.add(
   faBuilding,
   faCalendarAlt,
   faClock,

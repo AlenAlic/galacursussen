@@ -143,3 +143,34 @@ body {
   color: $primary-color;
   border-bottom: 1px solid $primary-color;
 }
+
+// center single card
+.center-card-container {
+  display: flex;
+  justify-content: center;
+  &.center {
+    align-items: center;
+    min-height: 100%;
+  }
+
+}
+
+// committees checkbox
+.committees-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 2rem !important;
+  label {
+    padding: 0 0.5rem;
+  }
+}
+
+// account-container
+.account-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+}

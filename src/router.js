@@ -3,6 +3,9 @@ import Router from "vue-router";
 const Login = () => import("@/views/Login.vue");
 const Dashboard = () => import("@/views/Dashboard.vue");
 const PastCourses = () => import("@/views/PastCourses.vue");
+const Admin = () => import("@/views/Admin.vue");
+const Activate = () => import("@/views/Activate.vue");
+const SetPassword = () => import("@/views/SetPassword.vue");
 const Profile = () => import("@/views/Profile.vue");
 const TestingGrounds = () => import("@/views/TestingGrounds.vue");
 
@@ -22,6 +25,15 @@ let router = new Router({
       component: Login
     },
     {
+      path: "/activate/:token",
+      component: Activate
+    },
+    {
+      path: "/set_password/:token",
+      name: "set_password",
+      component: SetPassword
+    },
+    {
       path: "/dashboard",
       name: "dashboard",
       component: Dashboard,
@@ -33,6 +45,14 @@ let router = new Router({
       path: "/past_courses",
       name: "past_courses",
       component: PastCourses,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/admin",
+      name: "admin",
+      component: Admin,
       meta: {
         auth: true
       }

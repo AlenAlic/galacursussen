@@ -10,7 +10,12 @@
         </select>
         <label for="year">Year</label>
       </div>
-      <course v-for="course in courses" :key="course.key" :course="course" />
+      <div v-if="!loading && courses.length > 0">
+        <course v-for="course in courses" :key="course.key" :course="course" />
+      </div>
+      <h6 v-else-if="year !== ''">
+        There are no courses for the selected year.
+      </h6>
     </div>
   </collapse-card>
 </template>

@@ -158,13 +158,6 @@ export default {
     attendance: state => {
       return state.attendance;
     },
-    hasFormData: state => {
-      return (
-        state.committees.length > 0 &&
-        state.languages.length > 0 &&
-        state.attendance.length > 0
-      );
-    },
     courses: state => {
       return state.courses ? Object.values(state.courses) : [];
     },

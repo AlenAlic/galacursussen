@@ -1,45 +1,38 @@
 <template>
   <div class="card">
     <div class="card-content">
-      <span class="card-title">Change password</span>
+      <span class="card-title">Set password</span>
       <form v-on:submit.prevent>
         <errors :errors="errors"></errors>
         <div class="input-field">
           <font-awesome-icon class="prefix" icon="key" />
-          <input v-model="current" type="password" id="current" />
-          <label for="current" :class="{ active: current }"
-            >Current password</label
-          >
-        </div>
-        <div class="input-field">
-          <font-awesome-icon class="prefix" icon="key" />
           <input v-model="password1" type="password" id="password1" />
-          <label for="password1" :class="{ active: password1 }"
-            >New password</label
-          >
+          <label for="password1" :class="{ active: password1 }">Password</label>
         </div>
         <div class="input-field">
           <font-awesome-icon class="prefix" icon="key" />
           <input v-model="password2" type="password" id="password2" />
           <label for="password2" :class="{ active: password2 }"
-            >Repeat new password</label
+            >Repeat password</label
           >
         </div>
-        <div>Password strength</div>
-        <div class="progress">
-          <div
-            class="determinate"
-            :class="passwordColor"
-            :style="{
-              width: passwordWidth
-            }"
-          ></div>
+        <div class="strength">
+          <div>Password strength</div>
+          <div class="progress">
+            <div
+              class="determinate"
+              :class="passwordColor"
+              :style="{
+                width: passwordWidth
+              }"
+            ></div>
+          </div>
         </div>
         <save-button
-          @click.native="changePassword"
+          @click.native="setPassword"
           :loading="loading"
           :active="filled"
-          text="Change password"
+          text="Set password"
         />
       </form>
     </div>
@@ -60,12 +53,11 @@ const weakRegex = new RegExp(
 import Vue from "vue";
 import Errors from "@/components/Errors";
 export default {
-  name: "ChangePasswordCard",
+  name: "SetPasswordCard",
   components: { SaveButton, Errors },
   props: { course: Object },
   data: function() {
     return {
-      current: "",
       password1: "",
       password2: "",
       errors: [],
@@ -96,23 +88,23 @@ export default {
     }
   },
   methods: {
-    changePassword: function() {
+    setPassword: function() {
       if (!this.passwordsEqual) {
         this.errors = ["Passwords are not equal."];
       } else {
         this.loading = true;
         Vue.axios
-          .patch(`auth/password/${this.$store.getters.currentUser.id}`, {
-            current: this.current,
+          .patch(`auth/password/set/${this.$route.params.token}`, {
             password1: this.password1,
             password2: this.password2
           })
           .then(res => {
-            this.current = "";
             this.password1 = "";
             this.password2 = "";
-            this.loading = false;
             this.$notify(res.data, "success");
+            setTimeout(() => {
+              this.$router.push({ name: "login" });
+            }, 1000);
           })
           .catch(({ errors }) => {
             this.loading = false;
@@ -126,7 +118,10 @@ export default {
 
 <style scoped lang="scss">
 .card {
-  max-width: 90vw;
-  width: 400px;
+  max-width: 400px;
+  width: 100%;
+}
+.strength {
+  margin: 1.5rem 0 2rem 0;
 }
 </style>

@@ -40,7 +40,7 @@
 import Errors from "@/components/Errors";
 import LoadingSpinner from "@/components/LoadingSpinner";
 export default {
-  name: "login-card",
+  name: "LoginCard",
   components: { LoadingSpinner, Errors },
   data: function() {
     return {

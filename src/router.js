@@ -8,6 +8,7 @@ const Activate = () => import("@/views/Activate.vue");
 const SetPassword = () => import("@/views/SetPassword.vue");
 const Profile = () => import("@/views/Profile.vue");
 const TestingGrounds = () => import("@/views/TestingGrounds.vue");
+const ResetPassword = () => import("@/views/ResetPassword.vue");
 
 Vue.use(Router);
 
@@ -32,6 +33,11 @@ let router = new Router({
       path: "/set_password/:token",
       name: "set_password",
       component: SetPassword
+    },
+    {
+      path: "/reset_password/:token?",
+      name: "reset_password",
+      component: ResetPassword
     },
     {
       path: "/dashboard",

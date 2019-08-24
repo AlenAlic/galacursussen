@@ -26,7 +26,9 @@
             icon="verified_user"
           />
           <nav-link
-            v-if="this.$config.env === 'development'"
+            v-if="
+              this.$config.env === 'development' && this.$store.getters.isAdmin
+            "
             navigate-to="/testing"
             text="Testing"
             icon="code"
@@ -83,7 +85,9 @@
             icon="verified_user"
           />
           <nav-link
-            v-if="this.$config.env === 'development'"
+            v-if="
+              this.$config.env === 'development' && this.$store.getters.isAdmin
+            "
             navigate-to="/testing"
             text="Testing"
             icon="code"
@@ -152,7 +156,7 @@ export default {
       this.$auth
         .signOut()
         .then(() => {
-          this.$router.replace({
+          this.$router.push({
             name: "login"
           });
         })

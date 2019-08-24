@@ -34,11 +34,13 @@ export default {
     Vue.axios
       .get(`auth/activate/${this.$route.params.token}`)
       .then(res => {
-        this.loading = false;
-        this.redirecting = true;
         let token = res.data;
         setTimeout(() => {
-          this.$router.push({ name: "set_password", params: { token } });
+          this.loading = false;
+          this.redirecting = true;
+          setTimeout(() => {
+            this.$router.push({ name: "set_password", params: { token } });
+          }, 1000);
         }, 1000);
       })
       .catch(() => {

@@ -1,5 +1,5 @@
 <template>
-  <form class="center-align">
+  <form v-on:submit.prevent class="center-align">
     <h4>{{ course.requested_by }}</h4>
     <h5>
       Currently assigned

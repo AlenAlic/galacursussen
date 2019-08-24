@@ -13,7 +13,7 @@ export default {
   },
   created() {
     if (this.$auth.isAuthenticated())
-      this.$router.replace({
+      this.$router.push({
         name: "dashboard"
       });
   }

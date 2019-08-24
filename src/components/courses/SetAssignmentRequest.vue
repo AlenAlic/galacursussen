@@ -1,5 +1,5 @@
 <template>
-  <form class="center-align">
+  <form v-on:submit.prevent class="center-align">
     <div class="input-field">
       <font-awesome-icon
         class="prefix"

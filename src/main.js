@@ -64,25 +64,26 @@ Vue.use(Vue2TouchEvents, { swipeTolerance: 30 });
 Vue.use(Datetime);
 // Default notifications configuration: vue2-notify
 Vue.use(Notify, {
-  itemClass: "bla",
+  itemClass: "notification",
   permanent: false,
   duration: 300,
   visibility: 5000,
-  position: "top-full"
+  position: "top-full",
+  closeButtonClass: "close"
 });
 const types = {
-  info: { itemClass: "toaster", iconClass: "alert__icon mdi mdi-information" },
+  info: { itemClass: "toaster", iconClass: "alert-icon mdi mdi-information" },
   error: {
     itemClass: "toaster--error",
-    iconClass: "alert__icon mdi mdi-alert-circle"
+    iconClass: "alert-icon mdi mdi-alert-circle"
   },
   warning: {
     itemClass: "toaster--warning",
-    iconClass: "alert__icon mdi mdi-alert"
+    iconClass: "alert-icon mdi mdi-alert"
   },
   success: {
     itemClass: "toaster--success",
-    iconClass: "alert__icon mdi mdi-checkbox-marked-circle"
+    iconClass: "alert-icon mdi mdi-checkbox-marked-circle"
   }
 };
 

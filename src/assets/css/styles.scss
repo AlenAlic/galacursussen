@@ -112,14 +112,6 @@ body {
   left: 0;
 }
 
-
-// notify fix click through
-.notify {
-  &.notify-top-full {
-    pointer-events: none;
-  }
-}
-
 // Form validation
 .incorrect {
   color: $color-danger;

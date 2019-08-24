@@ -48,17 +48,9 @@
 
 <script>
 import SaveButton from "@/components/SaveButton";
-const strongRegex = new RegExp(
-  "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{16,})" // eslint-disable-line no-useless-escape
-);
-const mediumRegex = new RegExp(
-  "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{12,})"
-);
-const weakRegex = new RegExp(
-  "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})"
-);
 import Vue from "vue";
 import Errors from "@/components/Errors";
+import { strongRegex, mediumRegex, weakRegex } from "@/assets/js/utilities";
 export default {
   name: "ChangePasswordCard",
   components: { SaveButton, Errors },

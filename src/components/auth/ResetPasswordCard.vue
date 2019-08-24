@@ -45,7 +45,7 @@ import Vue from "vue";
 import Errors from "@/components/Errors";
 import { strongRegex, mediumRegex, weakRegex } from "@/assets/js/utilities";
 export default {
-  name: "SetPasswordCard",
+  name: "ResetPasswordCard",
   components: { SaveButton, Errors },
   props: { course: Object },
   data: function() {
@@ -86,7 +86,7 @@ export default {
       } else {
         this.loading = true;
         Vue.axios
-          .patch(`auth/password/set/${this.$route.params.token}`, {
+          .patch(`auth/password/reset/${this.$route.params.token}`, {
             password1: this.password1,
             password2: this.password2
           })

@@ -2,7 +2,7 @@
   <div class="form">
     <div class="card">
       <div class="card-content">
-        <form>
+        <form v-on:submit.prevent>
           <errors :errors="errors" />
           <div class="input-field">
             <i class="material-icons prefix">person</i>
@@ -33,6 +33,9 @@
         </form>
       </div>
     </div>
+    <a href="javascript:void(0);" @click.prevent="resetPassword"
+      >Forgot password?</a
+    >
   </div>
 </template>
 
@@ -67,7 +70,7 @@ export default {
           this.rememberMe
         )
         .then(() => {
-          this.$router.replace({
+          this.$router.push({
             name: "dashboard"
           });
         })
@@ -75,6 +78,11 @@ export default {
           this.loading = false;
           return (this.errors = errors);
         });
+    },
+    resetPassword: function() {
+      this.$router.push({
+        name: "reset_password"
+      });
     }
   }
 };

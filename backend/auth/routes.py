@@ -1,5 +1,5 @@
-from flask import jsonify, request, json, render_template
-from flask_login import current_user, login_required
+from flask import jsonify, request, json, render_template, current_app
+from flask_login import login_required
 from backend.auth import bp
 from backend.auth.forms import LoginForm
 from backend.models import User
@@ -56,21 +56,6 @@ def password(user_id):
     return json_error("Incorrect password.")
 
 
-@bp.route('/password/set/<string:token>', methods=[PATCH])
-def set_password(token):
-    u = User.verify_reset_password_token(token)
-    if u != "error":
-        form = json.loads(request.data)
-        if form["password1"] == form["password2"]:
-            u.set_password(form["password1"])
-            u.auth_code = None
-            u.is_active = True
-            db.session.commit()
-            return "Password set."
-        return json_error("Passwords are not equal.")
-    return json_error("Token is invalid")
-
-
 @bp.route('/logout', methods=[POST])
 @login_required
 def logout():
@@ -78,7 +63,7 @@ def logout():
 
 
 def send_account_activation_email(u):
-    send_email(f"Account activation {request.url_root}.",
+    send_email(f"Account activation {current_app.config['PRETTY_URL']}.",
                recipients=[u.email],
                text_body=render_template('email/activate_account.txt', user=u),
                html_body=render_template('email/activate_account.html', user=u))
@@ -109,7 +94,55 @@ def activate(token):
     if u is not None:
         return jsonify(u.get_reset_password_token())
     else:
-        return json_error("")
+        return json_error("Invalid token")
+
+
+@bp.route('/password/set/<string:token>', methods=[PATCH])
+def set_password(token):
+    u = User.verify_reset_password_token(token)
+    if u != "error":
+        form = json.loads(request.data)
+        if form["password1"] == form["password2"]:
+            u.set_password(form["password1"])
+            u.auth_code = None
+            u.is_active = True
+            db.session.commit()
+            return "Password set."
+        return json_error("Passwords are not equal.")
+    return json_error("Token is invalid")
+
+
+def send_password_reset_email(u):
+    token = u.get_reset_password_token(expires_in=3600)
+    send_email(f"Password reset {current_app.config['PRETTY_URL']}.",
+               recipients=[u.email],
+               text_body=render_template('email/reset_password.txt', user=u, token=token),
+               html_body=render_template('email/reset_password.html', user=u, token=token))
+
+
+@bp.route('/password/reset', methods=[POST], defaults={"token": None})
+@bp.route('/password/reset/<string:token>', methods=[PATCH])
+def reset_password(token):
+    if request.method == POST:
+        data = json.loads(request.data)
+        u = User.query.filter(User.email == data["email"]).first()
+        if u is not None:
+            send_password_reset_email(u)
+        return ""
+    if request.method == PATCH:
+        u = User.verify_reset_password_token(token)
+        if u != "error":
+            if not u.is_active:
+                return json_error("Cannot reset the password of an account that has not been activated.")
+            form = json.loads(request.data)
+            if form["password1"] == form["password2"]:
+                u.set_password(form["password1"])
+                u.auth_code = None
+                u.is_active = True
+                db.session.commit()
+                return "Password reset."
+            return json_error("Passwords are not equal.")
+        return json_error("Token is invalid")
 
 
 @bp.route('/renew', methods=[GET])

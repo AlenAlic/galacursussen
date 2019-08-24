@@ -80,13 +80,18 @@ def create_app():
             'create_test_courses': create_test_courses
         }
 
-    def create_admin(email, password):
+    def create_admin(email, password, first_name, last_name, incie=False, salcie=False, mucie=False):
         if len(User.query.filter(User.access == values.ACCESS[values.ADMIN]).all()) == 0:
             a = User()
             a.email = email
             a.set_password(password)
             a.access = values.ACCESS[values.ADMIN]
             a.is_active = True
+            a.first_name = first_name
+            a.last_name = last_name
+            a.incie = incie
+            a.salcie = salcie
+            a.mucie = mucie
             db.session.add(a)
             db.session.commit()
 

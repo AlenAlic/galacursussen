@@ -14,7 +14,7 @@ from backend.email import send_email
 def login():
     form = LoginForm()
     if form.validate():
-        u = User.query.filter(User.email == form.email.data).first()
+        u = User.query.filter(User.email.ilike(form.email.data)).first()
         if u is None or not u.check_password(form.password.data):
             return json_unauthorized("Invalid username or password")
         elif u.is_active:
@@ -125,7 +125,7 @@ def send_password_reset_email(u):
 def reset_password(token):
     if request.method == POST:
         data = json.loads(request.data)
-        u = User.query.filter(User.email == data["email"]).first()
+        u = User.query.filter(User.email.ilike(data["email"])).first()
         if u is not None:
             send_password_reset_email(u)
         return OK

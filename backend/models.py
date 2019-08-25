@@ -131,22 +131,43 @@ class User(UserMixin, Anonymous, db.Model):
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
 
+    @staticmethod
+    def years_courses(year=None):
+        return Course.courses_year_query(year).all()
+
+    def years_assignment(self, year=None):
+        return Assignment.assignments_year_query(year, self).all()
+
+    def committee_assignments(self, year=None, committee=None):
+        assignments = [a for a in self.years_assignment(year) if a.assigned]
+        if committee == INCIE:
+            assignments = [a for a in assignments if a.course.committee == Committee.incie and a.role != Role.mucie]
+        elif committee == SALCIE:
+            assignments = [a for a in assignments if a.course.committee == Committee.salcie and a.role != Role.mucie]
+        elif committee == MUCIE:
+            assignments = [a for a in assignments if a.role == Role.mucie]
+        return assignments
+
+    def hours(self, year=None, committee=None):
+        courses = [a.course for a in self.committee_assignments(year, committee)]
+        seconds = sum([c.duration for c in courses], timedelta()).seconds
+        return datetime.utcfromtimestamp(seconds).strftime('%H:%M')
+
+    def hours_breakdown(self, year=None, committee=None):
+        assignments = self.committee_assignments(year, committee)
+        seconds = sum([a.course.duration for a in assignments], timedelta()).seconds
+        data = {"assignments": [a.hours() for a in assignments]}
+        data.update({"total": datetime.utcfromtimestamp(seconds).strftime('%H:%M')})
+        return data
+
     def json(self):
         return {
+            "id": self.user_id,
             "first_name": self.first_name,
             "last_name": self.last_name,
             "full_name": self.full_name(),
+            "hours": self.hours()
         }
-
-    def hours(self):
-        offset = 0 if datetime.now().month >= FIRST_MONTH else -1
-        start_date = datetime(datetime.now().year + offset, FIRST_MONTH, 1)
-        end_date = datetime(datetime.now().year + offset + 1, FIRST_MONTH, 1)
-        assignments = Assignment.query.join(Course)\
-            .filter(Assignment.user == self, Assignment.assigned.is_(True),
-                    Course.date >= start_date, Course.date < end_date).all()
-        seconds = sum([a.course.duration for a in assignments], timedelta()).seconds
-        return datetime.utcfromtimestamp(seconds).strftime('%H:%M')
 
     def created(self):
         return f"Created account for {self.full_name()} ({self.email})."
@@ -210,6 +231,17 @@ class Course(db.Model):
     def duration_formatted(self):
         duration = datetime(1970, 1, 1, 0, 0, 0, 0) + self.duration
         return f"{duration.strftime('%H:%M')}"
+
+    @staticmethod
+    def courses_year_query(year=None):
+        if year is not None:
+            start_date = datetime(year, FIRST_MONTH, 1)
+            end_date = datetime(year + 1, FIRST_MONTH, 1)
+        else:
+            offset = 0 if datetime.now().month >= FIRST_MONTH else -1
+            start_date = datetime(datetime.now().year + offset, FIRST_MONTH, 1)
+            end_date = datetime(datetime.now().year + offset + 1, FIRST_MONTH, 1)
+        return Course.query.filter(Course.date >= start_date, Course.date < end_date)
 
     @staticmethod
     def parse_dates(data):
@@ -333,6 +365,18 @@ class Assignment(db.Model):
         return self.course.committee == Committee.incie and self.user.incie or \
                self.course.committee == Committee.salcie and self.user.salcie
 
+    @staticmethod
+    def assignments_year_query(year=None, user=user):
+        if year is not None:
+            start_date = datetime(year, FIRST_MONTH, 1)
+            end_date = datetime(year + 1, FIRST_MONTH, 1)
+        else:
+            offset = 0 if datetime.now().month >= FIRST_MONTH else -1
+            start_date = datetime(datetime.now().year + offset, FIRST_MONTH, 1)
+            end_date = datetime(datetime.now().year + offset + 1, FIRST_MONTH, 1)
+        return Assignment.query.join(Course).filter(Course.date >= start_date, Course.date < end_date,
+                                                    Assignment.user == user)
+
     def json(self):
         return {
             "id": self.assignment_id,
@@ -348,6 +392,14 @@ class Assignment(db.Model):
             "has_mucie": any([a.role == Role.mucie for a in self.course.assignments]),
             "committee": self.committee(),
             "hours": self.user.hours()
+        }
+
+    def hours(self):
+        return {
+            "id": self.assignment_id,
+            "requested_by": self.course.requested_by,
+            "date_formatted": self.course.date_formatted(),
+            "duration_formatted": self.course.duration_formatted(),
         }
 
 

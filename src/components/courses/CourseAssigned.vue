@@ -1,6 +1,6 @@
 <template>
   <div class="response-list">
-    <card-collapse-list title="Assigned" :bold="true">
+    <card-collapse-list :title="title" :bold="true">
       <div v-for="assignment in assigned" :key="assignment.id">
         {{ assignment.name }}
         <i class="pl" v-show="assignment.role">{{ assignment.role }}</i>
@@ -22,6 +22,9 @@ export default {
       return this.course.assignments.filter(r => {
         return r.assigned;
       });
+    },
+    title: function() {
+      return `Assigned (${this.assigned.length})`;
     }
   },
   methods: {

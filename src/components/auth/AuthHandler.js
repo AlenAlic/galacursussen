@@ -22,6 +22,10 @@ const AuthHandler = {
         return store.getters.isAuthenticated;
       },
 
+      accessLevel() {
+        return store.getters.accessLevel;
+      },
+
       /**
        * Sign in a user with a username and password, and a check to get a longer duration token.
        * @param username

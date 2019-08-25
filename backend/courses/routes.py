@@ -6,23 +6,13 @@ from backend.models import new_courses_form_data, Course, User, Attendance, Assi
 from backend.values import *
 from backend.courses.forms import AddCourseForm
 from backend.responses import json_error, json_forbidden
-from datetime import datetime
 
 
 @bp.route('/', methods=[GET], defaults={'year': None})
 @bp.route('/<int:year>', methods=[GET])
 @login_required
 def index(year):
-    if year is not None:
-        start_date = datetime(year, FIRST_MONTH, 1)
-        end_date = datetime(year+1, FIRST_MONTH, 1)
-        courses = Course.query.filter(Course.date >= start_date, Course.date < end_date).all()
-        c = {c.course_id: c.json() for c in courses}
-        return jsonify(c)
-    offset = 0 if datetime.now().month >= FIRST_MONTH else -1
-    start_date = datetime(datetime.now().year + offset, FIRST_MONTH, 1)
-    end_date = datetime(datetime.now().year + offset + 1, FIRST_MONTH, 1)
-    courses = Course.query.filter(Course.date >= start_date, Course.date < end_date).all()
+    courses = Course.courses_year_query(year).all()
     c = {c.course_id: c.json() for c in courses}
     return jsonify(c)
 
@@ -99,3 +89,51 @@ def paid(course_id):
     course.paid = data["paid"]
     db.session.commit()
     return OK
+
+
+def calculate_hours(year, u):
+    i = u.hours_breakdown(year=year, committee=INCIE)
+    s = u.hours_breakdown(year=year, committee=SALCIE)
+    m = u.hours_breakdown(year=year, committee=MUCIE)
+    c = {}
+    if len(i["assignments"]) > 0 or u.incie:
+        c.update({INCIE: i})
+    if len(s["assignments"]) > 0 or u.salcie:
+        c.update({SALCIE: s})
+    if len(m["assignments"]) > 0 or u.mucie:
+        c.update({MUCIE: m})
+    return c
+
+
+@bp.route('/hours/<int:year>', methods=[GET])
+@login_required
+def hours(year):
+    c = calculate_hours(year, current_user)
+    return jsonify(c)
+
+
+def calculate_total_hours(year, u):
+    i = u.hours(year=year, committee=INCIE)
+    s = u.hours(year=year, committee=SALCIE)
+    m = u.hours(year=year, committee=MUCIE)
+    c = {}
+    if i != "00:00" or u.incie:
+        c.update({INCIE: i})
+    else:
+        c.update({INCIE: "-"})
+    if s != "00:00" or u.salcie:
+        c.update({SALCIE: s})
+    else:
+        c.update({SALCIE: "-"})
+    if m != "00:00" or u.mucie:
+        c.update({MUCIE: m})
+    else:
+        c.update({MUCIE: "-"})
+    return c
+
+
+@bp.route('/total_hours/<int:year>', methods=[GET])
+def total_hours(year):
+    users = User.query.filter(User.access != ACCESS[TREASURER]).order_by(User.first_name).all()
+    c = [{"user": u.full_name(), "hours": calculate_total_hours(year, u)} for u in users]
+    return jsonify(c)

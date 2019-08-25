@@ -3,7 +3,11 @@
     <create-new-request v-if="this.$store.getters.hasOrganizerPrivileges" />
     <not-responded-courses />
     <upcoming-courses v-if="courses" />
-    <h4 v-else-if="!this.$store.state.courses.loading">
+    <h4
+      v-else-if="
+        !this.$store.state.courses.loading && !this.$store.getters.isTreasurer
+      "
+    >
       There are no upcoming courses.
     </h4>
     <treasurer-courses v-if="this.$store.getters.isTreasurer" />

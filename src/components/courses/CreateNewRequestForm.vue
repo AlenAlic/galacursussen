@@ -175,10 +175,7 @@ export default {
           dances: this.dances
         })
         .then(() => {
-          this.$notify(
-            `Added course for ${this.course.requested_by}..`,
-            "success"
-          );
+          this.$notify(`Added course for ${this.requested_by}..`, "success");
           this.$store.dispatch(COURSES);
           this.requested_by = "";
           this.date = "";

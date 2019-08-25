@@ -32,6 +32,11 @@ ACCESS = {
 ACCESS_LEVEL = {v: k for k, v in ACCESS.items()}
 
 
+INCIE = "incie"
+SALCIE = "salcie"
+MUCIE = "mucie"
+
+
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S.000Z"
 FIRST_MONTH = 8
 FIRST_MONTH_STRING = "08"

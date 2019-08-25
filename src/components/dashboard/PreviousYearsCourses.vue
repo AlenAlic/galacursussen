@@ -4,16 +4,16 @@
       <div class="left-align">
         <select v-model="year" id="year">
           <option disabled value="">Choose your option</option>
-          <option v-for="year in years" :key="year" :value="year">{{
-            year
-          }}</option>
+          <option v-for="year in years" :key="year" :value="year"
+            >{{ year }}
+          </option>
         </select>
         <label for="year">Year</label>
       </div>
       <div v-if="!loading && courses.length > 0">
         <course v-for="course in courses" :key="course.key" :course="course" />
       </div>
-      <h6 v-else-if="year !== ''">
+      <h6 v-else-if="year !== '' && !loading">
         There are no courses for the selected year.
       </h6>
     </div>
@@ -24,6 +24,7 @@
 import Vue from "vue";
 import CollapseCard from "@/components/CollapseCard";
 import Course from "@/components/courses/Course";
+import { availableYears } from "@/assets/js/utilities";
 export default {
   name: "PreviousYearsCourses",
   components: { CollapseCard, Course },
@@ -36,10 +37,7 @@ export default {
   },
   computed: {
     years: function() {
-      const YEAR = 2018;
-      const range = n => [...Array(n).keys()];
-      let now = new Date().getFullYear();
-      return range(now - YEAR).map(r => r + YEAR);
+      return availableYears();
     },
     title: function() {
       let academicYear = this.year
@@ -75,8 +73,6 @@ export default {
 <style scoped lang="scss">
 .select-wrapper + label {
   position: relative;
-  top: -65px;
   left: 0;
-  font-size: 0.8rem;
 }
 </style>

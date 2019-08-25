@@ -64,7 +64,7 @@ def test_users():
         db.session.commit()
 
 
-START_YEAR = 2018
+START_YEAR = 2019
 
 COURSES = [
     ("NSE", datetime(START_YEAR, 11, 21, 20, 0, 0, 0), timedelta(hours=1, minutes=30),

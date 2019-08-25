@@ -33,4 +33,21 @@ const currencyFormat = num => {
   }
 };
 
-export { validateEmail, strongRegex, mediumRegex, weakRegex, currencyFormat };
+// available years
+const availableYears = () => {
+  const YEAR = 2018;
+  const range = n => [...Array(n).keys()];
+  let now = new Date();
+  let year = now.getFullYear();
+  if (now.getMonth() < 7) year = year - 1;
+  return range(year - YEAR + 1).map(r => r + YEAR);
+};
+
+export {
+  validateEmail,
+  strongRegex,
+  mediumRegex,
+  weakRegex,
+  currencyFormat,
+  availableYears
+};

@@ -233,7 +233,11 @@ export default {
         id: decoded != null ? decoded.id : null,
         admin: state.profile ? state.profile.admin : false,
         organizer: state.profile ? state.profile.organizer : false,
-        treasurer: state.profile ? state.profile.treasurer : false
+        treasurer: state.profile ? state.profile.treasurer : false,
+        access_level: state.profile ? state.profile.access_level : -1,
+        incie: state.profile ? state.profile.incie : false,
+        salcie: state.profile ? state.profile.salcie : false,
+        mucie: state.profile ? state.profile.mucie : false
       };
     },
     profile: state => {
@@ -247,6 +251,19 @@ export default {
     },
     isTreasurer: (state, getters) => {
       return getters.currentUser.treasurer;
+    },
+    hasTreasurerPrivileges: (state, getters) => {
+      return getters.currentUser.admin || getters.currentUser.treasurer;
+    },
+    accessLevel: (state, getters) => {
+      return getters.currentUser.access_level;
+    },
+    committeeMember: (state, getters) => {
+      return (
+        getters.currentUser.incie ||
+        getters.currentUser.salcie ||
+        getters.currentUser.mucie
+      );
     }
   }
 };

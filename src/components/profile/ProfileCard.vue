@@ -22,7 +22,7 @@
           <input v-model="email" type="email" id="email" />
           <label for="email" :class="{ active: email }">Email</label>
         </div>
-        <p class="committees-container">
+        <p class="committees-container" v-if="!this.$store.getters.isTreasurer">
           <label>
             <input type="checkbox" v-model="incie" />
             <span>InCie</span>

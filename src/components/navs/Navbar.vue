@@ -15,6 +15,7 @@
             icon="dashboard"
           />
           <nav-link
+            v-if="this.$store.getters.committeeMember"
             navigate-to="/past_courses"
             text="Past courses"
             icon="history"
@@ -25,16 +26,14 @@
             text="Admin"
             icon="verified_user"
           />
-          <nav-link
-            v-if="
-              this.$config.env === 'development' && this.$store.getters.isAdmin
-            "
-            navigate-to="/testing"
-            text="Testing"
-            icon="code"
-          />
         </ul>
         <ul class="right hide-on-med-and-down">
+          <nav-link
+            v-if="this.$store.getters.committeeMember"
+            navigate-to="/hours"
+            text="Hours"
+            icon="access_time"
+          />
           <nav-link navigate-to="/profile" text="Profile" icon="person" />
           <li>
             <a
@@ -74,6 +73,7 @@
             icon="dashboard"
           />
           <nav-link
+            v-if="this.$store.getters.committeeMember"
             navigate-to="/past_courses"
             text="Past courses"
             icon="history"
@@ -84,16 +84,16 @@
             text="Admin"
             icon="verified_user"
           />
-          <nav-link
-            v-if="
-              this.$config.env === 'development' && this.$store.getters.isAdmin
-            "
-            navigate-to="/testing"
-            text="Testing"
-            icon="code"
-          />
         </li>
         <li><div class="divider"></div></li>
+        <li>
+          <nav-link
+            v-if="this.$store.getters.committeeMember"
+            navigate-to="/hours"
+            text="Hours"
+            icon="access_time"
+          />
+        </li>
         <li>
           <nav-link navigate-to="/profile" text="Profile" icon="person" />
         </li>

@@ -17,7 +17,7 @@ const responseInterceptor = axiosInstance.interceptors.response.use(
       // Got a response from the api with an error status
       if (
         error.response.status === 401 &&
-        !window.location.pathname.startsWith("/login")
+        !window.location.pathname.startsWith("/")
       ) {
         // Not signed in. Log-out and redirect to sign in page.
         store.dispatch(UNAUTHORIZED).then(() =>

@@ -35,7 +35,7 @@ def updated(course_id):
     if request.method == PATCH:
         course = Course.query.filter(Course.course_id == course_id).first()
         course.save(json.loads(request.data), patch=True)
-        return course.changes_saved()
+        return OK
 
 
 @bp.route('/new', methods=[GET, POST])
@@ -89,3 +89,13 @@ def role(assignment_id):
     assignment.role = data["role"]
     db.session.commit()
     return jsonify({"message": assignment.set_role(), "course": assignment.course.json()})
+
+
+@bp.route('/paid/<int:course_id>', methods=[PATCH])
+@login_required
+def paid(course_id):
+    data = json.loads(request.data)
+    course = Course.query.filter(Course.course_id == course_id).first()
+    course.paid = data["paid"]
+    db.session.commit()
+    return OK

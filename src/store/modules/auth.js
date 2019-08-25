@@ -232,7 +232,8 @@ export default {
         lastName: decoded != null ? decoded.last_name : null,
         id: decoded != null ? decoded.id : null,
         admin: state.profile ? state.profile.admin : false,
-        organizer: state.profile ? state.profile.organizer : false
+        organizer: state.profile ? state.profile.organizer : false,
+        treasurer: state.profile ? state.profile.treasurer : false
       };
     },
     profile: state => {
@@ -243,6 +244,9 @@ export default {
     },
     isAdmin: (state, getters) => {
       return getters.currentUser.admin;
+    },
+    isTreasurer: (state, getters) => {
+      return getters.currentUser.treasurer;
     }
   }
 };

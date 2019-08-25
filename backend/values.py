@@ -7,6 +7,7 @@ TESTING_ENVIRONMENTS = [DEVELOPMENT_ENV, TESTING_ENV, DEBUG_ENV]
 
 
 ERRORS = "errors"
+OK = ""
 
 
 # Requests

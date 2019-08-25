@@ -91,8 +91,8 @@ export default {
           salcie: this.salcie,
           mucie: this.mucie
         })
-        .then(res => {
-          this.$notify(res.data, "success");
+        .then(() => {
+          this.$notify("Changes to profile saved.", "success");
           this.loading = false;
           this.$store.dispatch(USER_PROFILE);
         })

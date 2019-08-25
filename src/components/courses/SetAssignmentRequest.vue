@@ -177,8 +177,11 @@ export default {
           committee: this.committee,
           dances: this.dances
         })
-        .then(res => {
-          this.$notify(res.data, "success");
+        .then(() => {
+          this.$notify(
+            `Saved changes for ${this.course.requested_by}.`,
+            "success"
+          );
           this.$emit("close");
         })
         .catch(({ errors }) => {

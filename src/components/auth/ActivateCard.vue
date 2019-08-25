@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-content" v-if="loading">
       <h4>Authenticating</h4>
-      <loading-spinner size="big" />
+      <loading-spinner class="mt" size="small" />
     </div>
     <div class="card-content" v-else-if="invalid">
       <h4>Invalid token</h4>
@@ -10,8 +10,7 @@
     </div>
     <div class="card-content" v-else>
       <h4>Account activated</h4>
-      <p>Redirecting...</p>
-      <loading-spinner size="small" />
+      <loading-spinner class="mt" size="small" />
     </div>
   </div>
 </template>
@@ -57,5 +56,8 @@ export default {
 .card {
   max-width: 400px;
   width: 100%;
+}
+.mt {
+  margin-top: 1rem;
 }
 </style>

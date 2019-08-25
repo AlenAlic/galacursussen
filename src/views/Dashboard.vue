@@ -6,6 +6,7 @@
     <h4 v-else-if="!this.$store.state.courses.loading">
       There are no upcoming courses.
     </h4>
+    <treasurer-courses v-if="this.$store.getters.isTreasurer" />
   </div>
 </template>
 
@@ -14,9 +15,11 @@ import { COURSES } from "@/store/modules/courses";
 import NotRespondedCourses from "@/components/dashboard/NotRespondedCourses";
 import CreateNewRequest from "@/components/dashboard/CreateNewRequest";
 import UpcomingCourses from "@/components/dashboard/UpcomingCourses";
+import TreasurerCourses from "@/components/dashboard/TreasurerCourses";
 export default {
   name: "Dashboard",
   components: {
+    TreasurerCourses,
     UpcomingCourses,
     NotRespondedCourses,
     CreateNewRequest

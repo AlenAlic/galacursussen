@@ -39,7 +39,7 @@ def user(user_id):
         u.salcie = form["salcie"]
         u.mucie = form["mucie"]
         db.session.commit()
-        return "Changes to profile saved."
+        return OK
 
 
 @bp.route('/password/<int:user_id>', methods=[PATCH])
@@ -51,7 +51,7 @@ def password(user_id):
         if form["password1"] == form["password2"]:
             u.set_password(form["password1"], increment=False)
             db.session.commit()
-            return "Password changed."
+            return OK
         return json_error("Passwords are not equal.")
     return json_error("Incorrect password.")
 
@@ -107,7 +107,7 @@ def set_password(token):
             u.auth_code = None
             u.is_active = True
             db.session.commit()
-            return "Password set."
+            return OK
         return json_error("Passwords are not equal.")
     return json_error("Token is invalid")
 
@@ -128,7 +128,7 @@ def reset_password(token):
         u = User.query.filter(User.email == data["email"]).first()
         if u is not None:
             send_password_reset_email(u)
-        return ""
+        return OK
     if request.method == PATCH:
         u = User.verify_reset_password_token(token)
         if u != "error":
@@ -140,7 +140,7 @@ def reset_password(token):
                 u.auth_code = None
                 u.is_active = True
                 db.session.commit()
-                return "Password reset."
+                return OK
             return json_error("Passwords are not equal.")
         return json_error("Token is invalid")
 

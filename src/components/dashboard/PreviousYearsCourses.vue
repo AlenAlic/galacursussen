@@ -60,7 +60,7 @@ export default {
       Vue.axios
         .get(`courses/${newVal}`)
         .then(res => {
-          this.courses = res.data;
+          this.courses = Object.values(res.data);
           this.loading = false;
         })
         .catch(({ errors }) => {

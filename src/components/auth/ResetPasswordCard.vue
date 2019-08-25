@@ -90,10 +90,10 @@ export default {
             password1: this.password1,
             password2: this.password2
           })
-          .then(res => {
+          .then(() => {
             this.password1 = "";
             this.password2 = "";
-            this.$notify(res.data, "success");
+            this.$notify("Password reset.", "success");
             setTimeout(() => {
               this.$router.push({ name: "login" });
             }, 1000);

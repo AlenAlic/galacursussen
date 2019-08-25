@@ -16,4 +16,21 @@ const weakRegex = new RegExp(
   "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})"
 );
 
-export { validateEmail, strongRegex, mediumRegex, weakRegex };
+// price formatting
+const currencyFormat = num => {
+  let sign = num >= 0 ? "€" : "-€";
+  num = Math.abs(num);
+  if (num !== 0) {
+    return (
+      sign +
+      num
+        .toFixed(2)
+        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+        .replace(".00", "")
+    );
+  } else {
+    return "-";
+  }
+};
+
+export { validateEmail, strongRegex, mediumRegex, weakRegex, currencyFormat };

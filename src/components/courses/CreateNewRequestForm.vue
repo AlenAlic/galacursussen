@@ -174,7 +174,12 @@ export default {
           committee: this.committee,
           dances: this.dances
         })
-        .then(res => {
+        .then(() => {
+          this.$notify(
+            `Added course for ${this.course.requested_by}..`,
+            "success"
+          );
+          this.$store.dispatch(COURSES);
           this.requested_by = "";
           this.date = "";
           this.duration = DateTime.fromISO("1970-01-01T01:30:00.000Z").toISO();
@@ -184,8 +189,6 @@ export default {
           this.committee = "";
           this.dances = "";
           this.errors = {};
-          this.$notify(res.data, "success");
-          this.$store.dispatch(COURSES);
         })
         .catch(({ errors }) => {
           this.errors = errors;

@@ -10,10 +10,10 @@
       <b>Attendees: </b>{{ course.attendees }}
     </div>
     <div :class="{ 'grey-text': !pastCourseDate }">
-      <b>Price: </b>{{ course.price }}
+      <b>Price: </b>{{ price }}
     </div>
     <div :class="{ 'grey-text': !pastCourseDate }">
-      <b>Paid: </b>{{ course.paid ? "yes" : "" }}
+      <b>Paid: </b>{{ course.paid ? "Yes" : "No" }}
     </div>
     <div><b>MuCie available: </b>{{ course.has_mucie ? "Yes" : "No" }}</div>
   </div>
@@ -21,15 +21,19 @@
 
 <script>
 import { DateTime } from "luxon";
+import { currencyFormat } from "@/assets/js/utilities";
 export default {
   name: "CourseInfo",
   props: { course: Object },
   computed: {
     pastCourseDate: function() {
       return (
-        DateTime.fromISO(this.course.date, { zone: "UTC" }) >
+        DateTime.fromISO(this.course.date, { zone: "UTC" }) <
         DateTime.local().setZone("UTC")
       );
+    },
+    price: function() {
+      return currencyFormat(this.course.price);
     }
   }
 };

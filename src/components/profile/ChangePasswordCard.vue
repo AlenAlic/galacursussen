@@ -99,12 +99,12 @@ export default {
             password1: this.password1,
             password2: this.password2
           })
-          .then(res => {
+          .then(() => {
             this.current = "";
             this.password1 = "";
             this.password2 = "";
             this.loading = false;
-            this.$notify(res.data, "success");
+            this.$notify("Password changed.", "success");
           })
           .catch(({ errors }) => {
             this.loading = false;

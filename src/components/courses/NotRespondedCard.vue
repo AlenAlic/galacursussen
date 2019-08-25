@@ -102,8 +102,11 @@ export default {
           attendance: attendance,
           notes: this.notes
         })
-        .then(res => {
-          this.$notify(res.data, "success");
+        .then(() => {
+          this.$notify(
+            `Attendance set for ${this.course.requested_by}.`,
+            "success"
+          );
           this.hide = true;
           this.height = 0;
           let id = this.course.id;

@@ -105,7 +105,11 @@ export default {
           mucie: this.mucie,
           account: this.account
         })
-        .then(res => {
+        .then(() => {
+          this.$notify(
+            `Created account for ${this.first_name} ${this.last_name} (${this.email}).`,
+            "success"
+          );
           this.first_name = "";
           this.last_name = "";
           this.email = "";
@@ -114,7 +118,6 @@ export default {
           this.mucie = false;
           this.account = "";
           this.loading = false;
-          this.$notify(res.data, "success");
         })
         .catch(({ errors }) => {
           this.loading = false;

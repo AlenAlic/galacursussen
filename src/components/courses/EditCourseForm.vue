@@ -257,8 +257,11 @@ export default {
           paid: this.paid,
           assignments: this.assignments
         })
-        .then(res => {
-          this.$notify(res.data, "success");
+        .then(() => {
+          this.$notify(
+            `Saved changes for ${this.course.requested_by}.`,
+            "success"
+          );
           this.$store.dispatch(UPDATE_COURSE, { id });
           this.$emit("close");
         })

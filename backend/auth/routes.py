@@ -73,19 +73,22 @@ def send_account_activation_email(u):
 @login_required
 def create():
     form = json.loads(request.data)
-    u = User()
-    u.first_name = form["first_name"]
-    u.last_name = form["last_name"]
-    u.email = form["email"]
-    u.incie = form["incie"]
-    u.salcie = form["salcie"]
-    u.mucie = form["mucie"]
-    u.access = form["account"]
-    u.auth_code = auth_token()
-    db.session.add(u)
-    db.session.commit()
-    send_account_activation_email(u)
-    return jsonify(u.created())
+    u = User.query.filter(User.email.ilike(form["email"])).first()
+    if u is None:
+        u = User()
+        u.first_name = form["first_name"]
+        u.last_name = form["last_name"]
+        u.email = form["email"]
+        u.incie = form["incie"]
+        u.salcie = form["salcie"]
+        u.mucie = form["mucie"]
+        u.access = form["account"]
+        u.auth_code = auth_token()
+        db.session.add(u)
+        db.session.commit()
+        send_account_activation_email(u)
+        return jsonify(u.created())
+    return json_error("Email address already in use.")
 
 
 @bp.route('/activate/<string:token>', methods=[GET])

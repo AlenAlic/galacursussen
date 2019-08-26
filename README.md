@@ -27,3 +27,11 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+## Local mail server
+```
+python -m smtpd -n -c DebuggingServer localhost:8025
+
+python -u -m smtpd -n -c DebuggingServer localhost:8025 > mail.log
+```

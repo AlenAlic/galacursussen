@@ -22,6 +22,5 @@ yarn-error.log*
 
 # Own
 .editorconfig
-/instance/config.py
 /public/development.json
 /public/config.json

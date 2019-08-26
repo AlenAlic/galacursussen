@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, AnonymousUserMixin, current_user
 from flask_mail import Mail
+from config import Config
 from backend.values import *
 from datetime import datetime
 
@@ -36,11 +37,12 @@ class Anonymous(AnonymousUserMixin):
         return None
 
 
-def create_app():
+def create_app(config_class=Config):
     from backend.models import User, Course
     from backend.tests.data import test_users, test_courses
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_pyfile('config.py')
+
+    app = Flask(__name__)
+    app.config.from_object(config_class)
     app.url_map.strict_slashes = False
 
     db.init_app(app)

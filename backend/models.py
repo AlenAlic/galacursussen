@@ -23,6 +23,11 @@ def requires_access_level(access_levels):
     return decorator
 
 
+class TrackModifications(object):
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
 @login.request_loader
 def load_user(request):
     try:
@@ -36,7 +41,7 @@ def load_user(request):
     return user if user is not None else None
 
 
-class User(UserMixin, Anonymous, db.Model):
+class User(UserMixin, Anonymous, db.Model, TrackModifications):
     __tablename__ = "users"
     user_id = db.Column(db.Integer, primary_key=True)
     reset_index = db.Column(db.Integer, nullable=False, default=0)
@@ -44,7 +49,7 @@ class User(UserMixin, Anonymous, db.Model):
     password_hash = db.Column(db.String(128))
     access = db.Column(db.Integer, index=True, nullable=False)
     is_active = db.Column(db.Boolean, index=True, nullable=False, default=False)
-    last_seen = db.Column(db.DateTime, default=datetime.utcnow())
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     first_name = db.Column(db.String(128))
     last_name = db.Column(db.String(128))
     incie = db.Column(db.Boolean, nullable=False, default=False)
@@ -184,7 +189,7 @@ class Committee(enum.Enum):
     salcie = "SalCie"
 
 
-class Course(db.Model):
+class Course(db.Model, TrackModifications):
     __tablename__ = "course"
     course_id = db.Column(db.Integer, primary_key=True)
     requested_by = db.Column(db.String(256), nullable=False)
@@ -328,7 +333,7 @@ class Role(enum.Enum):
     mucie = "MuCie"
 
 
-class Assignment(db.Model):
+class Assignment(db.Model, TrackModifications):
     __tablename__ = "assignment"
     assignment_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', onupdate="CASCADE", ondelete="CASCADE"))

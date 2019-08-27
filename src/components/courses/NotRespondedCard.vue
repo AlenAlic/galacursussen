@@ -11,7 +11,7 @@
         <div>{{ course.date_formatted }}</div>
         <div class="data-container">
           <div class="data left-align">
-            <div class="text-container">
+            <div class="text-container" v-if="course.location !== ''">
               <div class="icon">
                 <font-awesome-icon icon="map-marker-alt" size="lg" />
               </div>
@@ -25,8 +25,8 @@
             </div>
           </div>
         </div>
-        <div class="data-container">
-          <card-collapse-list class="data" title="Attendees">
+        <div class="data-container left-align">
+          <card-collapse-list class="data" title="Responses">
             <response-list-entry
               v-for="assignment in course.assignments"
               :key="assignment.id"

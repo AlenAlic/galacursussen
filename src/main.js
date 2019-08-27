@@ -33,7 +33,6 @@ import {
   faStickyNote
 } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-
 library.add(
   faMusic,
   faCircle,
@@ -62,7 +61,6 @@ Vue.use(AuthHandler);
 Vue.use(materialize);
 Vue.use(Vue2TouchEvents, { swipeTolerance: 30 });
 Vue.use(Datetime);
-// Default notifications configuration: vue2-notify
 Vue.use(Notify, {
   itemClass: "notification",
   permanent: false,
@@ -86,39 +84,15 @@ const types = {
     iconClass: "alert-icon mdi mdi-checkbox-marked-circle"
   }
 };
-
 Vue.$notify.setTypes(types);
 
-// Use config.json for production-like env and the <env_name>.json for other env;
-const configFileName =
-  process.env.NODE_ENV === "production"
-    ? "config.json"
-    : process.env.NODE_ENV + ".json";
-axiosInstance
-  .get(configFileName)
-  .then(config => config.data)
-  .then(
-    config => {
-      Vue.prototype.$config = config;
-      Vue.prototype.$config.debug = process.env.NODE_ENV === "development";
+Vue.prototype.$config = {};
+Vue.prototype.$config.debug = process.env.NODE_ENV === "development";
+axiosInstance.defaults.baseURL = process.env.VUE_APP_BASE_URL;
+Vue.use(VueAxios, axiosInstance);
 
-      // Set the baseURL according to the latest config and register the instance.
-      axiosInstance.defaults.baseURL = Vue.prototype.$config.api.url;
-      Vue.use(VueAxios, axiosInstance);
-
-      new Vue({
-        router,
-        store,
-        render: h => h(App)
-      }).$mount("#app");
-    },
-    () => console.log("No configuration fie provided.")
-  );
-
-// new Vue({
-//   el: "#app",
-//   router,
-//   store,
-//   template: "<App/>",
-//   components: { App }
-// });
+new Vue({
+  router,
+  store,
+  render: h => h(App)
+}).$mount("#app");

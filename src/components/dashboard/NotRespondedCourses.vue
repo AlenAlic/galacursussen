@@ -24,6 +24,9 @@ export default {
       let courses = this.$store.getters.courses;
       if (courses.length > 0) {
         courses = courses.filter(c => {
+          return !c.cancelled;
+        });
+        courses = courses.filter(c => {
           let d = new Date(c.date);
           return d > new Date();
         });

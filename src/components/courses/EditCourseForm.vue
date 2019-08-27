@@ -83,26 +83,43 @@
     </div>
     <div class="radios">
       <div class="radio-title">Course language</div>
-      <label v-for="opt in languages" :key="opt.value">
+      <label>
+        <input v-model="language" value="nl" name="language" type="radio" />
+        <span>Dutch</span>
+      </label>
+      <label>
+        <input v-model="language" value="en" name="language" type="radio" />
+        <span>English</span>
+      </label>
+      <label>
         <input
           v-model="language"
-          :value="opt.value"
+          value="unknown"
           name="language"
           type="radio"
         />
-        <span>{{ opt.text }}</span>
+        <span>Unknown</span>
       </label>
     </div>
     <div class="radios">
       <div class="radio-title">What committee is the course for?</div>
-      <label v-for="opt in committees" :key="opt.value">
+      <label>
         <input
           v-model="committee"
-          :value="opt.value"
-          name="committees"
+          value="incie"
+          name="committee"
           type="radio"
         />
-        <span>{{ opt.text }}</span>
+        <span>InCie</span>
+      </label>
+      <label>
+        <input
+          v-model="committee"
+          value="salcie"
+          name="committee"
+          type="radio"
+        />
+        <span>SalCie</span>
       </label>
     </div>
     <div class="input-field">
@@ -170,15 +187,45 @@
         </div>
         <div>
           <div class="radios">
-            <label v-for="opt in attendance" :key="opt.value">
+            <label>
               <input
-                :value="opt.value"
+                value="yes"
                 :name="radioName(request.id)"
                 type="radio"
-                @click="addAttendance(request.id, opt.value)"
-                :checked="request.attendance === opt.value"
+                @click="addAttendance(request.id, 'yes')"
+                :checked="request.attendance === 'yes'"
               />
-              <span>{{ opt.text }}</span>
+              <span>Yes</span>
+            </label>
+            <label>
+              <input
+                value="maybe"
+                :name="radioName(request.id)"
+                type="radio"
+                @click="addAttendance(request.id, 'maybe')"
+                :checked="request.attendance === 'maybe'"
+              />
+              <span>Maybe</span>
+            </label>
+            <label>
+              <input
+                value="no"
+                :name="radioName(request.id)"
+                type="radio"
+                @click="addAttendance(request.id, 'no')"
+                :checked="request.attendance === 'no'"
+              />
+              <span>No</span>
+            </label>
+            <label>
+              <input
+                :value="null"
+                :name="radioName(request.id)"
+                type="radio"
+                @click="addAttendance(request.id, null)"
+                :checked="request.attendance === null"
+              />
+              <span>Not responded</span>
             </label>
           </div>
         </div>
@@ -219,15 +266,6 @@ export default {
     };
   },
   computed: {
-    languages: function() {
-      return this.$store.getters.languages;
-    },
-    committees: function() {
-      return this.$store.getters.committees;
-    },
-    attendance: function() {
-      return this.$store.getters.attendance;
-    },
     filled: function() {
       return this.requested_by !== "";
     }

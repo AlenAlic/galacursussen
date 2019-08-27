@@ -4,10 +4,12 @@
     :loading="this.$store.state.courses.loading"
     :counter="courses.length"
   >
-    <div v-if="!this.$store.state.courses.loading && courses.length > 0">
+    <div v-if="courses.length > 0">
       <course v-for="course in courses" :key="course.key" :course="course" />
     </div>
-    <h6 v-else>There are no courses for this year yet.</h6>
+    <h6 v-else-if="!this.$store.state.courses.loading">
+      There are no courses for this year yet.
+    </h6>
   </collapse-card>
 </template>
 

@@ -38,6 +38,7 @@ def user(user_id):
         u.incie = form["incie"]
         u.salcie = form["salcie"]
         u.mucie = form["mucie"]
+        u.email_notifications = form["email_notifications"]
         db.session.commit()
         return OK
 

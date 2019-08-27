@@ -81,26 +81,43 @@
     </div>
     <div class="radios">
       <div class="radio-title">Course language</div>
-      <label v-for="opt in languages" :key="opt.value">
+      <label>
+        <input v-model="language" value="nl" name="language" type="radio" />
+        <span>Dutch</span>
+      </label>
+      <label>
+        <input v-model="language" value="en" name="language" type="radio" />
+        <span>English</span>
+      </label>
+      <label>
         <input
           v-model="language"
-          :value="opt.value"
+          value="unknown"
           name="language"
           type="radio"
         />
-        <span>{{ opt.text }}</span>
+        <span>Unknown</span>
       </label>
     </div>
     <div class="radios">
       <div class="radio-title">What committee is the course for?</div>
-      <label v-for="opt in committees" :key="opt.value">
+      <label>
         <input
           v-model="committee"
-          :value="opt.value"
-          name="committees"
+          value="incie"
+          name="committee"
           type="radio"
         />
-        <span>{{ opt.text }}</span>
+        <span>InCie</span>
+      </label>
+      <label>
+        <input
+          v-model="committee"
+          value="salcie"
+          name="committee"
+          type="radio"
+        />
+        <span>SalCie</span>
       </label>
     </div>
     <div class="input-field">
@@ -124,7 +141,7 @@
 
 <script>
 import Vue from "vue";
-import { COURSES_FORM, COURSES } from "./../../store/modules/courses";
+import { COURSES } from "./../../store/modules/courses";
 import { DateTime } from "luxon";
 import { Datetime } from "vue-datetime";
 export default {
@@ -144,12 +161,6 @@ export default {
     };
   },
   computed: {
-    languages: function() {
-      return this.$store.getters.languages;
-    },
-    committees: function() {
-      return this.$store.getters.committees;
-    },
     filled: function() {
       return (
         this.requested_by !== "" &&
@@ -157,9 +168,6 @@ export default {
         this.language !== ""
       );
     }
-  },
-  created() {
-    this.$store.dispatch(COURSES_FORM);
   },
   methods: {
     newCourse: function() {

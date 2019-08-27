@@ -56,6 +56,7 @@ class User(UserMixin, Anonymous, db.Model, TrackModifications):
     salcie = db.Column(db.Boolean, nullable=False, default=False)
     mucie = db.Column(db.Boolean, nullable=False, default=False)
     auth_code = db.Column(db.String(128), nullable=True)
+    email_notifications = db.Column(db.Boolean, nullable=False, default=True)
     assignments = db.relationship("Assignment", back_populates="user")
 
     def __repr__(self):
@@ -118,7 +119,8 @@ class User(UserMixin, Anonymous, db.Model, TrackModifications):
                 "treasurer": self.is_treasurer(),
                 "incie": self.incie,
                 "salcie": self.salcie,
-                "mucie": self.mucie
+                "mucie": self.mucie,
+                "email_notifications": self.email_notifications
             }
         return "Not logged in"
 
@@ -314,7 +316,8 @@ class Course(db.Model, TrackModifications):
             "paid": self.paid,
             "dances": self.dances,
             "notes": self.notes,
-            "assignments": list(sorted([a.json() for a in self.assignments], key=lambda x: x["name"])),
+            "cancelled": self.cancelled,
+            "assignments": list(sorted([a.json() for a in self.assignments], key=lambda x: x["name"].lower())),
             "responses": len([r for r in self.assignments if r.attendance is not None]),
             "has_mucie": len([r for r in self.assignments
                               if r.attendance == Attendance.yes and r.user.mucie]) > 0

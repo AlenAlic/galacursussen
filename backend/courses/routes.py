@@ -6,6 +6,7 @@ from backend.models import new_courses_form_data, Course, User, Attendance, Assi
 from backend.values import *
 from backend.courses.forms import AddCourseForm
 from backend.responses import json_error, json_forbidden
+from sqlalchemy import func
 
 
 @bp.route('/', methods=[GET], defaults={'year': None})
@@ -134,6 +135,6 @@ def calculate_total_hours(year, u):
 
 @bp.route('/total_hours/<int:year>', methods=[GET])
 def total_hours(year):
-    users = User.query.filter(User.access != ACCESS[TREASURER]).order_by(User.first_name).all()
-    c = [{"user": u.full_name(), "hours": calculate_total_hours(year, u)} for u in users]
-    return jsonify(c)
+    users = User.query.filter(User.access != ACCESS[TREASURER]).order_by(func.lower(User.first_name)).all()
+    users = [{"user": u.full_name(), "hours": calculate_total_hours(year, u)} for u in users]
+    return jsonify(users)

@@ -36,6 +36,15 @@
             <span>MuCie</span>
           </label>
         </p>
+        <p class="email-notifications left-align">
+          <label>
+            <input type="checkbox" v-model="email_notifications" />
+            <span v-if="!this.$store.getters.isTreasurer">
+              Email me when new courses are added
+            </span>
+            <span v-else>Email me when courses need invoices sent</span>
+          </label>
+        </p>
         <save-button
           @click.native="updateProfile"
           :loading="loading"
@@ -64,6 +73,7 @@ export default {
       incie: this.$store.getters.profile.incie,
       salcie: this.$store.getters.profile.salcie,
       mucie: this.$store.getters.profile.mucie,
+      email_notifications: this.$store.getters.profile.email_notifications,
       loading: false
     };
   },
@@ -89,7 +99,8 @@ export default {
           email: this.email,
           incie: this.incie,
           salcie: this.salcie,
-          mucie: this.mucie
+          mucie: this.mucie,
+          email_notifications: this.email_notifications
         })
         .then(() => {
           this.$notify("Changes to profile saved.", "success");
@@ -109,5 +120,12 @@ export default {
 .card {
   max-width: 90vw;
   width: 400px;
+}
+.committees-container {
+  margin-bottom: 1rem !important;
+}
+.email-notifications {
+  margin-bottom: 1rem !important;
+  margin-left: 7.5px !important;
 }
 </style>

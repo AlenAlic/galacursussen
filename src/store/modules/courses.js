@@ -1,13 +1,6 @@
 /* eslint-disable no-undef */
 import Vue from "vue";
 
-const COURSES_FORM = "COURSES_FORM: Get form data.";
-const COURSES_FORM_REQUEST = "COURSES_FORM: Request sent.";
-const COURSES_FORM_SUCCESS = "COURSES_FORM: Successful request.";
-const COURSES_FORM_ERROR = "COURSES_FORM: Failed request.";
-
-const SET_COURSES_FORM = "COURSES_FORM: Set new form default data.";
-
 const ADD_COURSE = "ADD_COURSE: Adding new course to database.";
 const ADD_COURSE_REQUEST = "ADD_COURSE: Request sent.";
 const ADD_COURSE_SUCCESS = "ADD_COURSE: Successful request.";
@@ -27,33 +20,14 @@ const UPDATE_COURSE_REQUEST = "UPDATE_COURSE: Request sent.";
 const UPDATE_COURSE_SUCCESS = "UPDATE_COURSE: Successful request.";
 const UPDATE_COURSE_ERROR = "UPDATE_COURSE: Failed request.";
 
-export { COURSES_FORM, ADD_COURSE, COURSES, UPDATE_COURSE };
+export { ADD_COURSE, COURSES, UPDATE_COURSE };
 
 export default {
   state: {
-    loadingForm: false,
-    committees: [],
-    languages: [],
-    attendance: [],
     loading: false,
     courses: undefined
   },
   mutations: {
-    [SET_COURSES_FORM](state, data) {
-      state.committees = data.committees;
-      state.languages = data.languages;
-      state.attendance = data.attendance;
-    },
-    [COURSES_FORM_REQUEST](state) {
-      state.loadingForm = true;
-    },
-    [COURSES_FORM_SUCCESS](state) {
-      state.loadingForm = false;
-    },
-    [COURSES_FORM_ERROR](state) {
-      state.loadingForm = false;
-    },
-
     [SET_COURSES](state, data) {
       state.courses = data;
     },
@@ -75,19 +49,6 @@ export default {
     [UPDATE_COURSE_ERROR]() {}
   },
   actions: {
-    [COURSES_FORM]({ commit }) {
-      commit(COURSES_FORM_REQUEST);
-      return Vue.axios
-        .get("courses/new")
-        .then(resp => {
-          commit(SET_COURSES_FORM, resp.data);
-          commit(COURSES_FORM_SUCCESS);
-        })
-        .catch(({ status, errors }) => {
-          commit(COURSES_FORM_ERROR, errors);
-          throw { status, errors };
-        });
-    },
     [ADD_COURSE](
       { commit },
       {
@@ -149,15 +110,6 @@ export default {
     }
   },
   getters: {
-    committees: state => {
-      return state.committees;
-    },
-    languages: state => {
-      return state.languages;
-    },
-    attendance: state => {
-      return state.attendance;
-    },
     courses: state => {
       return state.courses ? Object.values(state.courses) : [];
     },

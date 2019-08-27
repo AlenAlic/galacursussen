@@ -34,6 +34,7 @@ def upgrade():
     sa.Column('salcie', sa.Boolean(), nullable=False),
     sa.Column('mucie', sa.Boolean(), nullable=False),
     sa.Column('auth_code', sa.String(length=128), nullable=True),
+    sa.Column('email_notifications', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('user_id')
     )
     op.create_index(op.f('ix_users_access'), 'users', ['access'], unique=False)

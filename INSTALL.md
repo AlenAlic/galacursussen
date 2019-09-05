@@ -36,13 +36,13 @@ Create .env.local file.
 
 The file should contain the following variables:
 
-    SECRET_KEY = 'test-key'
+    SECRET_KEY = "test-key"
     
-    DATABASE_URI = 'mysql+pymysql://galacursussen:<db_password>@localhost:3306/galacursussen'
+    DATABASE_URI = "mysql+pymysql://galacursussen:<db_password>@localhost:3306/galacursussen"
 
     PRETTY_URL = "<domain>"
     
-    VUE_APP_BASE_URL  = "<api_domain>"
+    VUE_APP_BASE_URL" = "<api_domain>"
 
 You can create the SECRET_KEY for the website, and password for the MySQL database using the following command:
 
@@ -81,6 +81,7 @@ Before you can log in to the site, you will need to create the admin account (an
     flask shell
     create_admin(email, password, first_name, last_name, incie=False, salcie=False, mucie=False)
     exit()
+    deactivate
 
 #### Gunicorn
 Gunicorn is a pure Python web server that will be used in stead of the built in Flask server.
@@ -123,7 +124,6 @@ Copy the data from below into that file and replace *\<username>* with the usern
         server_name <domain>;
 
         location / {
-            # forward application requests to the gunicorn server
             proxy_pass http://127.0.0.1:4040;
             proxy_redirect off;
             proxy_set_header Host $host;
@@ -134,16 +134,16 @@ Copy the data from below into that file and replace *\<username>* with the usern
         access_log /var/log/<domain>_access.log;
         error_log /var/log/<domain>_error.log;
     
-        ssl_certificate /etc/letsencrypt/live/<domain>/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/<domain>/privkey.pem;
-        include /etc/letsencrypt/options-ssl-nginx.conf;
-        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
-        ssl_ecdh_curve secp521r1:secp384r1:prime256v1;
+        #ssl_certificate /etc/letsencrypt/live/<domain>/fullchain.pem;
+        #ssl_certificate_key /etc/letsencrypt/live/<domain>/privkey.pem;
+        #include /etc/letsencrypt/options-ssl-nginx.conf;
+        #ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+        #ssl_ecdh_curve secp521r1:secp384r1:prime256v1;
 
     }
     server {
         server_name <domain>;
-        return 301 https://$host$request_uri;
+        return 301 https://$request_uri;
     }
 
 
@@ -154,6 +154,7 @@ After saving this file, reload nginx:
 ### Frontend
 #### Build frontend
 
+    npm install
     npm run build
 
 #### Nginx
@@ -178,11 +179,11 @@ Copy the data from below into that file and replace *\<username>* with the usern
         access_log /var/log/<domain>_access.log;
         error_log /var/log/<domain>_error.log;
     
-        ssl_certificate /etc/letsencrypt/live/<domain>/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/<domain>/privkey.pem;
-        include /etc/letsencrypt/options-ssl-nginx.conf;
-        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
-        ssl_ecdh_curve secp521r1:secp384r1:prime256v1;
+        #ssl_certificate /etc/letsencrypt/live/<domain>/fullchain.pem;
+        #ssl_certificate_key /etc/letsencrypt/live/<domain>/privkey.pem;
+        #include /etc/letsencrypt/options-ssl-nginx.conf;
+        #ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+        #ssl_ecdh_curve secp521r1:secp384r1:prime256v1;
         
     }
     server {
@@ -224,14 +225,9 @@ You will be prompted to install the certbot package. Press ENTER to proceed.
 
 To install the certificate, use the following command.
 
-    sudo certbot --nginx -d <your_domain>
+    sudo certbot certonly --nginx -d <domain> -d <api_domain>
 
-You will be prompted to enter an email address.
-This will address will be used to notify you for urgent renewal issues, or security notices.
-Enter a valid email address and press ENTER to proceed.
+Now finally, go back to the nginx conf files, and uncomment the blocks regarding cretificates.
+Then reload nginx.
 
-Afterwards, press a, then ENTER to accept the terms for the Let's Encrypt service.
-
-Next, you will be asked if you will allow your email address to be shared with the EFF. This is up to your own discretion.
-
-Lastly, you will be prompted whether or not you wish to redirect all traffic from HTTP to HTTPS. Press 2, and then ENTER to redirect all traffic to HTTPS.
+    sudo service nginx reload

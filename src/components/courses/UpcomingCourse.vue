@@ -1,5 +1,5 @@
 <template>
-  <div class="left-align">
+  <div class="left-align" :class="{ assigned: assigned }">
     <div v-if="course">
       <course-modals
         v-if="this.$store.getters.hasOrganizerPrivileges"
@@ -25,6 +25,16 @@ export default {
     CourseResponsesSingle,
     CourseInfo,
     CourseModals
+  },
+  computed: {
+    assigned: function() {
+      let assignments = this.course.assignments;
+      return (
+        assignments.filter(a => {
+          return a.assigned && a.user_id === this.$store.getters.currentUser.id;
+        }).length > 0
+      );
+    }
   }
 };
 </script>
@@ -32,5 +42,8 @@ export default {
 <style scoped lang="scss">
 .mt {
   margin-top: 1rem;
+}
+.assigned {
+  background: #4caf5030;
 }
 </style>

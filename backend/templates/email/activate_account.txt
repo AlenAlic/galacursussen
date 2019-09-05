@@ -10,4 +10,4 @@ To activate your account, paste the following link in your browser's address bar
 
 Regards,
 
-{{ config.BASE_URL }}
+{{ config.PRETTY_URL }}

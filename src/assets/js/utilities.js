@@ -43,11 +43,19 @@ const availableYears = () => {
   return range(year - YEAR + 1).map(r => r + YEAR);
 };
 
+// filter for courses by committee (InCie/SalCie)
+const filterCoursesByCommittee = (c, u) => {
+  if ((u.incie && u.salcie) || u.mucie) return c;
+  if (u.incie) return c.committee_value === "incie";
+  if (u.salcie) return c.committee_value === "salcie";
+};
+
 export {
   validateEmail,
   strongRegex,
   mediumRegex,
   weakRegex,
   currencyFormat,
-  availableYears
+  availableYears,
+  filterCoursesByCommittee
 };

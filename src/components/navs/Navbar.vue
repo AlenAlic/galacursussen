@@ -21,6 +21,12 @@
             icon="history"
           />
           <nav-link
+            v-if="this.$store.getters.hasOrganizerPrivileges"
+            navigate-to="/emails"
+            text="Emails"
+            icon="email"
+          />
+          <nav-link
             v-if="this.$store.getters.isAdmin"
             navigate-to="/admin"
             text="Admin"
@@ -66,7 +72,7 @@
         <li>
           <div class="user-view nav-img-background"></div>
         </li>
-        <li>
+        <li @click="hideSideNav">
           <nav-link
             navigate-to="/dashboard"
             text="Dashboard"
@@ -79,6 +85,12 @@
             icon="history"
           />
           <nav-link
+            v-if="this.$store.getters.hasOrganizerPrivileges"
+            navigate-to="/emails"
+            text="Emails"
+            icon="email"
+          />
+          <nav-link
             v-if="this.$store.getters.isAdmin"
             navigate-to="/admin"
             text="Admin"
@@ -86,15 +98,13 @@
           />
         </li>
         <li><div class="divider"></div></li>
-        <li>
+        <li @click="hideSideNav">
           <nav-link
             v-if="this.$store.getters.committeeMember"
             navigate-to="/hours"
             text="Hours"
             icon="access_time"
           />
-        </li>
-        <li>
           <nav-link navigate-to="/profile" text="Profile" icon="person" />
         </li>
         <li>

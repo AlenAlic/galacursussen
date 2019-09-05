@@ -228,8 +228,6 @@ export default {
     currentUser: (state, getters) => {
       let decoded = getters.decodedToken;
       return {
-        firstName: decoded != null ? decoded.first_name : null,
-        lastName: decoded != null ? decoded.last_name : null,
         id: decoded != null ? decoded.id : null,
         admin: state.profile ? state.profile.admin : false,
         organizer: state.profile ? state.profile.organizer : false,
@@ -262,6 +260,15 @@ export default {
       return (
         getters.currentUser.incie ||
         getters.currentUser.salcie ||
+        getters.currentUser.mucie
+      );
+    },
+    isInCieAndSalCieMember: (state, getters) => {
+      return getters.currentUser.incie && getters.currentUser.salcie;
+    },
+    showCommitteeTitle: (state, getters) => {
+      return (
+        (getters.currentUser.incie && getters.currentUser.salcie) ||
         getters.currentUser.mucie
       );
     }

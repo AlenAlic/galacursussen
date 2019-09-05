@@ -29,3 +29,8 @@ class Config(object):
     BASE_URL = "https://" + PRETTY_URL
     ACTIVATE_URL = BASE_URL + "/activate"
     RESET_URL = BASE_URL + "/reset_password"
+
+
+# MAIL SERVERS
+# python -m smtpd -n -c DebuggingServer localhost:8025
+# python -u -m smtpd -n -c DebuggingServer localhost:8025 > mail.log

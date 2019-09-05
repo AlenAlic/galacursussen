@@ -61,8 +61,7 @@ export default {
           this.courses = Object.values(res.data);
           this.loading = false;
         })
-        .catch(({ errors }) => {
-          this.errors = errors;
+        .catch(() => {
           this.loading = false;
         });
     }

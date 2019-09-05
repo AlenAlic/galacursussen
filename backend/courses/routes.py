@@ -2,11 +2,13 @@ from flask import request, jsonify, json
 from flask_login import login_required, current_user
 from backend.courses import bp
 from backend import db
-from backend.models import new_courses_form_data, Course, User, Attendance, Assignment
+from backend.models import Course, User, Attendance, Assignment, Committee
 from backend.values import *
 from backend.courses.forms import AddCourseForm
-from backend.responses import json_error, json_forbidden
+from backend.responses import json_error, json_forbidden, no_content
 from sqlalchemy import func
+from datetime import datetime
+from backend.courses.email import send_reminder_email, send_assignments_email
 
 
 @bp.route('/', methods=[GET], defaults={'year': None})
@@ -29,18 +31,15 @@ def updated(course_id):
         return OK
 
 
-@bp.route('/new', methods=[GET, POST])
+@bp.route('/new', methods=[POST])
 @login_required
 def new():
     form = AddCourseForm()
-    if request.method == GET:
-        return new_courses_form_data()
-    if request.method == POST:
-        if form.validate():
-            course = Course()
-            return course.save(form.model_data()).course_added()
-        else:
-            return json_error(form.vue_error_form())
+    if form.validate():
+        course = Course()
+        return course.save(form.model_data()).course_added()
+    else:
+        return json_error(form.vue_error_form())
 
 
 @bp.route('attend', methods=[PATCH])
@@ -134,7 +133,59 @@ def calculate_total_hours(year, u):
 
 
 @bp.route('/total_hours/<int:year>', methods=[GET])
+@login_required
 def total_hours(year):
     users = User.query.filter(User.access != ACCESS[TREASURER]).order_by(func.lower(User.first_name)).all()
     users = [{"user": u.full_name(), "hours": calculate_total_hours(year, u)} for u in users]
     return jsonify(users)
+
+
+def unresponsive_users():
+    assignment = Assignment.query.join(Course).filter(Course.date > datetime.now(), Assignment.attendance.is_(None)) \
+        .group_by(Assignment.user_id).all()
+    return [a.user for a in assignment]
+
+
+@bp.route('/notification', methods=[GET, POST])
+@login_required
+def notification():
+    if request.method == GET:
+        users = sorted([u.full_name() for u in unresponsive_users()], key=lambda x: x.lower())
+        return jsonify(users)
+    if request.method == POST:
+        users = unresponsive_users()
+        if len(users) > 0:
+            for u in users:
+                send_reminder_email(u)
+            return ""
+        else:
+            return no_content
+
+
+@bp.route('/assignments', methods=[POST])
+@login_required
+def assignments():
+    all_courses = Course.query.filter(Course.date > datetime.now()).order_by(Course.committee, Course.date).all()
+    if len(all_courses) > 0:
+        incie_courses = [c for c in all_courses if c.committee == Committee.incie]
+        salcie_courses = [c for c in all_courses if c.committee == Committee.salcie]
+        users = User.query.filter(User.is_active.is_(True)).all()
+        incie = [u for u in users if u.incie]
+        salcie = [u for u in users if u.salcie]
+        both = [u for u in users if (u.incie and u.salcie) or u.mucie]
+        sent = []
+        for u in both:
+            if u not in sent:
+                sent.append(u)
+                send_assignments_email(u, incie_courses, salcie_courses, "mucie")
+        for u in incie:
+            if u not in sent:
+                sent.append(u)
+                send_assignments_email(u, incie_courses, [], "incie")
+        for u in salcie:
+            if u not in sent:
+                sent.append(u)
+                send_assignments_email(u, [], salcie_courses, "salcie")
+        return ""
+    else:
+        return no_content

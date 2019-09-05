@@ -13,3 +13,7 @@ def json_unauthorized(errors):
 
 def json_forbidden(errors):
     return json_error(errors, 403)
+
+
+def no_content():
+    return "", 204

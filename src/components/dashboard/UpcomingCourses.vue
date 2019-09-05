@@ -11,12 +11,16 @@
 <script>
 import UpcomingCourse from "@/components/courses/UpcomingCourse";
 import { DateTime } from "luxon";
+import { filterCoursesByCommittee } from "@/assets/js/utilities";
 export default {
   name: "UpcomingCourses",
   components: { UpcomingCourse },
   computed: {
     courses: function() {
       let courses = this.$store.getters.courses;
+      courses = courses.filter(c => {
+        return filterCoursesByCommittee(c, this.$store.getters.currentUser);
+      });
       return courses.filter(c => {
         return (
           DateTime.fromISO(c.date, { zone: "UTC" }) >

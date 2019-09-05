@@ -385,6 +385,9 @@ class Assignment(db.Model, TrackModifications):
         return Assignment.query.join(Course).filter(Course.date >= start_date, Course.date < end_date,
                                                     Assignment.user == user)
 
+    def role_formatted(self):
+        return self.role.value if self.role is not None else ""
+
     def json(self):
         return {
             "id": self.assignment_id,
@@ -409,12 +412,3 @@ class Assignment(db.Model, TrackModifications):
             "date_formatted": self.course.date_formatted(),
             "duration_formatted": self.course.duration_formatted(),
         }
-
-
-def new_courses_form_data():
-    return jsonify(
-        {"languages": [{"value": i.name, "text": i.value} for i in Language],
-         "committees": [{"value": i.name, "text": i.value} for i in Committee],
-         "attendance": [{"value": i.name, "text": i.value} for i in Attendance] +
-                       [{"value": None, "text": "Not responded"}]
-         })

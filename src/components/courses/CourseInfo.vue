@@ -1,6 +1,11 @@
 <template>
   <div>
-    <h5>{{ course.requested_by }} ({{ course.committee }})</h5>
+    <h5>
+      {{ course.requested_by
+      }}<span v-if="this.$store.getters.showCommitteeTitle">
+        ({{ course.committee }})</span
+      >
+    </h5>
     <h6>{{ course.date_formatted }}</h6>
     <div><b>Location: </b>{{ course.location }}</div>
     <div><b>Course language: </b>{{ course.language }}</div>

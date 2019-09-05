@@ -1,0 +1,11 @@
+Dear {{ user.first_name }},
+
+
+There are courses available that require you to indicate your attendance for.
+
+Please check {{ config.PRETTY_URL }}.
+
+
+Regards,
+
+{{ config.PRETTY_URL }}

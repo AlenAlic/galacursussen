@@ -1,0 +1,49 @@
+Dear {{ user.first_name }},
+
+
+Here are the assignments for the upcoming courses.
+
+{% if incie_courses | length > 0 and (committee == "both" or committee == "incie") -%}
+{%- if acommittee == "mucie" -%}InCie{%- endif -%}
+
+{% for course in incie_courses -%}
+{{ course.date_formatted() }}
+{{ course.requested_by }}
+Location: {{ course.location }}
+Assigned:
+{% for assignment in course.assignments -%}
+{%- if assignment.assigned -%}
+{{ assignment.user.full_name() }} {{ assignment.role_formatted() }}
+{%- endif -%}
+{%- endfor %}
+Course language: {{ course.language.value }}
+Dances: {{ course.dances }}
+Notes: {{ course.notes }}
+
+{%- endfor %}
+{%- endif %}
+
+
+{% if salcie_courses | length > 0 and (committee == "both" or committee == "salcie") -%}
+{%- if acommittee == "mucie" -%}SalCie{%- endif -%}
+
+{% for course in salcie_courses -%}
+{{ course.date_formatted() }}
+{{ course.requested_by }}
+Location: {{ course.location }}
+Assigned:
+{% for assignment in course.assignments -%}
+{%- if assignment.assigned -%}
+{{ assignment.user.full_name() }} {{ assignment.role_formatted() }}
+{%- endif -%}
+{%- endfor %}
+Course language: {{ course.language.value }}
+Dances: {{ course.dances }}
+Notes: {{ course.notes }}
+
+{%- endfor %}
+{%- endif %}
+
+Regards,
+
+{{ config.PRETTY_URL }}

@@ -36,15 +36,15 @@
             <span>MuCie</span>
           </label>
         </p>
-        <p class="email-notifications left-align">
-          <label>
-            <input type="checkbox" v-model="email_notifications" />
-            <span v-if="!this.$store.getters.isTreasurer">
-              Email me when new courses are added
-            </span>
-            <span v-else>Email me when courses need invoices sent</span>
-          </label>
-        </p>
+        <!--        <p class="email-notifications left-align">-->
+        <!--          <label>-->
+        <!--            <input type="checkbox" v-model="email_notifications" />-->
+        <!--            <span v-if="!this.$store.getters.isTreasurer">-->
+        <!--              Email me when new courses are added-->
+        <!--            </span>-->
+        <!--            <span v-else>Email me when courses need invoices sent</span>-->
+        <!--          </label>-->
+        <!--        </p>-->
         <save-button
           @click.native="updateProfile"
           :loading="loading"

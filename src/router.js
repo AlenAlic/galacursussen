@@ -4,6 +4,7 @@ const Login = () => import("@/views/Login.vue");
 const Dashboard = () => import("@/views/Dashboard.vue");
 const PastCourses = () => import("@/views/PastCourses.vue");
 const Admin = () => import("@/views/Admin.vue");
+const SendEmail = () => import("@/views/SendEmails.vue");
 const Activate = () => import("@/views/Activate.vue");
 const SetPassword = () => import("@/views/SetPassword.vue");
 const Profile = () => import("@/views/Profile.vue");
@@ -54,6 +55,15 @@ let router = new Router({
       meta: {
         auth: true,
         access: ["Admin", "Organizer", "Member"]
+      }
+    },
+    {
+      path: "/emails",
+      name: "emails",
+      component: SendEmail,
+      meta: {
+        auth: true,
+        access: ["Admin", "Organizer"]
       }
     },
     {

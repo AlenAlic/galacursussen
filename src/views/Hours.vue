@@ -130,9 +130,8 @@ export default {
           this.hours = res.data;
           this.loading = false;
         })
-        .catch(({ errors }) => {
+        .catch(() => {
           this.loading = false;
-          this.errors = errors;
         });
     },
     getTotalHours: function(year) {
@@ -143,9 +142,8 @@ export default {
           this.total_hours = res.data;
           this.totalLoading = false;
         })
-        .catch(({ errors }) => {
+        .catch(() => {
           this.totalLoading = false;
-          this.errors = errors;
         });
     }
   }

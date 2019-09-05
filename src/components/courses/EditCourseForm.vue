@@ -304,7 +304,6 @@ export default {
           this.$emit("close");
         })
         .catch(({ errors }) => {
-          this.errors = errors;
           this.loading = false;
           this.$notify(errors[0], "error");
         });

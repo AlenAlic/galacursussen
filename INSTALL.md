@@ -43,6 +43,13 @@ The file should contain the following variables:
     PRETTY_URL = "<domain>"
     
     VUE_APP_BASE_URL" = "<api_domain>"
+    
+    # MAIL_SERVER = ''
+    # MAIL_PORT = 587
+    # MAIL_USE_TLS = 1
+    # MAIL_USERNAME = ''
+    # MAIL_PASSWORD = ''
+    # MAIL_DEFAULT_SENDER = ''
 
 You can create the SECRET_KEY for the website, and password for the MySQL database using the following command:
 

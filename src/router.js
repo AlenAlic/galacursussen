@@ -26,6 +26,7 @@ let router = new Router({
       name: "login",
       component: Login
     },
+    { path: "/index.html", component: Login, alias: "/login" }, // Fix for PWA at /index.html
     {
       path: "/activate/:token",
       component: Activate

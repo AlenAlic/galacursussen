@@ -9,7 +9,6 @@ sudo supervisorctl stop galacursussen
 echo "========================Done"
 
 echo "Checking out new version===="
-cd galacursussen
 git pull
 echo "========================Done"
 
@@ -28,5 +27,3 @@ echo "Restarting Services========="
 sudo supervisorctl start galacursussen
 sudo systemctl reload nginx
 echo "========================Done"
-
-cd

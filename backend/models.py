@@ -58,6 +58,7 @@ class User(UserMixin, Anonymous, db.Model, TrackModifications):
     auth_code = db.Column(db.String(128), nullable=True)
     email_notifications = db.Column(db.Boolean, nullable=False, default=True)
     assignments = db.relationship("Assignment", back_populates="user")
+    active_member = db.Column(db.Boolean, index=True, nullable=False, default=True)
 
     def __repr__(self):
         return f'{self.email}'

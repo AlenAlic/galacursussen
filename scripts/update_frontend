@@ -5,7 +5,6 @@ source scripts/backup
 echo "========================Done"
 
 echo "Checking out new version===="
-cd galacursussen
 git pull
 echo "========================Done"
 
@@ -18,4 +17,3 @@ echo "Restarting Services========="
 sudo systemctl reload nginx
 echo "========================Done"
 
-cd

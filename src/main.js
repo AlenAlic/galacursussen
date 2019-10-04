@@ -22,7 +22,9 @@ import {
   faHistory,
   faUserTie,
   faSignature,
-  faKey
+  faKey,
+  faCheck,
+  faTimes
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faBuilding,
@@ -43,7 +45,9 @@ library.add(
   faHistory,
   faUserTie,
   faSignature,
-  faKey
+  faKey,
+  faCheck,
+  faTimes
 );
 library.add(
   faBuilding,

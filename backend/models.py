@@ -177,6 +177,22 @@ class User(UserMixin, Anonymous, db.Model, TrackModifications):
             "hours": self.hours()
         }
 
+    def admin_json(self):
+        return {
+            "id": self.user_id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "full_name": self.full_name(),
+            "email": self.email,
+            "access_level": self.access_level(),
+            "incie": self.incie,
+            "salcie": self.salcie,
+            "mucie": self.mucie,
+            "is_active": self.is_active,
+            "active_member": self.active_member,
+            "access": self.access
+        }
+
     def created(self):
         return f"Created account for {self.full_name()} ({self.email})."
 
@@ -260,7 +276,7 @@ class Course(db.Model, TrackModifications):
 
     @staticmethod
     def generate_assignments(course):
-        users = User.query.filter(User.is_active.is_(True))
+        users = User.query.filter(User.active_member.is_(True))
         if course.committee == Committee.incie.name:
             users = users.filter(or_(User.mucie.is_(True), User.incie.is_(True)))
         if course.committee == Committee.salcie.name:

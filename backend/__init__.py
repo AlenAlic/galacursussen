@@ -111,6 +111,9 @@ def create_app(config_class=Config):
     from backend.courses import bp as courses_bp
     app.register_blueprint(courses_bp, url_prefix='/courses')
 
+    from backend.admin import bp as admin_bp
+    app.register_blueprint(admin_bp, url_prefix='/admin')
+
     return app
 
 

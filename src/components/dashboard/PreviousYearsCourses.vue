@@ -11,7 +11,12 @@
         <label for="year">Year</label>
       </div>
       <div v-if="!loading && courses.length > 0">
-        <course v-for="course in courses" :key="course.key" :course="course" />
+        <course
+          v-for="course in courses"
+          :key="course.key"
+          :course="course"
+          @closeModal="closeModal"
+        />
       </div>
       <h6 v-else-if="year !== '' && !loading">
         There are no courses for the selected year.
@@ -52,11 +57,14 @@ export default {
       M.FormSelect.init(document.querySelectorAll("select"));
     });
   },
-  watch: {
-    year: function(newVal) {
+  methods: {
+    closeModal: function() {
+      this.updateCourses(this.year);
+    },
+    updateCourses: function(year) {
       this.loading = true;
       Vue.axios
-        .get(`courses/${newVal}`)
+        .get(`courses/${year}`)
         .then(res => {
           this.courses = Object.values(res.data);
           this.loading = false;
@@ -64,6 +72,11 @@ export default {
         .catch(() => {
           this.loading = false;
         });
+    }
+  },
+  watch: {
+    year: function(newVal) {
+      this.updateCourses(newVal);
     }
   }
 };

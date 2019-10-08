@@ -79,7 +79,7 @@ export default {
   &.modal-medium {
     max-width: 700px;
   }
-  max-height: 90%;
+  height: 90%;
   overflow-y: auto;
 }
 .modal-header h3 {

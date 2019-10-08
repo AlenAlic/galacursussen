@@ -5,7 +5,12 @@
     :counter="courses.length"
   >
     <div v-if="courses.length > 0">
-      <course v-for="course in courses" :key="course.key" :course="course" />
+      <course
+        v-for="course in courses"
+        :key="course.key"
+        :course="course"
+        @closeModal="closeModal"
+      />
     </div>
     <h6 v-else-if="!this.$store.state.courses.loading">
       There are no courses for this year yet.
@@ -14,6 +19,7 @@
 </template>
 
 <script>
+import { COURSES } from "./../../store/modules/courses";
 import CollapseCard from "@/components/CollapseCard";
 import Course from "@/components/courses/Course";
 export default {
@@ -22,6 +28,11 @@ export default {
   computed: {
     courses: function() {
       return this.$store.getters.courses;
+    }
+  },
+  methods: {
+    closeModal: function() {
+      this.$store.dispatch(COURSES);
     }
   }
 };

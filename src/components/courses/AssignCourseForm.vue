@@ -110,7 +110,7 @@
 </template>
 
 <script>
-import { UPDATE_COURSE } from "@/store/modules/courses";
+// import { UPDATE_COURSE } from "@/store/modules/courses";
 import Vue from "vue";
 export default {
   name: "AssignCourseForm",
@@ -197,8 +197,8 @@ export default {
         });
     },
     exit: function() {
-      let id = this.course.id;
-      this.$store.dispatch(UPDATE_COURSE, { id });
+      // let id = this.course.id;
+      // this.$store.dispatch(UPDATE_COURSE, { id });
       this.$emit("close");
     }
   }

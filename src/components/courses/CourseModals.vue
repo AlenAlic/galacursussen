@@ -8,18 +8,14 @@
         Assignments
       </button>
     </div>
-    <modal v-if="showEditModal" @close="showEditModal = false" size="large">
-      <edit-course-form
-        slot="body"
-        :course="course"
-        @close="showEditModal = false"
-      />
+    <modal v-if="showEditModal" @close="closeEditModal" size="large">
+      <edit-course-form slot="body" :course="course" @close="closeEditModal" />
     </modal>
-    <modal v-if="showModal" @close="showModal = false" size="medium">
+    <modal v-if="showModal" @close="closeAssignModal" size="medium">
       <assign-course-form
         slot="body"
         :course-data="course"
-        @close="showModal = false"
+        @close="closeAssignModal"
       />
     </modal>
   </div>
@@ -42,6 +38,16 @@ export default {
       showEditModal: false,
       showModal: false
     };
+  },
+  methods: {
+    closeEditModal: function() {
+      this.showEditModal = false;
+      this.$emit("closeModal");
+    },
+    closeAssignModal: function() {
+      this.showModal = false;
+      this.$emit("closeModal");
+    }
   }
 };
 </script>

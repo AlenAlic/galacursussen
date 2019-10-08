@@ -4,6 +4,7 @@
       <course-modals
         v-if="this.$store.getters.hasOrganizerPrivileges"
         :course="course"
+        @closeModal="closeModal"
       />
       <course-info :course="course" />
       <course-assigned class="mt" :course="course" />
@@ -25,6 +26,11 @@ export default {
     CourseResponses,
     CourseInfo,
     CourseModals
+  },
+  methods: {
+    closeModal: function() {
+      this.$emit("closeModal");
+    }
   }
 };
 </script>

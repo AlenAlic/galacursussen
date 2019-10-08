@@ -235,7 +235,7 @@
 </template>
 
 <script>
-import { UPDATE_COURSE } from "@/store/modules/courses";
+// import { UPDATE_COURSE } from "@/store/modules/courses";
 import Vue from "vue";
 import { DateTime } from "luxon";
 import { Datetime } from "vue-datetime";
@@ -300,7 +300,7 @@ export default {
             `Saved changes for ${this.course.requested_by}.`,
             "success"
           );
-          this.$store.dispatch(UPDATE_COURSE, { id });
+          // this.$store.dispatch(UPDATE_COURSE, { id });
           this.$emit("close");
         })
         .catch(({ errors }) => {

@@ -21,6 +21,10 @@ yarn-error.log*
 *.sw?
 
 # Own
+__pycache__
+/backups
+/venv
+
 .editorconfig
 /public/development.json
 /public/config.json

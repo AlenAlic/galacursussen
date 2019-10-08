@@ -47,39 +47,32 @@
 </template>
 
 <script>
-import Vue from "vue";
+import { USERS } from "@/store/modules/users";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import Modal from "@/components/Modal";
 import EditUserForm from "@/components/admin/EditUserForm";
 export default {
   name: "ViewAllUsers",
   components: { EditUserForm, Modal, LoadingSpinner },
-  props: { course: Object },
   data: function() {
     return {
-      users: [],
-      loading: true,
       errors: [],
       showModal: false,
       modalData: null
     };
   },
+  computed: {
+    users: function() {
+      return this.$store.getters.users;
+    },
+    loading: function() {
+      return this.$store.getters.loadingUsers;
+    }
+  },
   created() {
-    this.getUsers();
+    if (!this.$store.getters.hasUsers) this.$store.dispatch(USERS);
   },
   methods: {
-    getUsers: function() {
-      this.loading = true;
-      return Vue.axios
-        .get("admin/users")
-        .then(res => {
-          this.users = res.data;
-          this.loading = false;
-        })
-        .catch(() => {
-          this.loading = false;
-        });
-    },
     setModal: function(user) {
       this.showModal = true;
       this.modalData = user;

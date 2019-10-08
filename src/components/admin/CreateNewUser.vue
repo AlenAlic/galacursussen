@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import { USERS } from "@/store/modules/users";
 import Vue from "vue";
 import SaveButton from "@/components/SaveButton";
 import { validateEmail } from "@/assets/js/utilities";
@@ -118,6 +119,7 @@ export default {
           this.mucie = false;
           this.account = "";
           this.loading = false;
+          this.$store.dispatch(USERS);
         })
         .catch(({ errors }) => {
           this.loading = false;

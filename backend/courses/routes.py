@@ -142,6 +142,8 @@ def calculate_total_hours(year, u):
 def total_hours(year):
     users = User.query.filter(User.access != ACCESS[TREASURER]).order_by(func.lower(User.first_name)).all()
     users = [{"user": u.full_name(), "hours": calculate_total_hours(year, u)} for u in users]
+    users = [u for u in users if u["user"].active_member
+             or (not u["hours"][INCIE] == "-" or not u["hours"][SALCIE] == "-" or not u["hours"][MUCIE] == "-")]
     return jsonify(users)
 
 

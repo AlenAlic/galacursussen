@@ -1,0 +1,12 @@
+Dear {{ user.first_name }},
+
+
+{{ assignment.user.first_name }} cannot attend {{ assignment.course }} on {{ assignment.course.date.strftime('%A %d %B') }} anymore.
+You might need to check the attendance for the that course.
+
+Please check {{ config.PRETTY_URL }}.
+
+
+Regards,
+
+{{ config.PRETTY_URL }}

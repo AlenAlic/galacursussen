@@ -8,7 +8,7 @@ from backend.courses.forms import AddCourseForm
 from backend.responses import json_error, json_forbidden, no_content
 from sqlalchemy import func
 from datetime import datetime
-from backend.courses.email import send_reminder_email, send_assignments_email
+from backend.courses.email import send_reminder_email, send_assignments_email, send_cancellation_email
 
 
 @bp.route('/', methods=[GET], defaults={'year': None})
@@ -50,6 +50,11 @@ def attend():
         .filter(Course.course_id == form["course_id"], User.user_id == form["user_id"]).first()
     if assignment.user == current_user or current_user.is_admin() or current_user.is_organizer():
         assignment.attendance = Attendance[form["attendance"]]
+        if assignment.attendance == Attendance.no and assignment.assigned:
+            assignment.assigned = False
+            organizers = User.query.filter(User.access == ACCESS[ORGANIZER])
+            for org in organizers:
+                send_cancellation_email(org, assignment)
         assignment.notes = form["notes"]
         db.session.commit()
         if current_user == assignment.user:

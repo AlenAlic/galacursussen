@@ -14,3 +14,9 @@ def send_assignments_email(user, incie_courses, salcie_courses, committee=""):
                                          salcie_courses=salcie_courses, committee=committee),
                html_body=render_template('email/assignments.html', user=user, incie_courses=incie_courses,
                                          salcie_courses=salcie_courses, committee=committee))
+
+
+def send_cancellation_email(user, assignment):
+    send_email(f'Cancellation for {assignment.course}', recipients=[user.email],
+               text_body=render_template('email/cancellation.txt', user=user, assignment=assignment),
+               html_body=render_template('email/cancellation.html', user=user, assignment=assignment))

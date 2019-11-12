@@ -4,10 +4,6 @@ echo "Creating database backup===="
 source scripts/backup
 echo "========================Done"
 
-echo "Stopping Gunicorn supervisor"
-sudo supervisorctl stop galacursussen
-echo "========================Done"
-
 echo "Checking out new version===="
 git pull
 echo "========================Done"
@@ -24,6 +20,6 @@ deactivate
 echo "========================Done"
 
 echo "Restarting Services========="
-sudo supervisorctl start galacursussen
+sudo supervisorctl restart galacursussen
 sudo systemctl reload nginx
 echo "========================Done"

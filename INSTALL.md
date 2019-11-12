@@ -168,13 +168,13 @@ When prompted, paste the database password, and press ENTER.
 
 Next, create the backup directory, and give the right permissions.
 
-    sudo mkdir backups
-    sudo chmod 777 backups
+    mkdir backups
+    chmod 775 backups
 
 Now that there is a folder for the backups to be stored, copy the backup script, and give the copied file the right permissions, so that it can be executed through a cronjob.
 
-    sudo cp scripts/backup scripts/cron_backup
-    sudo chmod 775 scripts/cron_backup
+    cp scripts/backup scripts/cron_backup
+    chmod 774 scripts/cron_backup
 
 Finally, set a cronjob for the weekly backups. Open the crontab:
 
@@ -183,8 +183,7 @@ Finally, set a cronjob for the weekly backups. Open the crontab:
 Append the following to the file:
 
     MAILTO=""
-    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-    
+
     @weekly ~/galacursussen/scripts/cron_backup
 
 The database will now be updated weekly.

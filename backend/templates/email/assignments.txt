@@ -3,9 +3,8 @@ Dear {{ user.first_name }},
 
 Here are the assignments for the upcoming courses.
 
-{% if incie_courses | length > 0 and (committee == "both" or committee == "incie") -%}
+{% if incie_courses | length > 0 and (committee == "mucie" or committee == "incie") -%}
 {%- if acommittee == "mucie" -%}InCie{%- endif -%}
-
 {% for course in incie_courses -%}
 {{ course.date_formatted() }}
 {{ course.requested_by }}
@@ -20,13 +19,11 @@ Course language: {{ course.language.value }}
 Dances: {{ course.dances }}
 Notes: {{ course.notes }}
 
-{%- endfor %}
+{% endfor %}
 {%- endif %}
 
-
-{% if salcie_courses | length > 0 and (committee == "both" or committee == "salcie") -%}
+{% if salcie_courses | length > 0 and (committee == "mucie" or committee == "salcie") -%}
 {%- if acommittee == "mucie" -%}SalCie{%- endif -%}
-
 {% for course in salcie_courses -%}
 {{ course.date_formatted() }}
 {{ course.requested_by }}
@@ -40,10 +37,9 @@ Assigned:
 Course language: {{ course.language.value }}
 Dances: {{ course.dances }}
 Notes: {{ course.notes }}
+{% endfor %}
 
-{%- endfor %}
 {%- endif %}
-
 Regards,
 
 {{ config.PRETTY_URL }}

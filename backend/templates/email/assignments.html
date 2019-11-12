@@ -1,8 +1,8 @@
 <p>Dear {{ user.first_name }},</p>
 <br/>
 <p>Here are the assignments for the upcoming courses.</p>
-{% if incie_courses | length > 0 and (committee == "both" or committee == "incie") -%}
-{%- if acommittee == "mucie" -%}<h4>InCie</h4>{%- endif -%}
+{% if incie_courses | length > 0 and (committee == "mucie" or committee == "incie") -%}
+{%- if committee == "mucie" -%}<h4>InCie</h4>{%- endif -%}
 {% for course in incie_courses -%}
 <div><b>{{ course.date_formatted() }}</b></div>
 <div><i>{{ course.requested_by }}</i></div>
@@ -17,11 +17,11 @@
 <div>Dances: {{ course.dances }}</div>
 <div>Notes: {{ course.notes }}</div>
 <br/>
-{%- endfor %}
+{% endfor %}
 {%- endif %}
 <br/>
-{% if salcie_courses | length > 0 and (committee == "both" or committee == "salcie") -%}
-{%- if acommittee == "mucie" -%}<h4>SalCie</h4>{%- endif -%}
+{% if salcie_courses | length > 0 and (committee == "mucie" or committee == "salcie") -%}
+{%- if committee == "mucie" -%}<h4>SalCie</h4>{%- endif -%}
 {% for course in salcie_courses -%}
 <div><b>{{ course.date_formatted() }}</b></div>
 <div><i>{{ course.requested_by }}</i></div>
@@ -30,7 +30,7 @@
 {% for assignment in course.assignments -%}
 {%- if assignment.assigned -%}
 <div>{{ assignment.user.full_name() }} <i>{{ assignment.role_formatted() }}</i></div>
-{%- endif -%}
+{% endif -%}
 {%- endfor %}
 <div>Course language: {{ course.language.value }}</div>
 <div>Dances: {{ course.dances }}</div>

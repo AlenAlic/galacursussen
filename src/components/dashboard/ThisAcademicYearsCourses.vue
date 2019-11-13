@@ -10,6 +10,7 @@
         :key="course.key"
         :course="course"
         @closeModal="closeModal"
+        class="mb"
       />
     </div>
     <h6 v-else-if="!this.$store.state.courses.loading">
@@ -37,3 +38,9 @@ export default {
   }
 };
 </script>
+
+<style scoped lang="scss">
+.mb {
+  margin-bottom: 3rem;
+}
+</style>

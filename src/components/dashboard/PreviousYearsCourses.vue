@@ -16,6 +16,7 @@
           :key="course.key"
           :course="course"
           @closeModal="closeModal"
+          class="mb"
         />
       </div>
       <h6 v-else-if="year !== '' && !loading">
@@ -86,5 +87,8 @@ export default {
 .select-wrapper + label {
   position: relative;
   left: 0;
+}
+.mb {
+  margin-bottom: 3rem;
 }
 </style>

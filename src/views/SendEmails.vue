@@ -143,6 +143,9 @@ export default {
   computed: {
     courses: function() {
       let courses = this.$store.getters.courses;
+      courses = courses.filter(c => {
+        return !c.cancelled;
+      });
       return courses.filter(c => {
         return (
           DateTime.fromISO(c.date, { zone: "UTC" }) >

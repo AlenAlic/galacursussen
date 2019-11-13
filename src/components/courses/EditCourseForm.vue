@@ -167,7 +167,7 @@
       <button slot="button" class="btn" @click.prevent="patchCourse">
         Save <loading-spinner size="spinner-btn" v-if="loading" />
       </button>
-      <button class="btn cancel" @click.prevent="$emit('close')">
+      <button class="btn cancel" @click.prevent="$emit('cancel')">
         Cancel
       </button>
     </div>
@@ -300,7 +300,6 @@ export default {
             `Saved changes for ${this.course.requested_by}.`,
             "success"
           );
-          // this.$store.dispatch(UPDATE_COURSE, { id });
           this.$emit("close");
         })
         .catch(({ errors }) => {

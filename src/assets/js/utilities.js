@@ -50,6 +50,27 @@ const filterCoursesByCommittee = (c, u) => {
   if (u.salcie) return c.committee_value === "salcie";
 };
 
+const UtilitiesHandler = {
+  install(Vue) {
+    Vue.prototype.$util = {
+      getScreenSize: function() {
+        return window.innerWidth;
+      },
+      // check for screen width
+      isScreenLargeEnough: function() {
+        return this.getScreenSize() > 1200;
+      },
+      splitEmail: function(email) {
+        let at = email.lastIndexOf("@");
+        if (at < 0) return email;
+        return email.substring(0, at) + "\u200B" + email.substring(at);
+      }
+    };
+  }
+};
+
+export default UtilitiesHandler;
+
 export {
   validateEmail,
   strongRegex,
@@ -57,5 +78,6 @@ export {
   weakRegex,
   currencyFormat,
   availableYears,
-  filterCoursesByCommittee
+  filterCoursesByCommittee,
+  UtilitiesHandler
 };

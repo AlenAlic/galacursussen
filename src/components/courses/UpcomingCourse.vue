@@ -14,6 +14,11 @@
         :course="course"
         :assignment="assignment"
       />
+      <course-cancel
+        v-if="this.$store.getters.hasOrganizerPrivileges"
+        :course="course"
+        @closeModal="closeModal"
+      />
     </div>
   </div>
 </template>
@@ -25,10 +30,12 @@ import CourseInfo from "@/components/courses/CourseInfo";
 import CourseResponsesSingle from "@/components/courses/CourseResponsesSingle";
 import CourseAssigned from "@/components/courses/CourseAssigned";
 import CourseRespondButtons from "@/components/courses/CourseRespondButtons";
+import CourseCancel from "@/components/courses/CourseCancel";
 export default {
   name: "UpcomingCourse",
   props: { course: Object },
   components: {
+    CourseCancel,
     CourseRespondButtons,
     CourseAssigned,
     CourseResponsesSingle,

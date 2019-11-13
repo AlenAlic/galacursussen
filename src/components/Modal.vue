@@ -57,17 +57,16 @@ export default {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  display: table;
   transition: opacity $transition-time ease;
+  overflow-y: auto;
 }
 .modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
+  margin: 96px 0;
 }
 .modal-container {
   width: 90%;
   max-width: 300px;
-  margin: 45px auto;
+  margin: 0 auto;
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 2px;

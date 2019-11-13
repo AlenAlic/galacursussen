@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{ 'is-cancelled': course.cancelled }">
     <h5>
       {{ course.requested_by
       }}<span v-if="this.$store.getters.showCommitteeTitle">
@@ -49,5 +49,8 @@ export default {
   margin-bottom: 1.5rem;
   border-bottom: 1px solid grey;
   padding-bottom: 0.75rem;
+}
+.is-cancelled {
+  text-decoration: line-through;
 }
 </style>

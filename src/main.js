@@ -11,6 +11,7 @@ import Vue2TouchEvents from "vue2-touch-events";
 import Datetime from "vue-datetime";
 import "vue-datetime/dist/vue-datetime.css";
 import Notify from "vue2-notify";
+import UtilitiesHandler from "./assets/js/utilities";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faMusic,
@@ -65,6 +66,7 @@ Vue.use(AuthHandler);
 Vue.use(materialize);
 Vue.use(Vue2TouchEvents, { swipeTolerance: 30 });
 Vue.use(Datetime);
+Vue.use(UtilitiesHandler);
 Vue.use(Notify, {
   itemClass: "notification",
   permanent: false,

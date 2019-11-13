@@ -8,10 +8,15 @@
         Assignments
       </button>
     </div>
-    <modal v-if="showEditModal" @close="closeEditModal" size="large">
-      <edit-course-form slot="body" :course="course" @close="closeEditModal" />
+    <modal v-if="showEditModal" @close="showEditModal = false" size="large">
+      <edit-course-form
+        slot="body"
+        :course="course"
+        @close="closeEditModal"
+        @cancel="showEditModal = false"
+      />
     </modal>
-    <modal v-if="showModal" @close="closeAssignModal" size="medium">
+    <modal v-if="showModal" @close="showModal = false" size="medium">
       <assign-course-form
         slot="body"
         :course-data="course"

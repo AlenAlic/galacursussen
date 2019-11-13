@@ -8,7 +8,7 @@
           @click.prevent="showSideNav"
           ><i class="material-icons">menu</i></a
         >
-        <ul class="left hide-on-med-and-down">
+        <ul class="left hide-navbar">
           <nav-link
             navigate-to="/dashboard"
             text="Dashboard"
@@ -33,7 +33,7 @@
             icon="verified_user"
           />
         </ul>
-        <ul class="right hide-on-med-and-down">
+        <ul class="right hide-navbar">
           <nav-link
             v-if="this.$store.getters.committeeMember"
             navigate-to="/hours"

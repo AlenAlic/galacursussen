@@ -31,6 +31,16 @@ def updated(course_id):
         return OK
 
 
+@bp.route('/cancel/<int:course_id>', methods=[PATCH])
+@login_required
+def cancel(course_id):
+    data = json.loads(request.data)
+    course = Course.query.filter(Course.course_id == course_id).first()
+    course.cancelled = data["cancel"]
+    db.session.commit()
+    return OK
+
+
 @bp.route('/new', methods=[POST])
 @login_required
 def new():
@@ -149,7 +159,8 @@ def total_hours(year):
 
 
 def unresponsive_users():
-    assignment = Assignment.query.join(Course).filter(Course.date > datetime.now(), Assignment.attendance.is_(None)) \
+    assignment = Assignment.query.join(Course).filter(Course.date > datetime.now(), Course.cancelled.isnot(True),
+                                                      Assignment.attendance.is_(None)) \
         .group_by(Assignment.user_id).all()
     return [a.user for a in assignment]
 
@@ -173,11 +184,12 @@ def notification():
 @bp.route('/assignments', methods=[POST])
 @login_required
 def assignments():
-    all_courses = Course.query.filter(Course.date > datetime.now()).order_by(Course.committee, Course.date).all()
+    all_courses = Course.query.filter(Course.date > datetime.now(), Course.cancelled.isnot(True)) \
+        .order_by(Course.committee, Course.date).all()
     if len(all_courses) > 0:
         incie_courses = [c for c in all_courses if c.committee == Committee.incie]
         salcie_courses = [c for c in all_courses if c.committee == Committee.salcie]
-        users = User.query.filter(User.is_active.is_(True)).all()
+        users = User.query.filter(User.is_active.is_(True), User.active_member.is_(True)).all()
         incie = [u for u in users if u.incie]
         salcie = [u for u in users if u.salcie]
         both = [u for u in users if (u.incie and u.salcie) or u.mucie]
@@ -186,14 +198,16 @@ def assignments():
             if u not in sent:
                 sent.append(u)
                 send_assignments_email(u, incie_courses, salcie_courses, "mucie")
-        for u in incie:
-            if u not in sent:
-                sent.append(u)
-                send_assignments_email(u, incie_courses, [], "incie")
-        for u in salcie:
-            if u not in sent:
-                sent.append(u)
-                send_assignments_email(u, [], salcie_courses, "salcie")
-        return ""
+        if len(incie_courses) > 0:
+            for u in incie:
+                if u not in sent:
+                    sent.append(u)
+                    send_assignments_email(u, incie_courses, [], "incie")
+        if len(salcie_courses) > 0:
+            for u in salcie:
+                if u not in sent:
+                    sent.append(u)
+                    send_assignments_email(u, [], salcie_courses, "salcie")
+        return OK
     else:
         return no_content

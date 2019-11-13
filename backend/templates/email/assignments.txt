@@ -13,8 +13,8 @@ Assigned:
 {% for assignment in course.assignments -%}
 {%- if assignment.assigned -%}
 {{ assignment.user.full_name() }} {{ assignment.role_formatted() }}
-{%- endif -%}
-{%- endfor %}
+{% endif -%}
+{%- endfor -%}
 Course language: {{ course.language.value }}
 Dances: {{ course.dances }}
 Notes: {{ course.notes }}
@@ -32,8 +32,8 @@ Assigned:
 {% for assignment in course.assignments -%}
 {%- if assignment.assigned -%}
 {{ assignment.user.full_name() }} {{ assignment.role_formatted() }}
-{%- endif -%}
-{%- endfor %}
+{% endif -%}
+{%- endfor -%}
 Course language: {{ course.language.value }}
 Dances: {{ course.dances }}
 Notes: {{ course.notes }}

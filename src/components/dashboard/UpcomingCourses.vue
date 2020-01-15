@@ -1,11 +1,14 @@
 <template>
-  <div class="not-responded-container">
+  <div class="not-responded-container" v-if="courses.length > 0">
     <div class="card-container" v-for="course in courses" :key="course.key">
       <div class="card">
         <upcoming-course class="card-content" :course="course" />
       </div>
     </div>
   </div>
+  <h4 v-else-if="!this.$store.state.courses.loading">
+    There are no upcoming courses.
+  </h4>
 </template>
 
 <script>

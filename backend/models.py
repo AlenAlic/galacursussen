@@ -265,7 +265,7 @@ class Course(db.Model, TrackModifications):
             offset = 0 if datetime.now().month >= FIRST_MONTH else -1
             start_date = datetime(datetime.now().year + offset, FIRST_MONTH, 1)
             end_date = datetime(datetime.now().year + offset + 1, FIRST_MONTH, 1)
-        return Course.query.filter(Course.date >= start_date, Course.date < end_date)
+        return Course.query.filter(Course.date >= start_date, Course.date < end_date).order_by(Course.date)
 
     @staticmethod
     def parse_dates(data):

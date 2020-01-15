@@ -4,17 +4,18 @@
 {
   z-index: 10001!important;
   &.notify-top-full {
-      width: 100%;
-      display: flex;
-      justify-content: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
     pointer-events: none;
-    margin-top: 69px;
+    margin-top: 4px;
   }
   div {
     pointer-events: auto;
 }
 }
 .notification {
+  padding: 16px 16px !important;
   .alert-icon {
     margin-right: 0.25rem;
   }

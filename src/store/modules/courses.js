@@ -25,7 +25,7 @@ export { ADD_COURSE, COURSES, UPDATE_COURSE };
 export default {
   state: {
     loading: false,
-    courses: undefined
+    courses: []
   },
   mutations: {
     [SET_COURSES](state, data) {
@@ -41,8 +41,11 @@ export default {
       state.loading = false;
     },
 
-    [SET_UPDATE_COURSE](state, data) {
-      Vue.set(state.courses, data.id, data);
+    [SET_UPDATE_COURSE](state, course) {
+      let courses = [...state.courses];
+      let i = courses.findIndex(c => c.id === course.id);
+      courses[i] = course;
+      state.courses = courses;
     },
     [UPDATE_COURSE_REQUEST]() {},
     [UPDATE_COURSE_SUCCESS]() {},
@@ -111,7 +114,7 @@ export default {
   },
   getters: {
     courses: state => {
-      return state.courses ? Object.values(state.courses) : [];
+      return state.courses;
     },
     hasCourses: (state, getters) => {
       return getters.courses.length > 0;

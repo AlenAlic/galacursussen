@@ -75,11 +75,7 @@
         </tbody>
       </table>
       <modal v-if="showModal" @close="showModal = false" size="medium">
-        <edit-user-form
-          slot="body"
-          :user-data="modalData"
-          @close="showModal = false"
-        />
+        <edit-user-form slot="body" :user-data="modalData" @close="showModal = false" />
       </modal>
     </div>
   </div>

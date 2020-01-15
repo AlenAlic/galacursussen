@@ -2,18 +2,11 @@
   <div class="navbar-fixed">
     <nav>
       <div class="nav-wrapper container">
-        <a
-          href="javascript:void(0);"
-          class="left sidenav-trigger"
-          @click.prevent="showSideNav"
+        <a href="javascript:void(0);" class="left sidenav-trigger" @click.prevent="showSideNav"
           ><i class="material-icons">menu</i></a
         >
         <ul class="left hide-navbar">
-          <nav-link
-            navigate-to="/dashboard"
-            text="Dashboard"
-            icon="dashboard"
-          />
+          <nav-link navigate-to="/dashboard" text="Dashboard" icon="dashboard" />
           <nav-link
             v-if="this.$store.getters.committeeMember"
             navigate-to="/past_courses"
@@ -42,9 +35,7 @@
           />
           <nav-link navigate-to="/profile" text="Profile" icon="person" />
           <li>
-            <a
-              @click.prevent="logout"
-              class="waves-effect waves-light btn white-text"
+            <a @click.prevent="logout" class="waves-effect waves-light btn white-text"
               >Log out <i class="material-icons right">exit_to_app</i></a
             >
           </li>
@@ -63,21 +54,13 @@
         v-touch:moving="draggingSideNavClose"
         v-touch:end="stopDraggingSideNav"
         v-touch:swipe.left="hideSideNav"
-        :style="
-          this.dragging
-            ? { transform: `translateX(${this.position - 100}%)` }
-            : null
-        "
+        :style="this.dragging ? { transform: `translateX(${this.position - 100}%)` } : null"
       >
         <li>
           <div class="user-view nav-img-background"></div>
         </li>
         <li @click="hideSideNav">
-          <nav-link
-            navigate-to="/dashboard"
-            text="Dashboard"
-            icon="dashboard"
-          />
+          <nav-link navigate-to="/dashboard" text="Dashboard" icon="dashboard" />
           <nav-link
             v-if="this.$store.getters.committeeMember"
             navigate-to="/past_courses"
@@ -109,9 +92,7 @@
         </li>
         <li>
           <div class="logout">
-            <a
-              @click.prevent="logout"
-              class="waves-effect waves-light btn white-text"
+            <a @click.prevent="logout" class="waves-effect waves-light btn white-text"
               >Log out <i class="material-icons right">exit_to_app</i></a
             >
           </div>
@@ -137,11 +118,7 @@
         v-touch:moving="draggingSideNavClose"
         v-touch:end="stopDraggingSideNav"
         v-touch:swipe.left="hideSideNav"
-        :style="
-          this.dragging
-            ? { opacity: this.position / 100, display: 'block' }
-            : null
-        "
+        :style="this.dragging ? { opacity: this.position / 100, display: 'block' } : null"
       ></div>
     </transition>
   </div>
@@ -191,24 +168,18 @@ export default {
     setDraggingStartPos: function(event) {
       if (event.type === "touchmove") {
         this.dragging = true;
-        this.startPosition = this.calculateDraggingPos(
-          event.targetTouches[0].clientX
-        );
+        this.startPosition = this.calculateDraggingPos(event.targetTouches[0].clientX);
       }
     },
     draggingSideNavOpen: function(event) {
       if (event.type === "touchmove") {
-        this.position = this.calculateDraggingPos(
-          event.targetTouches[0].clientX
-        );
+        this.position = this.calculateDraggingPos(event.targetTouches[0].clientX);
       }
     },
     draggingSideNavClose: function(event) {
       if (event.type === "touchmove") {
         let x =
-          this.calculateDraggingPos(event.targetTouches[0].clientX) +
-          100 -
-          this.startPosition;
+          this.calculateDraggingPos(event.targetTouches[0].clientX) + 100 - this.startPosition;
         x = x > 100 ? 100 : x;
         this.position = x;
       }

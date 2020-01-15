@@ -33,9 +33,7 @@
         </form>
       </div>
     </div>
-    <a href="javascript:void(0);" @click.prevent="resetPassword"
-      >Forgot password?</a
-    >
+    <a href="javascript:void(0);" @click.prevent="resetPassword">Forgot password?</a>
   </div>
 </template>
 
@@ -64,11 +62,7 @@ export default {
       this.error = undefined;
       this.loading = true;
       this.$auth
-        .signInWithUsernameAndPassword(
-          this.email,
-          this.password,
-          this.rememberMe
-        )
+        .signInWithUsernameAndPassword(this.email, this.password, this.rememberMe)
         .then(() => {
           this.$router.push({
             name: "dashboard"

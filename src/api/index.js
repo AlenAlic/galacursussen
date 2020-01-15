@@ -15,10 +15,7 @@ const responseInterceptor = axiosInstance.interceptors.response.use(
   error => {
     if (error.response) {
       // Got a response from the api with an error status
-      if (
-        error.response.status === 401 &&
-        !window.location.pathname.startsWith("/login")
-      ) {
+      if (error.response.status === 401 && !window.location.pathname.startsWith("/login")) {
         // Not signed in. Log-out and redirect to sign in page.
         store.dispatch(UNAUTHORIZED).then(() =>
           router.push({
@@ -61,9 +58,7 @@ const requestInterceptor = axiosInstance.interceptors.request.use(
   request => {
     // Assign the refreshed token on every request.
     let token = window.localStorage.getItem("token");
-    if (token)
-      request.headers["Authorization"] =
-        "Bearer " + window.localStorage.getItem("token");
+    if (token) request.headers["Authorization"] = "Bearer " + window.localStorage.getItem("token");
     return Promise.resolve(request);
   },
   error => {

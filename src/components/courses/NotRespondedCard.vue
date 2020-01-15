@@ -40,16 +40,8 @@
           <div class="can">Can you attend this course?</div>
           <div>
             <div class="input-field">
-              <font-awesome-icon
-                class="prefix"
-                :icon="['far', 'clipboard']"
-              ></font-awesome-icon>
-              <input
-                v-model="notes"
-                type="text"
-                id="notes"
-                :disabled="loading"
-              />
+              <font-awesome-icon class="prefix" :icon="['far', 'clipboard']"></font-awesome-icon>
+              <input v-model="notes" type="text" id="notes" :disabled="loading" />
               <label for="notes">Notes</label>
             </div>
             <div v-if="loading" class="buttons-container">
@@ -103,10 +95,7 @@ export default {
           notes: this.notes
         })
         .then(() => {
-          this.$notify(
-            `Attendance set for ${this.course.requested_by}.`,
-            "success"
-          );
+          this.$notify(`Attendance set for ${this.course.requested_by}.`, "success");
           this.hide = true;
           this.height = 0;
           let id = this.course.id;
@@ -128,8 +117,7 @@ export default {
   display: flex;
   justify-content: center;
   width: 100%;
-  transition: opacity $transition-time ease-in-out,
-    height $transition-time ease-in-out;
+  transition: opacity $transition-time ease-in-out, height $transition-time ease-in-out;
   &.fade {
     opacity: 0;
   }

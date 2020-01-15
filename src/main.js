@@ -50,14 +50,7 @@ library.add(
   faCheck,
   faTimes
 );
-library.add(
-  faBuilding,
-  faCalendarAlt,
-  faClock,
-  faClipboard,
-  faCompass,
-  faStickyNote
-);
+library.add(faBuilding, faCalendarAlt, faClock, faClipboard, faCompass, faStickyNote);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 Vue.config.productionTip = false;

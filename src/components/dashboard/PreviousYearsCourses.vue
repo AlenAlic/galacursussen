@@ -4,9 +4,7 @@
       <div class="left-align">
         <select v-model="year" id="year">
           <option disabled value="">Choose your option</option>
-          <option v-for="year in years" :key="year" :value="year"
-            >{{ year }}
-          </option>
+          <option v-for="year in years" :key="year" :value="year">{{ year }} </option>
         </select>
         <label for="year">Year</label>
       </div>
@@ -46,9 +44,7 @@ export default {
       return availableYears();
     },
     title: function() {
-      let academicYear = this.year
-        ? `${this.year} - ${Number(this.year) + 1}`
-        : "...";
+      let academicYear = this.year ? `${this.year} - ${Number(this.year) + 1}` : "...";
       return `Courses from the academic year   ${academicYear}`;
     }
   },

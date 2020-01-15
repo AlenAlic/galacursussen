@@ -32,8 +32,7 @@ export default {
         });
         courses = courses.filter(c => {
           return c.assignments.some(
-            a =>
-              a.user_id === this.$store.getters.currentUser.id && !a.attendance
+            a => a.user_id === this.$store.getters.currentUser.id && !a.attendance
           );
         });
       }

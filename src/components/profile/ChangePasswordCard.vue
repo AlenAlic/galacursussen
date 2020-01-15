@@ -7,23 +7,17 @@
         <div class="input-field">
           <font-awesome-icon class="prefix" icon="key" />
           <input v-model="current" type="password" id="current" />
-          <label for="current" :class="{ active: current }"
-            >Current password</label
-          >
+          <label for="current" :class="{ active: current }">Current password</label>
         </div>
         <div class="input-field">
           <font-awesome-icon class="prefix" icon="key" />
           <input v-model="password1" type="password" id="password1" />
-          <label for="password1" :class="{ active: password1 }"
-            >New password</label
-          >
+          <label for="password1" :class="{ active: password1 }">New password</label>
         </div>
         <div class="input-field">
           <font-awesome-icon class="prefix" icon="key" />
           <input v-model="password2" type="password" id="password2" />
-          <label for="password2" :class="{ active: password2 }"
-            >Repeat new password</label
-          >
+          <label for="password2" :class="{ active: password2 }">Repeat new password</label>
         </div>
         <div>Password strength</div>
         <div class="progress">
@@ -82,9 +76,7 @@ export default {
       return "grey";
     },
     filled: function() {
-      return (
-        this.current !== "" && this.password1 !== "" && this.passwordsEqual
-      );
+      return this.current !== "" && this.password1 !== "" && this.passwordsEqual;
     }
   },
   methods: {

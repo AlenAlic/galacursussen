@@ -3,36 +3,19 @@
     <div class="left-align select">
       <select v-model="year" id="year">
         <option disabled value="">Choose your option</option>
-        <option v-for="year in years" :key="year" :value="year"
-          >{{ year }}
-        </option>
+        <option v-for="year in years" :key="year" :value="year">{{ year }} </option>
       </select>
       <label for="year">Year</label>
     </div>
     <div class="hours-container">
       <div>
-        <personal-hours-card
-          v-if="incie"
-          committee="InCie"
-          :hours="incie"
-          :loading="loading"
-        />
+        <personal-hours-card v-if="incie" committee="InCie" :hours="incie" :loading="loading" />
       </div>
       <div>
-        <personal-hours-card
-          v-if="salcie"
-          committee="Salcie"
-          :hours="salcie"
-          :loading="loading"
-        />
+        <personal-hours-card v-if="salcie" committee="Salcie" :hours="salcie" :loading="loading" />
       </div>
       <div>
-        <personal-hours-card
-          v-if="mucie"
-          committee="Mucie"
-          :hours="mucie"
-          :loading="loading"
-        />
+        <personal-hours-card v-if="mucie" committee="Mucie" :hours="mucie" :loading="loading" />
       </div>
     </div>
     <div class="card">
@@ -81,25 +64,13 @@ export default {
   },
   computed: {
     incie: function() {
-      return this.hours
-        ? this.hours.incie
-          ? this.hours.incie
-          : undefined
-        : undefined;
+      return this.hours ? (this.hours.incie ? this.hours.incie : undefined) : undefined;
     },
     salcie: function() {
-      return this.hours
-        ? this.hours.salcie
-          ? this.hours.salcie
-          : undefined
-        : undefined;
+      return this.hours ? (this.hours.salcie ? this.hours.salcie : undefined) : undefined;
     },
     mucie: function() {
-      return this.hours
-        ? this.hours.mucie
-          ? this.hours.mucie
-          : undefined
-        : undefined;
+      return this.hours ? (this.hours.mucie ? this.hours.mucie : undefined) : undefined;
     },
     years: function() {
       return availableYears();

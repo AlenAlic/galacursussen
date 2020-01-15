@@ -12,9 +12,7 @@
         <div class="input-field">
           <font-awesome-icon class="prefix" icon="key" />
           <input v-model="password2" type="password" id="password2" />
-          <label for="password2" :class="{ active: password2 }"
-            >Repeat password</label
-          >
+          <label for="password2" :class="{ active: password2 }">Repeat password</label>
         </div>
         <div class="strength">
           <div>Password strength</div>
@@ -74,9 +72,7 @@ export default {
       return "grey";
     },
     filled: function() {
-      return (
-        this.current !== "" && this.password1 !== "" && this.passwordsEqual
-      );
+      return this.current !== "" && this.password1 !== "" && this.passwordsEqual;
     }
   },
   methods: {

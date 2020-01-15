@@ -1,10 +1,6 @@
 <template>
   <div class="not-responded-container">
-    <div
-      class="card-container"
-      v-for="course in notPaidCourses"
-      :key="course.key"
-    >
+    <div class="card-container" v-for="course in notPaidCourses" :key="course.key">
       <div class="card">
         <treasurer-course class="card-content" :course="course" />
       </div>
@@ -27,10 +23,7 @@ export default {
     courses: function() {
       let courses = this.$store.getters.courses;
       return courses.filter(c => {
-        return (
-          DateTime.fromISO(c.date, { zone: "UTC" }) <
-          DateTime.local().setZone("UTC")
-        );
+        return DateTime.fromISO(c.date, { zone: "UTC" }) < DateTime.local().setZone("UTC");
       });
     },
     paidCourses: function() {

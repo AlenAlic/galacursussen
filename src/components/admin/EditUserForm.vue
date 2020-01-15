@@ -4,16 +4,12 @@
     <div class="input-field">
       <font-awesome-icon class="prefix" icon="user-tie" />
       <input v-model="user.first_name" type="text" id="first_name" />
-      <label for="first_name" :class="{ active: user.first_name }"
-        >First name</label
-      >
+      <label for="first_name" :class="{ active: user.first_name }">First name</label>
     </div>
     <div class="input-field">
       <font-awesome-icon class="prefix" icon="signature" />
       <input v-model="user.last_name" type="text" id="last_name" />
-      <label for="last_name" :class="{ active: user.last_name }"
-        >Last name</label
-      >
+      <label for="last_name" :class="{ active: user.last_name }">Last name</label>
     </div>
     <div class="input-field">
       <font-awesome-icon class="prefix" icon="at" />
@@ -66,12 +62,7 @@
       </label>
     </div>
     <div class="buttons-container">
-      <save-button
-        @click.native="updateProfile"
-        :loading="loading"
-        :active="filled"
-        text="Save"
-      />
+      <save-button @click.native="updateProfile" :loading="loading" :active="filled" text="Save" />
       <button class="btn cancel" @click="exit">Cancel</button>
     </div>
   </form>
@@ -98,9 +89,7 @@ export default {
     },
     filled: function() {
       return (
-        validateEmail(this.user.email) &&
-        this.user.first_name !== "" &&
-        this.user.last_name !== ""
+        validateEmail(this.user.email) && this.user.first_name !== "" && this.user.last_name !== ""
       );
     }
   },
@@ -120,10 +109,7 @@ export default {
           access: this.user.access
         })
         .then(() => {
-          this.$notify(
-            `Changes to profile of ${this.user.first_name} saved.`,
-            "success"
-          );
+          this.$notify(`Changes to profile of ${this.user.first_name} saved.`, "success");
           this.loading = false;
           this.$emit("close");
         })

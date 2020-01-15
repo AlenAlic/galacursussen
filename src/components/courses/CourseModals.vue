@@ -17,11 +17,7 @@
       />
     </modal>
     <modal v-if="showModal" @close="showModal = false" size="medium">
-      <assign-course-form
-        slot="body"
-        :course-data="course"
-        @close="closeAssignModal"
-      />
+      <assign-course-form slot="body" :course-data="course" @close="closeAssignModal" />
     </modal>
   </div>
 </template>

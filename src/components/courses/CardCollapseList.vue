@@ -11,11 +11,7 @@
         keyboard_arrow_down</i
       >
     </div>
-    <div
-      class="trans-collapsible"
-      :style="{ height: `${this.height}px` }"
-      ref="form"
-    >
+    <div class="trans-collapsible" :style="{ height: `${this.height}px` }" ref="form">
       <slot></slot>
     </div>
   </div>

@@ -6,16 +6,12 @@
         <div class="input-field">
           <font-awesome-icon class="prefix" icon="user-tie" />
           <input v-model="first_name" type="text" id="first_name" />
-          <label for="first_name" :class="{ active: first_name }"
-            >First name</label
-          >
+          <label for="first_name" :class="{ active: first_name }">First name</label>
         </div>
         <div class="input-field">
           <font-awesome-icon class="prefix" icon="signature" />
           <input v-model="last_name" type="text" id="last_name" />
-          <label for="last_name" :class="{ active: last_name }"
-            >Last name</label
-          >
+          <label for="last_name" :class="{ active: last_name }">Last name</label>
         </div>
         <div class="account-container">
           <label>
@@ -50,12 +46,7 @@
             <span>MuCie</span>
           </label>
         </p>
-        <save-button
-          @click.native="createUser"
-          :loading="loading"
-          :active="filled"
-          text="Add"
-        />
+        <save-button @click.native="createUser" :loading="loading" :active="filled" text="Add" />
       </form>
     </div>
   </div>
@@ -85,12 +76,7 @@ export default {
   },
   computed: {
     filled: function() {
-      return (
-        validateEmail(this.email) &&
-        this.first_name &&
-        this.last_name &&
-        this.account !== ""
-      );
+      return validateEmail(this.email) && this.first_name && this.last_name && this.account !== "";
     }
   },
   methods: {

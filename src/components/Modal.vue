@@ -17,11 +17,7 @@
           </div>
           <div class="modal-footer right-align">
             <slot name="button"></slot>
-            <button
-              v-if="closeBtn"
-              class="modal-close-btn btn cancel"
-              @click="$emit('close')"
-            >
+            <button v-if="closeBtn" class="modal-close-btn btn cancel" @click="$emit('close')">
               {{ closeBtn }}
             </button>
           </div>

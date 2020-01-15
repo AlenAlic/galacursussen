@@ -1,18 +1,10 @@
 <template>
   <div>
     <div class="cancel-button-container">
-      <button
-        v-if="!course.cancelled"
-        class="btn btn-small danger"
-        @click="showCancelModal = true"
-      >
+      <button v-if="!course.cancelled" class="btn btn-small danger" @click="showCancelModal = true">
         Cancel
       </button>
-      <button
-        v-else
-        class="btn btn-small primary"
-        @click="showCancelModal = true"
-      >
+      <button v-else class="btn btn-small primary" @click="showCancelModal = true">
         Reinstate
       </button>
     </div>
@@ -65,10 +57,7 @@ export default {
           cancel: !this.course.cancelled
         })
         .then(() => {
-          this.$notify(
-            `Saved changes for ${this.course.requested_by}.`,
-            "success"
-          );
+          this.$notify(`Saved changes for ${this.course.requested_by}.`, "success");
           this.closeCancelModal();
         })
         .catch(({ errors }) => {

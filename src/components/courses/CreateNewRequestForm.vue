@@ -1,23 +1,14 @@
 <template>
   <form v-on:submit.prevent>
     <div class="input-field">
-      <font-awesome-icon
-        class="prefix"
-        :icon="['far', 'building']"
-      ></font-awesome-icon>
+      <font-awesome-icon class="prefix" :icon="['far', 'building']"></font-awesome-icon>
       <input v-model="requested_by" type="text" id="requested_by" />
       <label for="requested_by">Requested by</label>
     </div>
     <div class="row no-padd no-marg-bottom">
       <div class="col s12 m6">
-        <div
-          class="input-field datetime-fix"
-          :class="{ incorrect: this.errors.date }"
-        >
-          <font-awesome-icon
-            class="prefix"
-            :icon="['far', 'calendar-alt']"
-          ></font-awesome-icon>
+        <div class="input-field datetime-fix" :class="{ incorrect: this.errors.date }">
+          <font-awesome-icon class="prefix" :icon="['far', 'calendar-alt']"></font-awesome-icon>
           <datetime
             input-id="date"
             class="input-field"
@@ -43,10 +34,7 @@
       </div>
       <div class="col s12 m6">
         <div class="input-field">
-          <font-awesome-icon
-            class="prefix"
-            :icon="['far', 'clock']"
-          ></font-awesome-icon>
+          <font-awesome-icon class="prefix" :icon="['far', 'clock']"></font-awesome-icon>
           <datetime
             input-id="duration"
             class="input-field"
@@ -64,18 +52,12 @@
       </div>
     </div>
     <div class="input-field">
-      <font-awesome-icon
-        class="prefix"
-        :icon="['far', 'compass']"
-      ></font-awesome-icon>
+      <font-awesome-icon class="prefix" :icon="['far', 'compass']"></font-awesome-icon>
       <input v-model="location" type="text" id="location" />
       <label for="location">Location</label>
     </div>
     <div class="input-field">
-      <font-awesome-icon
-        class="prefix"
-        :icon="['far', 'clipboard']"
-      ></font-awesome-icon>
+      <font-awesome-icon class="prefix" :icon="['far', 'clipboard']"></font-awesome-icon>
       <input v-model="dances" type="text" id="dances" />
       <label for="dances">Dances</label>
     </div>
@@ -90,41 +72,23 @@
         <span>English</span>
       </label>
       <label>
-        <input
-          v-model="language"
-          value="unknown"
-          name="language"
-          type="radio"
-        />
+        <input v-model="language" value="unknown" name="language" type="radio" />
         <span>Unknown</span>
       </label>
     </div>
     <div class="radios">
       <div class="radio-title">What committee is the course for?</div>
       <label>
-        <input
-          v-model="committee"
-          value="incie"
-          name="committee"
-          type="radio"
-        />
+        <input v-model="committee" value="incie" name="committee" type="radio" />
         <span>InCie</span>
       </label>
       <label>
-        <input
-          v-model="committee"
-          value="salcie"
-          name="committee"
-          type="radio"
-        />
+        <input v-model="committee" value="salcie" name="committee" type="radio" />
         <span>SalCie</span>
       </label>
     </div>
     <div class="input-field">
-      <font-awesome-icon
-        class="prefix"
-        :icon="['far', 'clipboard']"
-      ></font-awesome-icon>
+      <font-awesome-icon class="prefix" :icon="['far', 'clipboard']"></font-awesome-icon>
       <input v-model="notes" type="text" id="notes" />
       <label for="notes">Notes</label>
     </div>
@@ -162,11 +126,7 @@ export default {
   },
   computed: {
     filled: function() {
-      return (
-        this.requested_by !== "" &&
-        this.committee !== "" &&
-        this.language !== ""
-      );
+      return this.requested_by !== "" && this.committee !== "" && this.language !== "";
     }
   },
   methods: {

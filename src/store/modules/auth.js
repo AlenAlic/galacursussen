@@ -257,20 +257,13 @@ export default {
       return getters.currentUser.access_level;
     },
     committeeMember: (state, getters) => {
-      return (
-        getters.currentUser.incie ||
-        getters.currentUser.salcie ||
-        getters.currentUser.mucie
-      );
+      return getters.currentUser.incie || getters.currentUser.salcie || getters.currentUser.mucie;
     },
     isInCieAndSalCieMember: (state, getters) => {
       return getters.currentUser.incie && getters.currentUser.salcie;
     },
     showCommitteeTitle: (state, getters) => {
-      return (
-        (getters.currentUser.incie && getters.currentUser.salcie) ||
-        getters.currentUser.mucie
-      );
+      return (getters.currentUser.incie && getters.currentUser.salcie) || getters.currentUser.mucie;
     }
   }
 };

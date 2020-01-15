@@ -7,8 +7,8 @@
           <loading-spinner v-if="loadingAvailability" size="small" />
           <div v-else-if="availabilityUsers.length > 0">
             <p>
-              Send a reminder email to the users (listed below) that have not
-              yet indicated their availability for the upcoming courses.
+              Send a reminder email to the users (listed below) that have not yet indicated their
+              availability for the upcoming courses.
             </p>
             <save-button
               class="card-button"
@@ -22,8 +22,7 @@
             </p>
           </div>
           <p v-else>
-            Everyone has filled in their availability for the upcoming courses
-            :)
+            Everyone has filled in their availability for the upcoming courses :)
           </p>
         </div>
       </div>
@@ -35,8 +34,7 @@
           <loading-spinner v-if="loadingAssignments" size="small" />
           <div v-else-if="courses.length > 0">
             <p>
-              Send an email to everyone with the current assignment for the
-              upcoming courses.
+              Send an email to everyone with the current assignment for the upcoming courses.
             </p>
             <save-button
               class="card-button center-align"
@@ -47,11 +45,7 @@
             />
             <div class="left-align">
               <h5 class="title">InCie</h5>
-              <div
-                v-for="course in incie"
-                :key="course.key"
-                class="assigned-course"
-              >
+              <div v-for="course in incie" :key="course.key" class="assigned-course">
                 <div>
                   <b>{{ course.date_formatted }}</b>
                 </div>
@@ -60,25 +54,16 @@
                 </div>
                 <div>Location: {{ course.location }}</div>
                 <div>Assigned:</div>
-                <div
-                  v-for="assignment in getAssignedUsers(course)"
-                  :key="assignment.id"
-                >
+                <div v-for="assignment in getAssignedUsers(course)" :key="assignment.id">
                   {{ assignment.name }}
-                  <i class="pl" v-show="assignment.role">{{
-                    assignment.role
-                  }}</i>
+                  <i class="pl" v-show="assignment.role">{{ assignment.role }}</i>
                 </div>
                 <div>Course language: {{ course.language }}</div>
                 <div>Dances: {{ course.dances }}</div>
                 <div>Notes: {{ course.notes }}</div>
               </div>
               <h5 class="title">SalCie</h5>
-              <div
-                v-for="course in salcie"
-                :key="course.key"
-                class="assigned-course"
-              >
+              <div v-for="course in salcie" :key="course.key" class="assigned-course">
                 <div>
                   <b>{{ course.date_formatted }}</b>
                 </div>
@@ -87,14 +72,9 @@
                 </div>
                 <div>Location: {{ course.location }}</div>
                 <div>Assigned:</div>
-                <div
-                  v-for="assignment in getAssignedUsers(course)"
-                  :key="assignment.id"
-                >
+                <div v-for="assignment in getAssignedUsers(course)" :key="assignment.id">
                   {{ assignment.name }}
-                  <i class="pl" v-show="assignment.role">{{
-                    assignment.role
-                  }}</i>
+                  <i class="pl" v-show="assignment.role">{{ assignment.role }}</i>
                 </div>
                 <div>Course language: {{ course.language }}</div>
                 <div>Dances: {{ course.dances }}</div>
@@ -147,10 +127,7 @@ export default {
         return !c.cancelled;
       });
       return courses.filter(c => {
-        return (
-          DateTime.fromISO(c.date, { zone: "UTC" }) >
-          DateTime.local().setZone("UTC")
-        );
+        return DateTime.fromISO(c.date, { zone: "UTC" }) > DateTime.local().setZone("UTC");
       });
     },
     incie: function() {

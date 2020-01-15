@@ -2,21 +2,15 @@
   <div :class="{ 'is-cancelled': course.cancelled }">
     <h5>
       {{ course.requested_by
-      }}<span v-if="this.$store.getters.showCommitteeTitle">
-        ({{ course.committee }})</span
-      >
+      }}<span v-if="this.$store.getters.showCommitteeTitle"> ({{ course.committee }})</span>
     </h5>
     <h6>{{ course.date_formatted }}</h6>
     <div><b>Location: </b>{{ course.location }}</div>
     <div><b>Course language: </b>{{ course.language }}</div>
     <div><b>Dances: </b>{{ course.dances }}</div>
     <div><b>Notes: </b>{{ course.notes }}</div>
-    <div :class="{ 'grey-text': !pastCourseDate }">
-      <b>Attendees: </b>{{ course.attendees }}
-    </div>
-    <div :class="{ 'grey-text': !pastCourseDate }">
-      <b>Price: </b>{{ price }}
-    </div>
+    <div :class="{ 'grey-text': !pastCourseDate }"><b>Attendees: </b>{{ course.attendees }}</div>
+    <div :class="{ 'grey-text': !pastCourseDate }"><b>Price: </b>{{ price }}</div>
     <div :class="{ 'grey-text': !pastCourseDate }">
       <b>Paid: </b>{{ course.paid ? "Yes" : "No" }}
     </div>
@@ -32,10 +26,7 @@ export default {
   props: { course: Object },
   computed: {
     pastCourseDate: function() {
-      return (
-        DateTime.fromISO(this.course.date, { zone: "UTC" }) <
-        DateTime.local().setZone("UTC")
-      );
+      return DateTime.fromISO(this.course.date, { zone: "UTC" }) < DateTime.local().setZone("UTC");
     },
     price: function() {
       return currencyFormat(this.course.price);

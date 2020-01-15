@@ -6,16 +6,12 @@
         <div class="input-field">
           <font-awesome-icon class="prefix" icon="user-tie" />
           <input v-model="first_name" type="text" id="first_name" />
-          <label for="first_name" :class="{ active: first_name }"
-            >First name</label
-          >
+          <label for="first_name" :class="{ active: first_name }">First name</label>
         </div>
         <div class="input-field">
           <font-awesome-icon class="prefix" icon="signature" />
           <input v-model="last_name" type="text" id="last_name" />
-          <label for="last_name" :class="{ active: last_name }"
-            >Last name</label
-          >
+          <label for="last_name" :class="{ active: last_name }">Last name</label>
         </div>
         <div class="input-field">
           <font-awesome-icon class="prefix" icon="at" />
@@ -82,11 +78,7 @@ export default {
       return this.$store.getters.profile;
     },
     filled: function() {
-      return (
-        validateEmail(this.email) &&
-        this.first_name !== "" &&
-        this.last_name !== ""
-      );
+      return validateEmail(this.email) && this.first_name !== "" && this.last_name !== "";
     }
   },
   methods: {

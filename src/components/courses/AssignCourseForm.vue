@@ -6,11 +6,7 @@
       <span v-if="assigned.length > 0">({{ assigned.length }})</span>
     </h5>
     <div v-if="assigned.length > 0" class="assigned">
-      <div
-        v-for="assignment in assigned"
-        :key="assignment.id"
-        class="underline"
-      >
+      <div v-for="assignment in assigned" :key="assignment.id" class="underline">
         <div class="assign">
           <div class="left-align">
             <b>
@@ -41,13 +37,7 @@
           <div></div>
           <div
             class="assign-buttons"
-            v-if="
-              !(
-                assignment.has_teacher &&
-                assignment.has_assistant &&
-                assignment.has_mucie
-              )
-            "
+            v-if="!(assignment.has_teacher && assignment.has_assistant && assignment.has_mucie)"
           >
             <button
               v-if="assignment.mucie"
@@ -81,11 +71,7 @@
       No one has been assigned yet.
     </div>
     <h5>Not assigned</h5>
-    <div
-      v-for="assignment in notAssigned"
-      :key="assignment.id"
-      class="underline"
-    >
+    <div v-for="assignment in notAssigned" :key="assignment.id" class="underline">
       <div class="assign">
         <div class="left-align">
           <b :class="attendanceClass(assignment)">

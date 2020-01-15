@@ -9,9 +9,7 @@
       />
     </div>
     <div class="col s12 m6">
-      <h6 class="title">
-        <b>Not responded</b> - {{ totalRequests - totalResponses }}
-      </h6>
+      <h6 class="title"><b>Not responded</b> - {{ totalRequests - totalResponses }}</h6>
       <response-list-entry
         v-for="assignment in notResponded"
         :key="assignment.id"

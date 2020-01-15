@@ -4,10 +4,7 @@
       <form v-on:submit.prevent>
         <div>
           <div class="input-field" :class="{ 'datetime-fix': !!notes }">
-            <font-awesome-icon
-              class="prefix"
-              :icon="['far', 'clipboard']"
-            ></font-awesome-icon>
+            <font-awesome-icon class="prefix" :icon="['far', 'clipboard']"></font-awesome-icon>
             <input v-model="notes" type="text" id="notes" :disabled="loading" />
             <label for="notes">Notes</label>
           </div>
@@ -62,10 +59,7 @@ export default {
           notes: this.notes
         })
         .then(() => {
-          this.$notify(
-            `Attendance updated for ${this.course.requested_by}.`,
-            "success"
-          );
+          this.$notify(`Attendance updated for ${this.course.requested_by}.`, "success");
           let id = this.course.id;
           this.$store.dispatch(UPDATE_COURSE, { id });
         })

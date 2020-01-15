@@ -54,16 +54,7 @@ export default {
   actions: {
     [ADD_COURSE](
       { commit },
-      {
-        requested_by,
-        date,
-        duration,
-        location,
-        notes,
-        language,
-        committee,
-        dances
-      }
+      { requested_by, date, duration, location, notes, language, committee, dances }
     ) {
       commit(ADD_COURSE_REQUEST);
       return Vue.axios

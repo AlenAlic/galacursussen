@@ -25,10 +25,7 @@ export default {
         return filterCoursesByCommittee(c, this.$store.getters.currentUser);
       });
       return courses.filter(c => {
-        return (
-          DateTime.fromISO(c.date, { zone: "UTC" }) >
-          DateTime.local().setZone("UTC")
-        );
+        return DateTime.fromISO(c.date, { zone: "UTC" }) > DateTime.local().setZone("UTC");
       });
     }
   }

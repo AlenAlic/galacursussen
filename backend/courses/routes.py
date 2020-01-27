@@ -186,7 +186,7 @@ def notification():
 def assignments():
     all_courses = Course.query.filter(Course.date > datetime.now(), Course.cancelled.isnot(True)) \
         .order_by(Course.committee, Course.date).all()
-    all_courses = [c for c in all_courses if len(c.assignments) > 0]
+    all_courses = [c for c in all_courses if len([a for a in c.assignments if a.assigned]) > 0]
     if len(all_courses) > 0:
         incie_courses = [c for c in all_courses if c.committee == Committee.incie]
         salcie_courses = [c for c in all_courses if c.committee == Committee.salcie]

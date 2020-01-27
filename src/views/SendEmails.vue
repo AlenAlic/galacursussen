@@ -126,19 +126,19 @@ export default {
       courses = courses.filter(c => {
         return !c.cancelled;
       });
-      return courses.filter(c => {
-        return DateTime.fromISO(c.date, { zone: "UTC" }) > DateTime.local().setZone("UTC");
-      });
+      return courses.filter(
+        c => DateTime.fromISO(c.date, { zone: "UTC" }) > DateTime.local().setZone("UTC")
+      );
     },
     incie: function() {
-      return this.courses.filter(c => {
-        return c.committee_value === "incie";
-      });
+      return this.courses.filter(
+        c => c.committee_value === "incie" && c.assignments.filter(a => a.assigned).length > 0
+      );
     },
     salcie: function() {
-      return this.courses.filter(c => {
-        return c.committee_value === "salcie";
-      });
+      return this.courses.filter(
+        c => c.committee_value === "salcie" && c.assignments.filter(a => a.assigned).length > 0
+      );
     }
   },
   methods: {
@@ -172,8 +172,7 @@ export default {
       this.sendingAssignmentsEmail = true;
       return Vue.axios
         .post("courses/assignments")
-        .then(res => {
-          console.log(res);
+        .then(() => {
           this.$notify("Emails have been sent.", "success");
           this.sendingAssignmentsEmail = false;
           this.sentAssignmentsEmail = true;

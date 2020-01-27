@@ -41,8 +41,8 @@
           <div>
             <div class="input-field">
               <font-awesome-icon class="prefix" :icon="['far', 'clipboard']"></font-awesome-icon>
-              <input v-model="notes" type="text" id="notes" :disabled="loading" />
-              <label for="notes">Notes</label>
+              <input v-model="notes" type="text" :id="`notes-${course.id}`" :disabled="loading" />
+              <label :for="`notes-${course.id}`">Notes</label>
             </div>
             <div v-if="loading" class="buttons-container">
               <loading-spinner class="spinner" size="small" />

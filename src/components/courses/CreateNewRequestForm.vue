@@ -106,7 +106,6 @@
 <script>
 import Vue from "vue";
 import { COURSES } from "./../../store/modules/courses";
-import { DateTime } from "luxon";
 import { Datetime } from "vue-datetime";
 export default {
   name: "CreateNewRequestForm",
@@ -115,7 +114,7 @@ export default {
     return {
       requested_by: "",
       date: "",
-      duration: DateTime.fromISO("1970-01-01T01:30:00.000Z").toISO(),
+      duration: "1970-01-01T01:30:00.000Z",
       location: "",
       notes: "",
       language: "",
@@ -147,7 +146,7 @@ export default {
           this.$store.dispatch(COURSES);
           this.requested_by = "";
           this.date = "";
-          this.duration = DateTime.fromISO("1970-01-01T01:30:00.000Z").toISO();
+          this.duration = "1970-01-01T01:30:00.000Z";
           this.location = "";
           this.notes = "";
           this.language = "";

@@ -89,8 +89,8 @@
     </div>
     <div class="input-field">
       <font-awesome-icon class="prefix" :icon="['far', 'clipboard']"></font-awesome-icon>
-      <input v-model="notes" type="text" id="notes" />
-      <label for="notes" :class="{ active: notes }">Notes</label>
+      <input v-model="notes" type="text" :id="`notes-${course.id}-edit`" />
+      <label :for="`notes-${course.id}-edit`" :class="{ active: notes }">Notes</label>
     </div>
     <div class="row no-padd no-marg-bottom">
       <div class="col s4">

@@ -1,13 +1,19 @@
 <template>
-  <div class="not-responded-container">
-    <div class="card-container" v-for="course in notPaidCourses" :key="course.key">
-      <div class="card">
-        <treasurer-course class="card-content" :course="course" />
+  <div>
+    <h4 v-if="notPaidCourses.length > 0">Require payment</h4>
+    <div class="not-responded-container">
+      <div class="card-container" v-for="course in notPaidCourses" :key="course.key">
+        <div class="card">
+          <treasurer-course class="card-content" :course="course" />
+        </div>
       </div>
     </div>
-    <div class="card-container" v-for="course in paidCourses" :key="course.key">
-      <div class="card">
-        <treasurer-course class="card-content" :course="course" />
+    <h4 v-if="paidCourses.length > 0">Paid courses</h4>
+    <div class="not-responded-container">
+      <div class="card-container" v-for="course in paidCourses" :key="course.key">
+        <div class="card">
+          <treasurer-course class="card-content" :course="course" />
+        </div>
       </div>
     </div>
   </div>
@@ -22,9 +28,12 @@ export default {
   computed: {
     courses: function() {
       let courses = this.$store.getters.courses;
-      return courses.filter(c => {
-        return DateTime.fromISO(c.date, { zone: "UTC" }) < DateTime.local().setZone("UTC");
-      });
+      return courses.filter(
+        c =>
+          (DateTime.fromISO(c.date, { zone: "UTC" }) < DateTime.local().setZone("UTC") &&
+            !c.cancelled) ||
+          (c.cancelled && c.price)
+      );
     },
     paidCourses: function() {
       return this.courses.filter(c => {

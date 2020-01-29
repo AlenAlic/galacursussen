@@ -28,7 +28,7 @@ export default {
         let courseDate = DateTime.fromISO(c.date, { zone: "UTC" });
         let today = DateTime.local()
           .setZone("UTC")
-          .set({ hour: 23, minute: 59, second: 0, millisecond: 0 });
+          .set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
         return courseDate > today;
       });
     }

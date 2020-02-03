@@ -303,7 +303,10 @@ class Course(db.Model, TrackModifications):
             for change in data["assignments"]:
                 req = Assignment.query.filter(Assignment.assignment_id == change).first()
                 req.attendance = data["assignments"][change]
-            course.attendees = data["attendees"]
+            if data["attendees"] != "":
+                course.attendees = data["attendees"]
+            else:
+                course.attendees = None
             if is_float(data["price"]):
                 course.price = float(data["price"])
             course.paid = data["paid"]

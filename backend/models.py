@@ -157,7 +157,7 @@ class User(UserMixin, Anonymous, db.Model, TrackModifications):
         return assignments
 
     def hours(self, year=None, committee=None):
-        courses = [a.course for a in self.committee_assignments(year, committee)]
+        courses = [a.course for a in self.committee_assignments(year, committee) if not a.course.cancelled]
         seconds = sum([c.duration for c in courses], timedelta()).seconds
         return datetime.utcfromtimestamp(seconds).strftime('%H:%M')
 

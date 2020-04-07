@@ -120,6 +120,7 @@ def calculate_hours(year, u):
     return c
 
 
+@bp.route('/hours', methods=[GET], defaults={'year': None})
 @bp.route('/hours/<int:year>', methods=[GET])
 @login_required
 def hours(year):
@@ -147,6 +148,7 @@ def calculate_total_hours(year, u):
     return c
 
 
+@bp.route('/total_hours', methods=[GET], defaults={'year': None})
 @bp.route('/total_hours/<int:year>', methods=[GET])
 @login_required
 def total_hours(year):

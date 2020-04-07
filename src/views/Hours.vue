@@ -56,7 +56,7 @@ export default {
   data: function() {
     return {
       hours: undefined,
-      year: new Date().getFullYear(),
+      year: null,
       total_hours: undefined,
       loading: true,
       totalLoading: true
@@ -96,7 +96,7 @@ export default {
     getHours: function(year) {
       this.loading = true;
       return Vue.axios
-        .get(`courses/hours/${year}`)
+        .get(`courses/hours/${year ? year : ""}`)
         .then(res => {
           this.hours = res.data;
           this.loading = false;
@@ -108,7 +108,7 @@ export default {
     getTotalHours: function(year) {
       this.totalLoading = true;
       return Vue.axios
-        .get(`courses/total_hours/${year}`)
+        .get(`courses/total_hours/${year ? year : ""}`)
         .then(res => {
           this.total_hours = res.data;
           this.totalLoading = false;

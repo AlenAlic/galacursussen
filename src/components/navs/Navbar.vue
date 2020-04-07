@@ -22,6 +22,7 @@
           <nav-link v-if="this.$store.getters.isAdmin" navigate-to="/admin" text="Admin" icon="verified_user" />
         </ul>
         <ul class="right hide-navbar">
+          <nav-link v-if="this.$store.getters.committeeMember" navigate-to="/finances" icon="euro_symbol" />
           <nav-link v-if="this.$store.getters.committeeMember" navigate-to="/hours" icon="access_time" />
           <nav-link navigate-to="/profile" icon="person" />
           <li>
@@ -67,6 +68,12 @@
         </li>
         <li><div class="divider"></div></li>
         <li @click="hideSideNav">
+          <nav-link
+            v-if="this.$store.getters.committeeMember"
+            navigate-to="/finances"
+            text="Finances"
+            icon="euro_symbol"
+          />
           <nav-link v-if="this.$store.getters.committeeMember" navigate-to="/hours" text="Hours" icon="access_time" />
           <nav-link navigate-to="/profile" text="Profile" icon="person" />
         </li>

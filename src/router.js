@@ -10,6 +10,7 @@ const SetPassword = () => import("@/views/SetPassword.vue");
 const Profile = () => import("@/views/Profile.vue");
 const ResetPassword = () => import("@/views/ResetPassword.vue");
 const Hours = () => import("@/views/Hours.vue");
+const Finances = () => import("@/views/Finances.vue");
 
 Vue.use(Router);
 
@@ -80,6 +81,15 @@ let router = new Router({
       path: "/hours",
       name: "hours",
       component: Hours,
+      meta: {
+        auth: true,
+        access: ["Admin", "Organizer", "Member"]
+      }
+    },
+    {
+      path: "/finances",
+      name: "finances",
+      component: Finances,
       meta: {
         auth: true,
         access: ["Admin", "Organizer", "Member"]

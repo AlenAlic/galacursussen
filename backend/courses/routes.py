@@ -160,6 +160,13 @@ def total_hours(year):
     return jsonify(users)
 
 
+@bp.route('/finances', methods=[GET], defaults={'year': None})
+@bp.route('/finances/<int:year>', methods=[GET])
+@login_required
+def finances(year):
+    return jsonify([c.json() for c in Course.courses_year_query(year).all()])
+
+
 def unresponsive_users():
     assignment = Assignment.query.join(Course).filter(Course.date > datetime.now(), Course.cancelled.isnot(True),
                                                       Assignment.attendance.is_(None)) \

@@ -1,8 +1,7 @@
 <template>
   <div :class="{ 'is-cancelled': course.cancelled }">
     <h5>
-      {{ course.requested_by
-      }}<span v-if="this.$store.getters.showCommitteeTitle"> ({{ course.committee }})</span>
+      {{ course.requested_by }}<span v-if="this.$store.getters.showCommitteeTitle"> ({{ course.committee }})</span>
     </h5>
     <h6>{{ course.date_formatted }}</h6>
     <div><b>Location: </b>{{ course.location }}</div>
@@ -11,9 +10,7 @@
     <div><b>Notes: </b>{{ course.notes }}</div>
     <div :class="{ 'grey-text': !pastCourseDate }"><b>Attendees: </b>{{ course.attendees }}</div>
     <div :class="{ 'grey-text': !pastCourseDate }"><b>Price: </b>{{ price }}</div>
-    <div :class="{ 'grey-text': !pastCourseDate }">
-      <b>Paid: </b>{{ course.paid ? "Yes" : "No" }}
-    </div>
+    <div :class="{ 'grey-text': !pastCourseDate }"><b>Paid: </b>{{ course.paid ? "Yes" : "No" }}</div>
     <div><b>MuCie available: </b>{{ course.has_mucie ? "Yes" : "No" }}</div>
   </div>
 </template>

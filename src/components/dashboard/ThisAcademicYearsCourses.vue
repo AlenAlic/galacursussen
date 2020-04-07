@@ -5,13 +5,7 @@
     :counter="courses.length"
   >
     <div v-if="courses.length > 0">
-      <course
-        v-for="course in courses"
-        :key="course.key"
-        :course="course"
-        @closeModal="closeModal"
-        class="mb"
-      />
+      <course v-for="course in courses" :key="course.key" :course="course" @closeModal="closeModal" class="mb" />
     </div>
     <h6 v-else-if="!this.$store.state.courses.loading">
       There are no courses for this year yet.

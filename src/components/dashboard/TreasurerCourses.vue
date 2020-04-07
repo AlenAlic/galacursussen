@@ -30,8 +30,7 @@ export default {
       let courses = this.$store.getters.courses;
       return courses.filter(
         c =>
-          (DateTime.fromISO(c.date, { zone: "UTC" }) < DateTime.local().setZone("UTC") &&
-            !c.cancelled) ||
+          (DateTime.fromISO(c.date, { zone: "UTC" }) < DateTime.local().setZone("UTC") && !c.cancelled) ||
           (c.cancelled && c.price)
       );
     },

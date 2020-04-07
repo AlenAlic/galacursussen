@@ -19,21 +19,11 @@
             text="Emails"
             icon="email"
           />
-          <nav-link
-            v-if="this.$store.getters.isAdmin"
-            navigate-to="/admin"
-            text="Admin"
-            icon="verified_user"
-          />
+          <nav-link v-if="this.$store.getters.isAdmin" navigate-to="/admin" text="Admin" icon="verified_user" />
         </ul>
         <ul class="right hide-navbar">
-          <nav-link
-            v-if="this.$store.getters.committeeMember"
-            navigate-to="/hours"
-            text="Hours"
-            icon="access_time"
-          />
-          <nav-link navigate-to="/profile" text="Profile" icon="person" />
+          <nav-link v-if="this.$store.getters.committeeMember" navigate-to="/hours" icon="access_time" />
+          <nav-link navigate-to="/profile" icon="person" />
           <li>
             <a @click.prevent="logout" class="waves-effect waves-light btn white-text"
               >Log out <i class="material-icons right">exit_to_app</i></a
@@ -73,21 +63,11 @@
             text="Emails"
             icon="email"
           />
-          <nav-link
-            v-if="this.$store.getters.isAdmin"
-            navigate-to="/admin"
-            text="Admin"
-            icon="verified_user"
-          />
+          <nav-link v-if="this.$store.getters.isAdmin" navigate-to="/admin" text="Admin" icon="verified_user" />
         </li>
         <li><div class="divider"></div></li>
         <li @click="hideSideNav">
-          <nav-link
-            v-if="this.$store.getters.committeeMember"
-            navigate-to="/hours"
-            text="Hours"
-            icon="access_time"
-          />
+          <nav-link v-if="this.$store.getters.committeeMember" navigate-to="/hours" text="Hours" icon="access_time" />
           <nav-link navigate-to="/profile" text="Profile" icon="person" />
         </li>
         <li>
@@ -178,8 +158,7 @@ export default {
     },
     draggingSideNavClose: function(event) {
       if (event.type === "touchmove") {
-        let x =
-          this.calculateDraggingPos(event.targetTouches[0].clientX) + 100 - this.startPosition;
+        let x = this.calculateDraggingPos(event.targetTouches[0].clientX) + 100 - this.startPosition;
         x = x > 100 ? 100 : x;
         this.position = x;
       }

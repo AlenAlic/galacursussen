@@ -7,8 +7,8 @@
           <loading-spinner v-if="loadingAvailability" size="small" />
           <div v-else-if="availabilityUsers.length > 0">
             <p>
-              Send a reminder email to the users (listed below) that have not yet indicated their
-              availability for the upcoming courses.
+              Send a reminder email to the users (listed below) that have not yet indicated their availability for the
+              upcoming courses.
             </p>
             <save-button
               class="card-button"
@@ -126,9 +126,7 @@ export default {
       courses = courses.filter(c => {
         return !c.cancelled;
       });
-      return courses.filter(
-        c => DateTime.fromISO(c.date, { zone: "UTC" }) > DateTime.local().setZone("UTC")
-      );
+      return courses.filter(c => DateTime.fromISO(c.date, { zone: "UTC" }) > DateTime.local().setZone("UTC"));
     },
     incie: function() {
       return this.courses.filter(

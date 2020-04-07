@@ -93,10 +93,7 @@ export default {
           account: this.account
         })
         .then(() => {
-          this.$notify(
-            `Created account for ${this.first_name} ${this.last_name} (${this.email}).`,
-            "success"
-          );
+          this.$notify(`Created account for ${this.first_name} ${this.last_name} (${this.email}).`, "success");
           this.first_name = "";
           this.last_name = "";
           this.email = "";

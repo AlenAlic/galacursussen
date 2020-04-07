@@ -88,9 +88,7 @@ export default {
       return this.$store.getters.profile;
     },
     filled: function() {
-      return (
-        validateEmail(this.user.email) && this.user.first_name !== "" && this.user.last_name !== ""
-      );
+      return validateEmail(this.user.email) && this.user.first_name !== "" && this.user.last_name !== "";
     }
   },
   methods: {

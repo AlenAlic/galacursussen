@@ -8,12 +8,7 @@
       <div><b>Price: </b>{{ price }}</div>
       <div><b>Paid: </b>{{ course.paid ? "Yes" : "No" }}</div>
       <div class="center-align mt">
-        <save-button
-          @click.native="createUser"
-          :loading="loading"
-          :active="true"
-          :text="buttonText"
-        />
+        <save-button @click.native="createUser" :loading="loading" :active="true" :text="buttonText" />
       </div>
     </div>
   </div>

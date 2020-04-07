@@ -52,10 +52,7 @@ export default {
     [UPDATE_COURSE_ERROR]() {}
   },
   actions: {
-    [ADD_COURSE](
-      { commit },
-      { requested_by, date, duration, location, notes, language, committee, dances }
-    ) {
+    [ADD_COURSE]({ commit }, { requested_by, date, duration, location, notes, language, committee, dances }) {
       commit(ADD_COURSE_REQUEST);
       return Vue.axios
         .post("courses/new", {

@@ -3,11 +3,7 @@
     <div class="left-align">
       <b v-if="bold">{{ title }}</b>
       <span v-else>{{ title }}</span>
-      <i
-        class="material-icons right trans-rotate clickable"
-        @click="changing"
-        :class="{ 'rotate-180': open }"
-      >
+      <i class="material-icons right trans-rotate clickable" @click="changing" :class="{ 'rotate-180': open }">
         keyboard_arrow_down</i
       >
     </div>

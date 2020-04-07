@@ -8,10 +8,7 @@
             <loading-spinner class="loading" size="tiny" v-if="loading" />
           </div>
           <div>
-            <i
-              class="material-icons right trans-rotate clickable unselectable"
-              :class="{ 'rotate-180': open }"
-            >
+            <i class="material-icons right trans-rotate clickable unselectable" :class="{ 'rotate-180': open }">
               arrow_drop_down_circle</i
             >
           </div>

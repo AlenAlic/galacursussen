@@ -1,24 +1,12 @@
 <template>
   <div class="left-align" :class="{ assigned: assigned }">
     <div v-if="course">
-      <course-modals
-        v-if="this.$store.getters.hasOrganizerPrivileges"
-        :course="course"
-        @closeModal="closeModal"
-      />
+      <course-modals v-if="this.$store.getters.hasOrganizerPrivileges" :course="course" @closeModal="closeModal" />
       <course-info :course="course" />
       <course-assigned class="mt" :course="course" />
       <course-responses-single :course="course" />
-      <course-respond-buttons
-        v-if="assignment.attendance"
-        :course="course"
-        :assignment="assignment"
-      />
-      <course-cancel
-        v-if="this.$store.getters.hasOrganizerPrivileges"
-        :course="course"
-        @closeModal="closeModal"
-      />
+      <course-respond-buttons v-if="assignment.attendance" :course="course" :assignment="assignment" />
+      <course-cancel v-if="this.$store.getters.hasOrganizerPrivileges" :course="course" @closeModal="closeModal" />
     </div>
   </div>
 </template>

@@ -4,21 +4,13 @@
       <h6 class="title">
         <b>Assigned</b>
       </h6>
-      <response-list-entry
-        v-for="assignment in assigned"
-        :key="assignment.id"
-        :assignment="assignment"
-      />
+      <response-list-entry v-for="assignment in assigned" :key="assignment.id" :assignment="assignment" />
     </div>
     <div class="col s12 m6">
       <h6 class="title">
         <b>Not assigned</b>
       </h6>
-      <response-list-entry
-        v-for="assignment in notAssigned"
-        :key="assignment.id"
-        :assignment="assignment"
-      />
+      <response-list-entry v-for="assignment in notAssigned" :key="assignment.id" :assignment="assignment" />
     </div>
   </div>
 </template>

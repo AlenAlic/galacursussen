@@ -41,12 +41,7 @@
         <!--            <span v-else>Email me when courses need invoices sent</span>-->
         <!--          </label>-->
         <!--        </p>-->
-        <save-button
-          @click.native="updateProfile"
-          :loading="loading"
-          :active="filled"
-          text="Save profile"
-        />
+        <save-button @click.native="updateProfile" :loading="loading" :active="filled" text="Save profile" />
       </form>
     </div>
   </div>

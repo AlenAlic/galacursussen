@@ -1,19 +1,11 @@
 <template>
   <div class="left-align">
     <div v-if="course">
-      <course-modals
-        v-if="this.$store.getters.hasOrganizerPrivileges"
-        :course="course"
-        @closeModal="closeModal"
-      />
+      <course-modals v-if="this.$store.getters.hasOrganizerPrivileges" :course="course" @closeModal="closeModal" />
       <course-info :course="course" />
       <course-assigned class="mt" :course="course" />
       <course-responses :course="course" />
-      <course-cancel
-        v-if="this.$store.getters.hasOrganizerPrivileges"
-        :course="course"
-        @closeModal="closeModal"
-      />
+      <course-cancel v-if="this.$store.getters.hasOrganizerPrivileges" :course="course" @closeModal="closeModal" />
     </div>
   </div>
 </template>

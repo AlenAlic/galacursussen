@@ -9,13 +9,7 @@
         <label for="year">Year</label>
       </div>
       <div v-if="!loading && courses.length > 0">
-        <course
-          v-for="course in courses"
-          :key="course.key"
-          :course="course"
-          @closeModal="closeModal"
-          class="mb"
-        />
+        <course v-for="course in courses" :key="course.key" :course="course" @closeModal="closeModal" class="mb" />
       </div>
       <h6 v-else-if="year !== '' && !loading">
         There are no courses for the selected year.

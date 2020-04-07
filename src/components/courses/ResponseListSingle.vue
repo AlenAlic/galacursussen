@@ -1,17 +1,9 @@
 <template>
   <div>
     <h6 class="title"><b>Responses</b> - {{ totalResponses }}</h6>
-    <response-list-entry
-      v-for="assignment in responded"
-      :key="assignment.id"
-      :assignment="assignment"
-    />
+    <response-list-entry v-for="assignment in responded" :key="assignment.id" :assignment="assignment" />
     <h6 class="title"><b>Not responded</b> - {{ totalRequests - totalResponses }}</h6>
-    <response-list-entry
-      v-for="assignment in notResponded"
-      :key="assignment.id"
-      :assignment="assignment"
-    />
+    <response-list-entry v-for="assignment in notResponded" :key="assignment.id" :assignment="assignment" />
   </div>
 </template>
 

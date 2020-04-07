@@ -29,12 +29,7 @@
             }"
           ></div>
         </div>
-        <save-button
-          @click.native="changePassword"
-          :loading="loading"
-          :active="filled"
-          text="Change password"
-        />
+        <save-button @click.native="changePassword" :loading="loading" :active="filled" text="Change password" />
       </form>
     </div>
   </div>

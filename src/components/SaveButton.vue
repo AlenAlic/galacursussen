@@ -1,9 +1,5 @@
 <template>
-  <button
-    :disabled="!active || loading"
-    class="waves-effect waves-light btn"
-    :class="{ 'no-click': !active }"
-  >
+  <button :disabled="!active || loading" class="waves-effect waves-light btn" :class="{ 'no-click': !active }">
     {{ text }} <loading-spinner size="spinner-btn" v-if="loading" />
   </button>
 </template>

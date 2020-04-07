@@ -4,11 +4,7 @@
       <loading-spinner />
     </div>
     <div v-else>
-      <not-responded-card
-        v-for="course in courses"
-        :key="course.id"
-        :course="course"
-      ></not-responded-card>
+      <not-responded-card v-for="course in courses" :key="course.id" :course="course"></not-responded-card>
     </div>
   </div>
 </template>
@@ -31,9 +27,7 @@ export default {
           return d > new Date();
         });
         courses = courses.filter(c => {
-          return c.assignments.some(
-            a => a.user_id === this.$store.getters.currentUser.id && !a.attendance
-          );
+          return c.assignments.some(a => a.user_id === this.$store.getters.currentUser.id && !a.attendance);
         });
       }
       return courses;

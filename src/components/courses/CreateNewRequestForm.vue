@@ -35,14 +35,7 @@
       <div class="col s12 m6">
         <div class="input-field">
           <font-awesome-icon class="prefix" :icon="['far', 'clock']"></font-awesome-icon>
-          <datetime
-            input-id="duration"
-            class="input-field"
-            type="time"
-            v-model="duration"
-            :minute-step="5"
-            zone="UTC"
-          >
+          <datetime input-id="duration" class="input-field" type="time" v-model="duration" :minute-step="5" zone="UTC">
             <!--suppress XmlInvalidId -->
             <label for="duration" class="active" slot="before">
               Course duration

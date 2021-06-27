@@ -38,7 +38,7 @@ const availableYears = () => {
   let now = new Date();
   let year = now.getFullYear();
   if (now.getMonth() < 7) year = year - 1;
-  return range(year - YEAR + 1).map(r => r + YEAR);
+  return range(year - YEAR + 2).map(r => r + YEAR);
 };
 
 // filter for courses by committee (InCie/SalCie)

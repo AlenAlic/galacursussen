@@ -43,7 +43,7 @@ const availableYears = () => {
 
 // filter for courses by committee (InCie/SalCie)
 const filterCoursesByCommittee = (c, u) => {
-  if ((u.incie && u.salcie) || u.mucie) return c;
+  if ((u.incie && u.salcie) || u.mucie || u.organizer || u.admin) return c;
   if (u.incie) return c.committee_value === "incie";
   if (u.salcie) return c.committee_value === "salcie";
 };

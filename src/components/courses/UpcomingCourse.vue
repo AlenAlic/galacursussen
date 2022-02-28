@@ -5,7 +5,7 @@
       <course-info :course="course" />
       <course-assigned class="mt" :course="course" />
       <course-responses-single :course="course" />
-      <course-respond-buttons v-if="assignment.attendance" :course="course" :assignment="assignment" />
+      <course-respond-buttons v-if="assignment && assignment.attendance" :course="course" :assignment="assignment" />
       <course-cancel v-if="this.$store.getters.hasOrganizerPrivileges" :course="course" @closeModal="closeModal" />
     </div>
   </div>

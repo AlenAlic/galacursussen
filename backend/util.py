@@ -24,7 +24,7 @@ def start_of_year():
 
 def is_float(s):
     try:
-        int(s)
+        float(s)
         return True
     except (ValueError, TypeError):
         return False

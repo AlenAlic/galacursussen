@@ -307,7 +307,7 @@ class Course(db.Model, TrackModifications):
                 course.attendees = data["attendees"]
             else:
                 course.attendees = None
-            if is_float(data["price"]):
+            if is_float(data["price"]) is True:
                 course.price = float(data["price"])
             course.paid = data["paid"]
         else:
